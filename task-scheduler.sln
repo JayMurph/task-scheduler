@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler", "task-sche
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-entities", "task-scheduler-entities\task-scheduler-entities.csproj", "{9C4B11BA-1459-4D45-BE95-31FAC5639338}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-entity-tests", "task-schedule-entity-tests\task-scheduler-entity-tests.csproj", "{74627B04-0258-417A-AA29-D98DB9A6FCF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9C4B11BA-1459-4D45-BE95-31FAC5639338}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C4B11BA-1459-4D45-BE95-31FAC5639338}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C4B11BA-1459-4D45-BE95-31FAC5639338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74627B04-0258-417A-AA29-D98DB9A6FCF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74627B04-0258-417A-AA29-D98DB9A6FCF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74627B04-0258-417A-AA29-D98DB9A6FCF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74627B04-0258-417A-AA29-D98DB9A6FCF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

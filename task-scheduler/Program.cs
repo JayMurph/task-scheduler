@@ -108,7 +108,12 @@ namespace task_scheduler {
         public bool IsActive { get; private set; } = false;
 
 
-        public TaskItem(string title, DateTime startTime, INotificationManager manager, INotificationPeriod period, IClock clock) {
+        public TaskItem(
+            string title,
+            DateTime startTime,
+            INotificationManager manager,
+            INotificationPeriod period,
+            IClock clock) {
 
             this.startTime = startTime;
             this.LastNotificationTime = startTime;
@@ -181,7 +186,6 @@ namespace task_scheduler {
         }
 
         private void PostNotification(DateTime timeOfNotification) {
-
             Notification notification = new Notification(this, timeOfNotification);
 
             LastNotificationTime = timeOfNotification;
