@@ -24,6 +24,10 @@ namespace task_schedule_entity_tests {
             public void AddSeconds(double seconds) {
                 time = time.AddSeconds(seconds);
             }
+
+            public object Clone() {
+                return new ControlledClock(Now);
+            }
         }
         internal class ConstPeriod : INotificationPeriod {
             TimeSpan period;

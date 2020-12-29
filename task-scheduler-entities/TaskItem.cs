@@ -215,6 +215,7 @@ namespace task_scheduler_entities {
 
         public void Dispose() {
             notifier?.Cancel();
+            notifier = null;
         }
 
         ~TaskItem() {
