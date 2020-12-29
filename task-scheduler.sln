@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-entities", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-entity-tests", "task-schedule-entity-tests\task-scheduler-entity-tests.csproj", "{74627B04-0258-417A-AA29-D98DB9A6FCF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task_shceduler_presentation", "task_shceduler_presentation\task_shceduler_presentation.csproj", "{54010E79-B7EA-4513-B698-A6AC09F96EDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task_scheduler_presentation", "task_shceduler_presentation\task_scheduler_presentation.csproj", "{54010E79-B7EA-4513-B698-A6AC09F96EDC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task_scheduler_application", "task_scheduler_application\task_scheduler_application.csproj", "{2EEF9DB4-2AED-49B0-B0F9-71BFCAB1C302}"
 EndProject
