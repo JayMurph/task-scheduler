@@ -4,7 +4,7 @@ namespace task_scheduler_entities {
     /// <summary>
     /// Interface for classes that are TaskItems that produce notifications
     /// </summary>
-    public interface ITaskItem {
+    public interface ITaskItem : IDisposable{
 
         /// <summary>
         /// The title of the ITaskItem

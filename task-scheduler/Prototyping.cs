@@ -236,7 +236,7 @@ namespace task_scheduler {
             }
         }
     }
-    class Program {
+    class Prototyping {
         static void Main(string[] args) {
 
             INotificationManager manager = new NotificationManager();

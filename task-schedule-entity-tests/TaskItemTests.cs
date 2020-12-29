@@ -96,5 +96,29 @@ namespace task_schedule_entity_tests {
 
             Assert.AreEqual(1, manager.GetAll().Count);
         }
+
+        [TestMethod]
+        public void TaskItem_DoesNotProductNotificationWhenCancelled() {
+            ControlledClock clock = new ControlledClock(DateTime.Now);
+            NotificationManager manager = new NotificationManager();
+            ConstPeriod constPeriod = new ConstPeriod(new TimeSpan(0,0,2));
+
+            TaskItem testTask = new TaskItem(
+                "Test",
+                "Test",
+                new Colour(0, 0, 0, 0),
+                clock.Now,
+                manager,
+                constPeriod,
+                clock
+            );
+
+            testTask.Cancel();
+
+            clock.AddSeconds(2.1);
+            Thread.Sleep(10);
+
+            Assert.AreEqual(0, manager.GetAll().Count);
+        }
     }
 }

@@ -212,5 +212,13 @@ namespace task_scheduler_entities {
 
             manager.Add(notification);
         }
+
+        public void Dispose() {
+            notifier?.Cancel();
+        }
+
+        ~TaskItem() {
+            Dispose();
+        }
     }
 }
