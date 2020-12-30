@@ -230,7 +230,7 @@ namespace task_scheduler_entities {
         /// Time-stamp for the new Notification
         /// </param>
         private void PostNotification(DateTime timeOfNotification) {
-            Notification notification = new Notification(this, timeOfNotification);
+            Notification notification = new Notification(Guid.NewGuid(), this, timeOfNotification);
 
             LastNotificationTime = timeOfNotification;
 
