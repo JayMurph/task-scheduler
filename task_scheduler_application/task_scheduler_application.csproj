@@ -5,7 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\task-scheduler-entities\task-scheduler-entities.csproj" />
     <ProjectReference Include="..\task_scheduler_data_access\task_scheduler_data_access.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UseCases\AddTask\" />
+    <Folder Include="UseCases\DeleteTask\" />
+    <Folder Include="UseCases\DismissNotification\" />
+    <Folder Include="UseCases\EditTask\" />
+    <Folder Include="UseCases\ViewSingleTask\" />
+    <Folder Include="UseCases\ViewNotifications\" />
+    <Folder Include="UseCases\ViewTasks\" />
   </ItemGroup>
 
 </Project>
