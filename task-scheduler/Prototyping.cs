@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using task_scheduler_entities;
+using task_scheduler_application;
 
 namespace task_scheduler {
     public class RealTimeClock : IClock {
@@ -38,165 +39,160 @@ namespace task_scheduler {
         }
     }
 
-    class TaskSchedulerApplication {
-        INotificationManager notificationManager;
-        ExtendedTaskManager taskManager;
-    }
-
-    class UserController {
-        private readonly INotificationManager notificationManager;
-        private readonly ExtendedTaskManager taskManager;
-        public AddTaskUseCaseFactory AddTaskUseCaseFactory { get; private set; }
-
-        public UserController(
-            INotificationManager notificationManager,
-            ExtendedTaskManager taskManager) {
-            this.notificationManager = notificationManager;
-            this.taskManager = taskManager;
-
-            AddTaskUseCaseFactory = new AddTaskUseCaseFactory(taskManager);
-        }
-    }
-
-    class TaskItemViewModel {
-        public string Title;
-        public string Comment;
-        public Colour Colour;
-        public DateTime StartTime;
-        public string Period;
-        public string Error;
-    }
-
-    class TaskItemInputModel {
-        public string Title;
-        public string Comment;
-        public Colour Colour;
-        public DateTime StartTime;
-        public string Period;
-    }
-
-    interface IUseCase<in T, out U> {
-        T Input { set; }
-        U Output { get; }
-        void Execute();
-    }
-
-    interface IUseCaseFactory<T> {
-        T New();
-    } 
-
-    class ExtendedTaskManager : BasicTaskManager {
-        private readonly INotificationManager notificationManager;
-
-        public ExtendedTaskManager(INotificationManager notificationManager) {
-            this.notificationManager = notificationManager;
-        }
-        public bool Add(
-            string title,
-            string comment,
-            Colour colour,
-            DateTime startTime,
-            INotificationPeriod period,
-            IClock clock
-            ) {
-
-            ITaskItem newTask =
-                new TaskItem(
-                    title,
-                    comment,
-                    colour,
-                    startTime,
-                    notificationManager,
-                    period,
-                    clock
-                );
-
-            if (!base.Add(newTask)) {
-                newTask.Dispose();
-                return false;
-            }
-
-            return true;
-        }
-    }
-
-    class AddTaskUseCaseFactory : IUseCaseFactory<AddTaskUseCase>{
-        private readonly ExtendedTaskManager taskManager;
-
-        public AddTaskUseCaseFactory(ExtendedTaskManager taskManager) {
-            this.taskManager = taskManager;
-        }
-        public AddTaskUseCase New() {
-            return new AddTaskUseCase(taskManager);
-        }
-    }
-
-    class AddTaskUseCase : IUseCase<TaskItemInputModel, TaskItemViewModel> {
-        private readonly ExtendedTaskManager taskManager;
-
-        public TaskItemInputModel Input { private get; set; }
-
-        public TaskItemViewModel Output { get; private set; } = new TaskItemViewModel();
-
-        public void Execute() {
-            //if(taskManager.Add(
-            //    Input.Title,
-            //    Input.Comment,
-            //    Input.Colour,
-            //    Input.StartTime,
-            //    )) {
-            //    Output = new TaskItemViewModel {
-            //        Colour = Input.Colour,
-            //        Title = Input.Title,
-            //        Comment = Input.Comment,
-            //        StartTime = Input.StartTime
-            //    };
-            //}
-            //else {
-            //    Output = new TaskItemViewModel {
-            //        Error = "Duplicate task item was provided."
-            //    };
-            //}
-        }
-
-        public AddTaskUseCase(ExtendedTaskManager taskManager) {
-            this.taskManager = taskManager;
-        }
-    }
-
     class Prototyping {
-        static void Main(string[] args) {
 
+        private static void TaskHarness() {
             INotificationManager manager = new BasicNotificationManager();
-            ExtendedTaskManager taskManager = new ExtendedTaskManager(manager);
-
-            UserController userController = new UserController(manager, taskManager);
 
             manager.NotificationAdded += (object s, Notification n) => { Console.WriteLine($"{n.Time} : {n.Producer.Title}"); };
+
             DateTime fake = DateTime.Now.Add(new TimeSpan(0, 0, 0, 10));
 
             ITaskItem newTask =
                 new TaskItem(
                     "New task",
                     "New task",
-                    new Colour(255,255,255,255),
+                    new Colour(255, 255, 255, 255),
                     DateTime.Now,
                     manager,
-                    new ConstantPeriod(new TimeSpan(0, 0, 5)), 
+                    new ConstantPeriod(new TimeSpan(0, 0, 5)),
                     new RealTimeClock(),
                     fake.AddSeconds(80),
                     Guid.NewGuid()
                 );
 
-            taskManager.Add(newTask);
-
             string input = "";
-            while(input != "x") {
+            while (input != "x") {
                 Console.WriteLine("Waiting . . .");
                 input = Console.ReadLine();
-                taskManager.Remove(newTask);
                 break;
             }
+        }
+
+        private static void GuidHarness() {
+            Guid id1 = Guid.NewGuid();
+            Guid id2 = Guid.NewGuid();
+            Console.WriteLine($"1 --  {id1}");
+            Console.WriteLine($"2 --  {id2}");
+            Console.WriteLine($"id1 == id2 ?  =  {id1 == id2}");
+        }
+        
+        class AddTaskUseCaseInput {
+            public string Title;
+            public string Comment;
+            public Colour Colour;
+            public DateTime StartTime;
+        }
+
+        class AddTaskUseCaseOutput {
+            public bool Success;
+            public string Error;
+        }
+
+        interface IUseCase<in T, out U> where T : class where U : class{
+            T Input { set; }
+            U Output { get; }
+            void Execute();
+        }
+        class AddTaskUseCase : IUseCase<AddTaskUseCaseInput, AddTaskUseCaseOutput> {
+            INotificationManager notificationManager;
+            ITaskManager taskManager;
+            IClock clock;
+            IRepository<ITaskItem> taskRepo;
+
+            public AddTaskUseCaseInput Input { set; get; }
+
+            public AddTaskUseCaseOutput Output { get; private set; }
+
+            public void Execute() {
+                AddTaskUseCaseInput input = Input;
+
+                TaskItem newItem = new TaskItem(
+                    input.Title,
+                    input.Comment,
+                    input.Colour,
+                    input.StartTime,
+                    notificationManager,
+                    new ConstantPeriod(new TimeSpan(0, 0, 15)),
+                    clock
+                    );
+
+                taskManager.Add(newItem);
+                taskRepo.Insert(newItem);
+
+                Output = new AddTaskUseCaseOutput { Success = true };
+            }
+
+            public AddTaskUseCase(
+                INotificationManager notificationManager,
+                ITaskManager taskManager,
+                IClock clock,
+                IRepository<ITaskItem> taskRepo) {
+
+                this.notificationManager = notificationManager;
+                this.taskManager = taskManager;
+                this.clock = clock;
+                this.taskRepo = taskRepo;
+            }
+        }
+        interface IUseCaseFactory<T> where T : class{
+            T New(); 
+        }
+
+        class AddTaskUseCaseFactory : IUseCaseFactory<AddTaskUseCase> {
+
+            INotificationManager notificationManager;
+            ITaskManager taskManager;
+            IClock clock;
+            IRepository<ITaskItem> taskRepo;
+
+            public AddTaskUseCaseFactory(
+                INotificationManager notificationManager,
+                ITaskManager taskManager,
+                IClock clock,
+                IRepository<ITaskItem> taskRepo) {
+
+                this.notificationManager = notificationManager;
+                this.taskManager = taskManager;
+                this.clock = clock;
+                this.taskRepo = taskRepo;
+            }
+
+            public AddTaskUseCase New() {
+                return new AddTaskUseCase(
+                    notificationManager,
+                    taskManager,
+                    clock,
+                    taskRepo
+                );
+            }
+        }
+
+        class UserController {
+            AddTaskUseCaseFactory addTaskFactory;
+            public UserController(
+                INotificationManager notificationManager,
+                ITaskManager taskManager,
+                IClock clock,
+                IRepository<ITaskItem> taskRepo) {
+
+                addTaskFactory = new AddTaskUseCaseFactory(
+                    notificationManager,
+                    taskManager,
+                    clock,
+                    taskRepo
+                    );
+            }
+        }
+
+        private static void FactoryHarness() {
+
+        }
+
+        static void Main(string[] args) {
+            //TaskHarness();
+            //GuidHarness();
+            FactoryHarness();
         }
     }
 }

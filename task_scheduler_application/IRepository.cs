@@ -8,10 +8,10 @@ namespace task_scheduler_application {
     /// </summary>
     /// <typeparam name="T">Type that is created, updated, retrieved, and deleted from a
     /// data-source</typeparam>
-    interface IRepository<T>{
-        bool Insert(IEnumerable<T> t);
+    public interface IRepository<T>{
+        bool Insert(T t);
         IEnumerable<T> Select(Predicate<T> predicate);
-        bool Update(IEnumerable<T> t);
-        bool Delete(IEnumerable<T> t);
+        bool Update(T t);
+        bool Delete(T t);
     }
 }
