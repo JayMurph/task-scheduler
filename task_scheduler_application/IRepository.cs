@@ -13,5 +13,6 @@ namespace task_scheduler_application {
         IEnumerable<T> Select(Predicate<T> predicate);
         bool Update(T t);
         bool Delete(T t);
+        bool SaveChanges();
     }
 }

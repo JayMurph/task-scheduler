@@ -157,6 +157,10 @@ namespace task_scheduler {
             public bool Update(ITaskItem t) {
                 return false;
             }
+
+            bool IRepository<ITaskItem>.SaveChanges() {
+                throw new NotImplementedException();
+            }
         }
 
         private static void FactoryHarness() {
