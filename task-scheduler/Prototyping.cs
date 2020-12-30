@@ -88,12 +88,6 @@ namespace task_scheduler {
             public bool Success;
             public string Error;
         }
-
-        interface IUseCase<in T, out U> where T : class where U : class{
-            T Input { set; }
-            U Output { get; }
-            void Execute();
-        }
         class AddTaskUseCase : IUseCase<AddTaskUseCaseInput, AddTaskUseCaseOutput> {
             INotificationManager notificationManager;
             ITaskManager taskManager;
@@ -134,9 +128,6 @@ namespace task_scheduler {
                 this.clock = clock;
                 this.taskRepo = taskRepo;
             }
-        }
-        interface IUseCaseFactory<T> where T : class{
-            T New(); 
         }
 
         class AddTaskUseCaseFactory : IUseCaseFactory<AddTaskUseCase> {
