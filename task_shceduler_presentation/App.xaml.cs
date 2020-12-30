@@ -14,14 +14,40 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using task_scheduler_entities;
+using task_scheduler_application;
+using task_scheduler_application.Repositories;
+using task_scheduler_application.UseCases.AddTask;
 
-namespace task_shceduler_presentation
+namespace task_scheduler_presentation
 {
+    class DummyTaskRepo : ITaskItemRepository {
+        public bool Delete(TaskItem t) {
+            return false;
+        }
+
+        public bool Insert(TaskItem t) {
+            return false;
+        }
+
+        public bool SaveChanges() {
+            return false;
+        }
+
+        public IEnumerable<TaskItem> Select(Predicate<TaskItem> predicate) {
+            return new List<TaskItem>();
+        }
+
+        public bool Update(TaskItem t) {
+            return false;
+        }
+    }
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
     sealed partial class App : Application
     {
+        static public Controllers.UserController UserController; 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -30,6 +56,28 @@ namespace task_shceduler_presentation
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            //get database data 
+
+            //create domain entities
+            BasicNotificationManager notificationManager = new BasicNotificationManager();
+            BasicTaskManager taskManager = new BasicTaskManager();
+            DummyTaskRepo taskRepo = new DummyTaskRepo();
+            RealTimeClock clock = new RealTimeClock();
+
+            //instantiate domain entities retrieved from database
+
+            //create use-case factories
+            AddTaskUseCaseFactory addTaskUseCaseFactory =
+                new AddTaskUseCaseFactory(
+                    taskManager,
+                    notificationManager,
+                    taskRepo,
+                    clock
+                );
+
+            //Instantiate user controller, passing in required factories
+            UserController = new Controllers.UserController(addTaskUseCaseFactory);
         }
 
         /// <summary>

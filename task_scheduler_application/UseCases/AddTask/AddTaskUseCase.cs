@@ -4,7 +4,7 @@ using System.Text;
 using task_scheduler_entities;
 
 namespace task_scheduler_application.UseCases.AddTask {
-    class AddTaskUseCase : IUseCase<AddTaskInput, AddTaskOutput> {
+    public class AddTaskUseCase : IUseCase<AddTaskInput, AddTaskOutput> {
 
         ITaskManager taskManager;
         INotificationManager notificationManager;

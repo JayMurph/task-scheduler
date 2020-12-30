@@ -4,7 +4,7 @@ using System.Text;
 using task_scheduler_entities;
 
 namespace task_scheduler_application.UseCases.AddTask {
-    class AddTaskInput {
+    public class AddTaskInput {
 
         public string Title;
         public string Comment;
