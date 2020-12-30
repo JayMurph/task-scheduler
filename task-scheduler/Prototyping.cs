@@ -5,11 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using task_scheduler_entities;
 
 namespace task_scheduler {
-    public interface IClock : ICloneable{
-        DateTime Now { get; }
-    }
     public class RealTimeClock : IClock {
         public object Clone() {
             return new RealTimeClock();
@@ -18,10 +16,6 @@ namespace task_scheduler {
         public DateTime Now {
             get { return DateTime.Now; }
         }
-    }
-    public interface INotificationPeriod {
-        TimeSpan TimeUntilNextNotification(DateTime taskStartTime, DateTime now);
-        DateTime NextNotificationTime(DateTime taskStartTime, DateTime now);
     }
     public class ConstantPeriod : INotificationPeriod {
         private readonly TimeSpan period; 
@@ -44,216 +38,150 @@ namespace task_scheduler {
         }
     }
 
-    public class DelayedTask{
-
-        private DateTime dueTime;
-        private IClock clock;
-        private Task asyncTask;
-        private volatile bool stopSignal = false;
-
-        public DelayedTask(Action action, DateTime dueTime, IClock clock) {
-            this.dueTime = dueTime;
-            this.clock = clock;
-
-            asyncTask = Task.Factory.StartNew(() => AsyncOperation(action));
-        }
-
-        public virtual void Cancel() {
-            stopSignal = true;
-
-            try {
-                asyncTask.Wait();
-            }
-            catch (Exception ex){
-                Console.WriteLine(ex);
-            }
-            finally {
-                asyncTask.Dispose();
-            }
-        }
-
-        protected virtual void AsyncOperation(Action action) {
-            while(clock.Now < dueTime) {
-                if (stopSignal) {
-                    return;
-                }
-            }
-
-            action();
-        }
-
+    class TaskSchedulerApplication {
+        INotificationManager notificationManager;
+        ExtendedTaskManager taskManager;
     }
 
-    public class TaskItem {
-        private INotificationPeriod period;
-        private INotificationManager manager;
-        private IClock clock;
-        private DelayedTask notifier;
-        private DateTime startTime;
+    class UserController {
+        private readonly INotificationManager notificationManager;
+        private readonly ExtendedTaskManager taskManager;
+        public AddTaskUseCaseFactory AddTaskUseCaseFactory { get; private set; }
 
-        public string Title { get; set; }
-        public DateTime StartTime {
-            get {
-                return startTime;
-            }
-            set {
-                startTime = value;
-                if (IsActive) {
-                    notifier?.Cancel();
-                    ScheduleNextNotification();
-                }
-            }
-        } 
-        public DateTime LastNotificationTime { get; private set; } = DateTime.MinValue;
-        public bool IsActive { get; private set; } = false;
+        public UserController(
+            INotificationManager notificationManager,
+            ExtendedTaskManager taskManager) {
+            this.notificationManager = notificationManager;
+            this.taskManager = taskManager;
 
+            AddTaskUseCaseFactory = new AddTaskUseCaseFactory(taskManager);
+        }
+    }
 
-        public TaskItem(
+    class TaskItemViewModel {
+        public string Title;
+        public string Comment;
+        public Colour Colour;
+        public DateTime StartTime;
+        public string Period;
+        public string Error;
+    }
+
+    class TaskItemInputModel {
+        public string Title;
+        public string Comment;
+        public Colour Colour;
+        public DateTime StartTime;
+        public string Period;
+    }
+
+    interface IUseCase<in T, out U> {
+        T Input { set; }
+        U Output { get; }
+        void Execute();
+    }
+
+    interface IUseCaseFactory<T> {
+        T New();
+    } 
+
+    class ExtendedTaskManager : BasicTaskManager {
+        private readonly INotificationManager notificationManager;
+
+        public ExtendedTaskManager(INotificationManager notificationManager) {
+            this.notificationManager = notificationManager;
+        }
+        public bool Add(
             string title,
+            string comment,
+            Colour colour,
             DateTime startTime,
-            INotificationManager manager,
             INotificationPeriod period,
-            IClock clock) {
+            IClock clock
+            ) {
 
-            this.startTime = startTime;
-            this.LastNotificationTime = startTime;
-            this.Title = title;
-            this.period = period;
-            this.manager = manager;
-            this.clock = clock;
-
-            while(IsOverdue()){
-                PostNotification(period.NextNotificationTime(this.StartTime, this.LastNotificationTime)); 
-            }
-
-            ScheduleNextNotification();
-        }
-
-        public TaskItem(
-            string title,
-            DateTime startTime,
-            INotificationManager manager,
-            INotificationPeriod period,
-            IClock clock, 
-            DateTime lastNotificationTime) {
-
-            this.startTime = startTime;
-            this.LastNotificationTime = lastNotificationTime;
-
-            this.Title = title;
-            this.period = period;
-            this.manager = manager;
-            this.clock = clock;
-
-            while(IsOverdue()){
-                PostNotification(period.NextNotificationTime(this.StartTime, this.LastNotificationTime)); 
-            }
-
-            ScheduleNextNotification();
-        }
-
-        public bool IsOverdue() {
-            return period.NextNotificationTime(this.StartTime, this.LastNotificationTime) < clock.Now;
-        }
-
-        public void Cancel() {
-            notifier?.Cancel();
-            IsActive = false;
-        }
-
-        public void ChangePeriod(INotificationPeriod period) {
-            this.period = period;
-
-            notifier?.Cancel();
-
-            while(IsOverdue()){
-                PostNotification(period.NextNotificationTime(this.StartTime, this.LastNotificationTime)); 
-            }
-
-            ScheduleNextNotification();
-        }
-
-        private void ScheduleNextNotification() {
-
-            DateTime nextNotificationTime = period.NextNotificationTime(StartTime, clock.Now);
-
-            notifier = 
-                new DelayedTask(
-                    () => { PostNotification(clock.Now); ScheduleNextNotification(); }, 
-                    nextNotificationTime, 
+            ITaskItem newTask =
+                new TaskItem(
+                    title,
+                    comment,
+                    colour,
+                    startTime,
+                    notificationManager,
+                    period,
                     clock
                 );
-        }
 
-        private void PostNotification(DateTime timeOfNotification) {
-            Notification notification = new Notification(this, timeOfNotification);
-
-            LastNotificationTime = timeOfNotification;
-
-            manager.Add(notification);
-        }
-    }
-    public class Notification {
-        private readonly TaskItem owner;
-        private readonly DateTime timeOf;
-        public TaskItem TaskItem { get => owner; }
-        public DateTime TimeOf { get => timeOf; }
-        public Notification(TaskItem owner, DateTime timeOf) {
-            this.owner = owner;
-            this.timeOf = timeOf;
-        }
-    }
-    public interface INotificationManager {
-        event EventHandler<Notification> Added;
-        void Add(Notification notification);
-        List<Notification> GetAll();
-        bool Remove(Notification notification);
-    }
-    public class NotificationManager : INotificationManager {
-        private List<Notification> notifications = new List<Notification>();
-
-        public event EventHandler<Notification> Added;
-        protected void OnAdded(Notification notification) {
-            Added?.Invoke(this, notification);
-        }
-
-        public void Add(Notification notification) {
-            lock (notification) {
-                notifications.Add(notification);
+            if (!base.Add(newTask)) {
+                newTask.Dispose();
+                return false;
             }
-            OnAdded(notification);
-        }
 
-        public List<Notification> GetAll() {
-            lock (notifications) {
-                return new List<Notification>(notifications);
+            return true;
+        }
+    }
+
+    class AddTaskUseCaseFactory : IUseCaseFactory<AddTaskUseCase>{
+        private readonly ExtendedTaskManager taskManager;
+
+        public AddTaskUseCaseFactory(ExtendedTaskManager taskManager) {
+            this.taskManager = taskManager;
+        }
+        public AddTaskUseCase New() {
+            return new AddTaskUseCase(taskManager);
+        }
+    }
+
+    class AddTaskUseCase : IUseCase<TaskItemInputModel, TaskItemViewModel> {
+        private readonly ExtendedTaskManager taskManager;
+
+        public TaskItemInputModel Input { private get; set; }
+
+        public TaskItemViewModel Output { get; private set; } = new TaskItemViewModel();
+
+        public void Execute() {
+            if(taskManager.Add(
+                Input.Title,
+                Input.Comment,
+                Input.Colour,
+                Input.StartTime,
+                //
+                //
+                )) {
+                Output = new TaskItemViewModel {
+                    Colour = Input.Colour,
+                    Title = Input.Title,
+                    Comment = Input.Comment,
+                    StartTime = Input.StartTime
+                };
             }
-        }
-
-        public bool Remove(Notification notification) {
-            lock (notification) {
-                return notifications.Remove(notification);
+            else {
+                Output = new TaskItemViewModel {
+                    Error = "Duplicate task item was provided."
+                };
             }
         }
+
+        public AddTaskUseCase(ExtendedTaskManager taskManager) {
+            this.taskManager = taskManager;
+        }
     }
+
     class Prototyping {
         static void Main(string[] args) {
 
-            INotificationManager manager = new NotificationManager();
-            manager.Added += (object s, Notification n) => { Console.WriteLine($"{n.TimeOf} : {n.TaskItem.Title}"); };
-            DateTime fake = DateTime.Now.Add(new TimeSpan(0, 0, 0, 10));
-            //TaskItem oldTask =
-            //    new TaskItem(
-            //        "Old task",
-            //        fake,
-            //        manager,
-            //        period,
-            //        fake.Add(new TimeSpan(0,0,0,10))
-            //    );
+            INotificationManager manager = new BasicNotificationManager();
+            ExtendedTaskManager taskManager = new ExtendedTaskManager(manager);
 
-            TaskItem newTask =
+            UserController userController = new UserController(manager, taskManager);
+
+            manager.NotificationAdded += (object s, Notification n) => { Console.WriteLine($"{n.Time} : {n.Producer.Title}"); };
+            DateTime fake = DateTime.Now.Add(new TimeSpan(0, 0, 0, 10));
+
+            ITaskItem newTask =
                 new TaskItem(
                     "New task",
+                    "New task",
+                    new Colour(255,255,255,255),
                     DateTime.Now,
                     manager,
                     new ConstantPeriod(new TimeSpan(0, 0, 5)), 
@@ -261,11 +189,14 @@ namespace task_scheduler {
                     fake.AddSeconds(80)
                 );
 
+            taskManager.Add(newTask);
+
             string input = "";
             while(input != "x") {
                 Console.WriteLine("Waiting . . .");
                 input = Console.ReadLine();
-                newTask.StartTime = DateTime.Now.AddSeconds(10);
+                taskManager.Remove(newTask);
+                break;
             }
         }
     }
