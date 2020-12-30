@@ -1,7 +1,7 @@
 ﻿using System;
 using task_scheduler_entities;
 
-namespace task_scheduler_application {
+namespace task_scheduler_application.Periods {
     public class ConstantPeriod : INotificationPeriod {
         private readonly TimeSpan period; 
 

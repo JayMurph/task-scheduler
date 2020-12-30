@@ -7,17 +7,9 @@ using System.Threading.Tasks;
 using System.Threading;
 using task_scheduler_entities;
 using task_scheduler_application;
+using task_scheduler_application.Periods;
 
 namespace task_scheduler {
-    public class RealTimeClock : IClock {
-        public object Clone() {
-            return new RealTimeClock();
-        }
-
-        public DateTime Now {
-            get { return DateTime.Now; }
-        }
-    }
 
     class Prototyping {
 
