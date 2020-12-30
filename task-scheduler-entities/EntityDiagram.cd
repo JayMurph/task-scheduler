@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="task_scheduler_entities.BasicNotificationManager" BaseTypeListCollapsed="true">
+    <Position X="9.5" Y="9.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIAACAAAAAAAAAAAAgABAAAAAAAAAAAAgBAAAAAAAA=</HashCode>
+      <FileName>BasicNotificationManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="task_scheduler_entities.BasicTaskManager" BaseTypeListCollapsed="true">
+    <Position X="12.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAgAAgAAAAAAAAA=</HashCode>
+      <FileName>BasicTaskManager.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="task_scheduler_entities.DelayedTask">
+    <Position X="1.5" Y="9.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgwAAAAAAAAAAAAAAgAAAQAAAAAAICAAAAAAA=</HashCode>
+      <FileName>DelayedTask.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="task_scheduler_entities.Notification">
+    <Position X="3" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Notification.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Producer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="task_scheduler_entities.TaskItem" BaseTypeListCollapsed="true">
+    <Position X="6.25" Y="9.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACGQDAAAEAAEAAgAACEIAAAgAAAAAACAhAAAAA=</HashCode>
+      <FileName>TaskItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="clock" />
+      <Field Name="manager" />
+      <Field Name="notifier" />
+      <Field Name="period" />
+      <Property Name="Colour" />
+    </ShowAsAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Struct Name="task_scheduler_entities.Colour">
+    <Position X="4" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAEAAQA=</HashCode>
+      <FileName>Colour.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="task_scheduler_entities.IClock">
+    <Position X="5.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IClock.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="task_scheduler_entities.INotificationManager">
+    <Position X="9.75" Y="6.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgBAAAAAAAA=</HashCode>
+      <FileName>INotificationManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="task_scheduler_entities.INotificationPeriod">
+    <Position X="7.25" Y="4.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>INotificationPeriod.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="task_scheduler_entities.ITaskItem">
+    <Position X="6.25" Y="1.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACEQAAAAEAAEAAAAAAAIAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ITaskItem.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="task_scheduler_entities.ITaskManager">
+    <Position X="12.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>ITaskManager.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -139,26 +139,24 @@ namespace task_scheduler {
         public TaskItemViewModel Output { get; private set; } = new TaskItemViewModel();
 
         public void Execute() {
-            if(taskManager.Add(
-                Input.Title,
-                Input.Comment,
-                Input.Colour,
-                Input.StartTime,
-                //
-                //
-                )) {
-                Output = new TaskItemViewModel {
-                    Colour = Input.Colour,
-                    Title = Input.Title,
-                    Comment = Input.Comment,
-                    StartTime = Input.StartTime
-                };
-            }
-            else {
-                Output = new TaskItemViewModel {
-                    Error = "Duplicate task item was provided."
-                };
-            }
+            //if(taskManager.Add(
+            //    Input.Title,
+            //    Input.Comment,
+            //    Input.Colour,
+            //    Input.StartTime,
+            //    )) {
+            //    Output = new TaskItemViewModel {
+            //        Colour = Input.Colour,
+            //        Title = Input.Title,
+            //        Comment = Input.Comment,
+            //        StartTime = Input.StartTime
+            //    };
+            //}
+            //else {
+            //    Output = new TaskItemViewModel {
+            //        Error = "Duplicate task item was provided."
+            //    };
+            //}
         }
 
         public AddTaskUseCase(ExtendedTaskManager taskManager) {
@@ -186,7 +184,8 @@ namespace task_scheduler {
                     manager,
                     new ConstantPeriod(new TimeSpan(0, 0, 5)), 
                     new RealTimeClock(),
-                    fake.AddSeconds(80)
+                    fake.AddSeconds(80),
+                    Guid.NewGuid()
                 );
 
             taskManager.Add(newTask);
