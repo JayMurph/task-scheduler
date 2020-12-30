@@ -190,6 +190,22 @@ namespace task_scheduler {
             var output = uc.Output;
         }
 
+        enum Directions {
+            RIGHT, LEFT, UP, DOWN
+        }
+
+        static INotificationPeriod MapPeriod(string periodStr) {
+            switch (periodStr) {
+                default:
+                    break;
+            }
+        }
+
+        static void MapHarness() {
+
+        }
+
+
         static void Main(string[] args) {
             //TaskHarness();
             //GuidHarness();

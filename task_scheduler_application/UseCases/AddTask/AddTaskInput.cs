@@ -9,7 +9,7 @@ namespace task_scheduler_application.UseCases.AddTask {
         public string Title;
         public string Comment;
 
-        //public DateTime StartTime;
+        public DateTime StartTime;
 
         //public Colour Colour;
         public byte R;
