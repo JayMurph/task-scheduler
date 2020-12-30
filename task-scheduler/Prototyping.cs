@@ -165,6 +165,10 @@ namespace task_scheduler {
             var clock = new RealTimeClock();
             var taskRepo = new TaskRepository();
 
+            foreach (ITaskItem task in taskRepo.Select(x => true)) {
+                taskManager.Add(task);
+            }
+
             var userController = new UserController(notificationManager, taskManager, clock, taskRepo);
 
             //

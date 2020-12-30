@@ -5,11 +5,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E2AA9F68-96B6-4CBA-8C3A-7C4CEB2212CE}</ProjectGuid>
+    <ProjectGuid>{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>task_scheduler_data_access</RootNamespace>
-    <AssemblyName>task_scheduler_data_access</AssemblyName>
+    <AssemblyName>task-scheduler-data-access</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>

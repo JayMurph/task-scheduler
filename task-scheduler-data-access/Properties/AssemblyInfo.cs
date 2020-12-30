@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("task_scheduler_data_access")]
+[assembly: AssemblyTitle("task-scheduler-data-access")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("task_scheduler_data_access")]
+[assembly: AssemblyProduct("task-scheduler-data-access")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e2aa9f68-96b6-4cba-8c3a-7c4ceb2212ce")]
+[assembly: Guid("ef2a9364-b97f-481b-b6bc-7da18a35ccb0")]
 
 // Version information for an assembly consists of the following four values:
 //

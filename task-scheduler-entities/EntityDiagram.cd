@@ -1,19 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="task_scheduler_entities.BasicNotificationManager" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="18.25" Y="1" Width="1.5" />
+  <Class Name="task_scheduler_entities.BasicNotificationManager" BaseTypeListCollapsed="true">
+    <Position X="6.75" Y="13.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAACAAAAAAAAAAAAgABAAAAAAAAAAAAgBAAAAAAAA=</HashCode>
       <FileName>BasicNotificationManager.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="notifications" />
+    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
-  <Class Name="task_scheduler_entities.BasicTaskManager" Collapsed="true" BaseTypeListCollapsed="true">
-    <Position X="20" Y="1" Width="1.5" />
+  <Class Name="task_scheduler_entities.BasicTaskManager" BaseTypeListCollapsed="true">
+    <Position X="4" Y="14" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAgAAgAAAAAAAAA=</HashCode>
       <FileName>BasicTaskManager.cs</FileName>
     </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="tasks" />
+    </ShowAsCollectionAssociation>
     <Lollipop Position="0.2" Collapsed="true" />
   </Class>
   <Class Name="task_scheduler_entities.DelayedTask">
@@ -24,7 +30,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="task_scheduler_entities.Notification">
-    <Position X="15.75" Y="3.5" Width="1.5" />
+    <Position X="6.75" Y="10" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAQAAAAAAAAAAAAAwA=</HashCode>
       <FileName>Notification.cs</FileName>
@@ -77,14 +83,14 @@
     </TypeIdentifier>
   </Interface>
   <Interface Name="task_scheduler_entities.ITaskItem">
-    <Position X="12.75" Y="3.75" Width="1.75" />
+    <Position X="3.75" Y="10.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAACEQAAAAEAAEAAAAAAAIAAAgAAAAAAAAAAAAAA=</HashCode>
       <FileName>ITaskItem.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="task_scheduler_entities.ITaskManager" Collapsed="true">
-    <Position X="18.25" Y="2.25" Width="1.5" />
+  <Interface Name="task_scheduler_entities.ITaskManager">
+    <Position X="8.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAAAAAAAAAAAAAABAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
       <FileName>ITaskManager.cs</FileName>

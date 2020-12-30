@@ -10,5 +10,15 @@
 
     <Grid>
         <TextBlock Margin="100,100" FontSize="30">Task</TextBlock>
+        <Button Content="New Task">
+            <Button.Flyout>
+                <Flyout x:Name="newTaskFlyout">
+                    <StackPanel>
+                        <TextBlock Text="Test"></TextBlock>
+                        <Button>Test</Button>
+                    </StackPanel>
+                </Flyout> 
+            </Button.Flyout>
+        </Button>
     </Grid>
 </Page>
