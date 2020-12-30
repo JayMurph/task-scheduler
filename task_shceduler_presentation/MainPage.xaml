@@ -8,7 +8,29 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
-
-    </Grid>
+    <NavigationView
+        x:Name="navigation"
+        Loaded="navigation_Loaded"
+        Margin="0,12,0,0"
+        ItemInvoked="navigation_ItemInvoked"
+        IsTabStop="False" 
+        RequestedTheme="Dark" 
+        PaneDisplayMode="Top"
+        >
+        <NavigationView.MenuItems>
+            <NavigationViewItem 
+                Tag="Notification_Page"
+                Icon="Message"
+                >
+                <TextBlock Tag="Nav_Notification">Notifications</TextBlock>
+            </NavigationViewItem>
+            <NavigationViewItem
+                Tag="Task_Page"
+                Icon="Account"
+                >
+                <TextBlock Tag="Nav_Task">Tasks</TextBlock>
+            </NavigationViewItem>
+        </NavigationView.MenuItems>
+        <Frame x:Name="contentFrame"></Frame>
+    </NavigationView>
 </Page>

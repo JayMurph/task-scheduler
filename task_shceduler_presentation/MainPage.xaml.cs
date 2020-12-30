@@ -26,5 +26,36 @@ namespace task_shceduler_presentation
         {
             this.InitializeComponent();
         }
+
+        #region NavigationView event handlers
+        private void navigation_Loaded(object sender, RoutedEventArgs e) {
+            // set the initial SelectedItem
+            foreach (NavigationViewItemBase item in navigation.MenuItems) {
+                if (item is NavigationViewItem && item.Tag.ToString() == "Notification_Page") {
+                    navigation.SelectedItem = item;
+                    break;
+                }
+            }
+            contentFrame.Navigate(typeof(Views.NotificationPage));
+        }
+
+        private void navigation_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
+
+            TextBlock ItemContent = args.InvokedItem as TextBlock;
+
+            if (ItemContent != null) {
+                switch (ItemContent.Tag) {
+                    case "Nav_Task":
+                        contentFrame.Navigate(typeof(Views.TaskPage));
+                        break;
+
+                    case "Nav_Notification":
+                        contentFrame.Navigate(typeof(Views.NotificationPage));
+                        break;
+                }
+            }
+        }
+        #endregion
+
     }
 }
