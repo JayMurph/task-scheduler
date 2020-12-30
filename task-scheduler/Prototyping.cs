@@ -41,14 +41,6 @@ namespace task_scheduler {
             }
         }
 
-        private static void GuidHarness() {
-            Guid id1 = Guid.NewGuid();
-            Guid id2 = Guid.NewGuid();
-            Console.WriteLine($"1 --  {id1}");
-            Console.WriteLine($"2 --  {id2}");
-            Console.WriteLine($"id1 == id2 ?  =  {id1 == id2}");
-        }
-        
         class AddTaskUseCaseInput {
             public string Title;
             public string Comment;
@@ -132,7 +124,8 @@ namespace task_scheduler {
         }
 
         class UserController {
-            AddTaskUseCaseFactory addTaskFactory;
+            private AddTaskUseCaseFactory addTaskFactory;
+            public AddTaskUseCase AddTask { get => addTaskFactory.New(); }
             public UserController(
                 INotificationManager notificationManager,
                 ITaskManager taskManager,
@@ -148,8 +141,45 @@ namespace task_scheduler {
             }
         }
 
-        private static void FactoryHarness() {
+        class TaskRepository : IRepository<ITaskItem> {
+            public bool Delete(ITaskItem t) {
+                return false;
+            }
 
+            public bool Insert(ITaskItem t) {
+                return false;
+            }
+
+            public IEnumerable<ITaskItem> Select(Predicate<ITaskItem> predicate) {
+                return new List<ITaskItem>();
+            }
+
+            public bool Update(ITaskItem t) {
+                return false;
+            }
+        }
+
+        private static void FactoryHarness() {
+            var notificationManager = new BasicNotificationManager();
+            var taskManager = new BasicTaskManager();
+            var clock = new RealTimeClock();
+            var taskRepo = new TaskRepository();
+
+            var userController = new UserController(notificationManager, taskManager, clock, taskRepo);
+
+            //
+
+            var uc = userController.AddTask;
+
+            uc.Input = new AddTaskUseCaseInput {
+                Title = "Test",
+                Comment = "Test",
+                Colour = new Colour(1, 1, 1, 1),
+                StartTime = DateTime.Now
+            };
+            uc.Execute();
+
+            var output = uc.Output;
         }
 
         static void Main(string[] args) {
