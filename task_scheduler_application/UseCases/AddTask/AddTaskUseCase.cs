@@ -21,6 +21,7 @@ namespace task_scheduler_application.UseCases.AddTask {
             //retrieve input data
             //create new TaskItem from input data
             //add task to task manager, check for errors
+            //create DA TaskItem from new TaskItem
             //add task to task repo, check for errors
 
             //fill out output data and return
