@@ -9,15 +9,21 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Margin="100,100" FontSize="30">Task</TextBlock>
-        <Button Content="New Task">
+        <Button 
+            CornerRadius="40"
+            Height="72" 
+            Width="72"
+            >
+            <Button.Content>
+                <SymbolIcon Symbol="Add" Width="40" Height="40" ></SymbolIcon>
+            </Button.Content>
             <Button.Flyout>
                 <Flyout x:Name="newTaskFlyout">
                     <StackPanel>
                         <TextBlock Text="Test"></TextBlock>
                         <Button>Test</Button>
                     </StackPanel>
-                </Flyout> 
+                </Flyout>
             </Button.Flyout>
         </Button>
     </Grid>
