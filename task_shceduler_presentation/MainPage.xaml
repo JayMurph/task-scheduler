@@ -8,29 +8,46 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <NavigationView
-        x:Name="navigation"
-        Loaded="navigation_Loaded"
-        Margin="0,12,0,0"
-        ItemInvoked="navigation_ItemInvoked"
-        IsTabStop="False" 
-        RequestedTheme="Dark" 
-        PaneDisplayMode="Top"
-        >
-        <NavigationView.MenuItems>
-            <NavigationViewItem 
-                Tag="Notification_Page"
-                Icon="Message"
-                >
-                <TextBlock Tag="Nav_Notification">Notifications</TextBlock>
-            </NavigationViewItem>
-            <NavigationViewItem
-                Tag="Task_Page"
-                Icon="Account"
-                >
-                <TextBlock Tag="Nav_Task">Tasks</TextBlock>
-            </NavigationViewItem>
-        </NavigationView.MenuItems>
-        <Frame x:Name="contentFrame"></Frame>
-    </NavigationView>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <NavigationView
+            x:Name="navigation"
+            Loaded="navigation_Loaded"
+            ItemInvoked="navigation_ItemInvoked"
+            IsTabStop="False" 
+            RequestedTheme="Dark" 
+            PaneDisplayMode="Top" 
+            IsBackButtonVisible="Collapsed"
+            Grid.ColumnSpan="3"
+            Grid.RowSpan="3"
+            >
+            <NavigationView.MenuItems>
+                <NavigationViewItem 
+                    Tag="Notification_Page"
+                    Icon="Message"
+                    >
+                    <TextBlock Tag="Nav_Notification">Notifications</TextBlock>
+                </NavigationViewItem>
+                <NavigationViewItem
+                    Tag="Task_Page"
+                    Icon="Account"
+                    >
+                    <TextBlock Tag="Nav_Task">Tasks</TextBlock>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <Frame x:Name="contentFrame"></Frame>
+        </NavigationView>
+        <Canvas Grid.Column="1" Grid.Row="1">
+            <local:AddTaskButtonControl/>
+        </Canvas>
+    </Grid>
 </Page>

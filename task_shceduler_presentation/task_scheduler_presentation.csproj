@@ -116,8 +116,11 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AddTaskControl.xaml.cs">
-      <DependentUpon>AddTaskControl.xaml</DependentUpon>
+    <Compile Include="AddTaskButtonControl.xaml.cs">
+      <DependentUpon>AddTaskButtonControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="AddTaskFlyoutControl.xaml.cs">
+      <DependentUpon>AddTaskFlyoutControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -154,7 +157,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="AddTaskControl.xaml">
+    <Page Include="AddTaskButtonControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AddTaskFlyoutControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

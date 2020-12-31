@@ -15,10 +15,11 @@ using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace task_shceduler_presentation {
-    public sealed partial class AddTaskControl : UserControl {
-        public AddTaskControl() {
+namespace task_scheduler_presentation {
+    public sealed partial class AddTaskFlyoutControl: UserControl {
+        public AddTaskFlyoutControl() {
             this.InitializeComponent();
+            DataContext = this;
         }
     }
 }
