@@ -19,7 +19,18 @@ namespace task_scheduler_presentation {
     public sealed partial class AddTaskFlyoutControl: UserControl {
         public AddTaskFlyoutControl() {
             this.InitializeComponent();
+            //could set min date on dateInput
             DataContext = this;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+
+            string title = titleInput.Text;
+            string description = descriptionInput.Text;
+            DateTimeOffset? date = dateInput.Date;
+            TimeSpan time = timeInput.Time;
+
+            var uc = App.UserController.AddTaskUseCaseFactory.New();
         }
     }
 }

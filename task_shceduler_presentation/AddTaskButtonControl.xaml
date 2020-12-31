@@ -17,7 +17,7 @@
         VerticalAlignment="Center"
         >
         <Button.Content>
-            <SymbolIcon Symbol="Add" Width="40" Height="40" ></SymbolIcon>
+            <SymbolIcon Symbol="Add" Width="40" Height="40"></SymbolIcon>
         </Button.Content>
         <Button.Flyout>
             <Flyout x:Name="newTaskFlyout">

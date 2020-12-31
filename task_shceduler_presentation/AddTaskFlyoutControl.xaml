@@ -12,26 +12,29 @@
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock>Title</TextBlock>
-            <TextBox></TextBox>
+            <TextBox x:Name="titleInput"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock>Description</TextBlock>
-            <TextBox></TextBox>
+            <TextBox x:Name="descriptionInput"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <CalendarDatePicker></CalendarDatePicker>
+            <CalendarDatePicker x:Name="dateInput"></CalendarDatePicker>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
-            <TimePicker ></TimePicker>
+            <TimePicker x:Name="timeInput"></TimePicker>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <ColorPicker
+                x:Name="colorInput"
                 IsColorChannelTextInputVisible="False"
                 IsColorSliderVisible="False"
                 IsHexInputVisible="False"
                 Width="156"
-                Height="156"></ColorPicker>
+                Height="156"
+                >
+            </ColorPicker>
         </StackPanel>
-        <Button>Create</Button>
+        <Button Click="Button_Click">Create</Button>
     </StackPanel>
 </UserControl>

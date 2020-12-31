@@ -7,13 +7,11 @@ namespace task_scheduler_entities {
         public byte R;
         public byte G;
         public byte B;
-        public byte A;
 
-        public Colour(byte r, byte g, byte b, byte a) {
+        public Colour(byte r, byte g, byte b) {
             this.R = r;
             this.G = g;
             this.B = b;
-            this.A = a;
         }
     }
 }
