@@ -41,7 +41,6 @@ namespace task_scheduler_presentation.Controllers {
             };
 
             //check for "Custom" frequency and handle that
-            //abstract away the magic "Custom" string
             if(input.FrequencyType == FrequencyTypes.Custom) {
                 input.CustomFrequency = view.CustomFrequency;
             }
@@ -55,7 +54,9 @@ namespace task_scheduler_presentation.Controllers {
 
             //get Use Case output and handle errors
             CreateTaskOutput output = uc.Output;
-            if (!output.Success) {
+            if (output.Success) {
+            }
+            else {
                 view.Error = output.Error;
             }
         }

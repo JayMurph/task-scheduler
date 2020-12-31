@@ -12,7 +12,7 @@
     <Folder Include="UseCases\DeleteTask\" />
     <Folder Include="UseCases\DismissNotification\" />
     <Folder Include="UseCases\EditTask\" />
-    <Folder Include="UseCases\ViewSingleTask\" />
+    <Folder Include="UseCases\ViewTaskDetails\" />
     <Folder Include="UseCases\ViewNotifications\" />
     <Folder Include="UseCases\ViewTasks\" />
   </ItemGroup>

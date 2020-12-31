@@ -20,6 +20,8 @@ namespace task_scheduler_presentation.Views {
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class TaskPage : Page {
+
+        //list of observable task models
         public TaskPage() {
             this.InitializeComponent();
         }

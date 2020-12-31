@@ -33,29 +33,35 @@ namespace task_scheduler_application.UseCases.CreateTask {
         public CreateTaskOutput Output { get; private set; } = null;
 
         public void Execute() {
-            //retrieve input data
-
             //validate input data
 
             //create new TaskItem from input data
-            //TaskItem newTask = new TaskItem(
-            //    Input.Title,
-            //    Input.Description,
-            //    new task_scheduler_entities.Colour(
-            //        Input.R, Input.B, Input.G
-            //    ),
-            //    notificationManager,
-            //    //
-            //    clock);
+            TaskItem newTask = new TaskItem(
+                Input.Title,
+                Input.Description,
+                new task_scheduler_entities.Colour(
+                    Input.R, Input.B, Input.G
+                ),
+                Input.StartTime,
+                notificationManager,
+                /*assuming custom frequency for now*/
+                new Frequencies.ConstantFrequency(Input.CustomFrequency),
+                clock
+            );
 
             //add task to task manager, check for errors
-            //taskManager.Add(newTask);
+            if (taskManager.Add(newTask)) {
+                //create DA TaskItem from new TaskItem
+                //add task to task repo, check for errors
 
-            //create DA TaskItem from new TaskItem
-            //add task to task repo, check for errors
+                //fill out output data and return
+                Output = new CreateTaskOutput() { Success = true };
+            }
+            else {
+              //fill out output data and return
+              Output = new CreateTaskOutput() { Success = false, Error = "ERROR" };
+            }
 
-            //fill out output data and return
-            Output = new CreateTaskOutput() { Success = false, Error = "TEST" };
         }
     }
 }
