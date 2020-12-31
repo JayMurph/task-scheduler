@@ -4,15 +4,17 @@ using System.Text;
 using task_scheduler_application.Repositories;
 using task_scheduler_entities;
 
-namespace task_scheduler_application.UseCases.AddTask {
-    public class AddTaskUseCase : IUseCase<AddTaskInput, AddTaskOutput> {
+namespace task_scheduler_application.UseCases.CreateTask {
+    public class CreateTaskUseCase : IUseCase<CreateTaskInput, CreateTaskOutput> {
 
         private readonly ITaskManager taskManager;
         private readonly INotificationManager notificationManager;
-        private readonly Repositories.ITaskItemRepository taskRepo;
+        private readonly ITaskItemRepository taskRepo;
         private readonly IClock clock;
 
-        public AddTaskUseCase(
+        #region AddTaskUseCase Constructor
+
+        public CreateTaskUseCase(
             ITaskManager taskManager,
             INotificationManager notificationManager,
             ITaskItemRepository taskRepo,
@@ -24,20 +26,36 @@ namespace task_scheduler_application.UseCases.AddTask {
             this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
         }
 
-        public AddTaskInput Input { set; private get; } = null;
+        #endregion
 
-        public AddTaskOutput Output { get; private set; } = null;
+        public CreateTaskInput Input { set; private get; } = null;
+
+        public CreateTaskOutput Output { get; private set; } = null;
 
         public void Execute() {
-            throw new NotImplementedException();
-
             //retrieve input data
+
+            //validate input data
+
             //create new TaskItem from input data
+            //TaskItem newTask = new TaskItem(
+            //    Input.Title,
+            //    Input.Description,
+            //    new task_scheduler_entities.Colour(
+            //        Input.R, Input.B, Input.G
+            //    ),
+            //    notificationManager,
+            //    //
+            //    clock);
+
             //add task to task manager, check for errors
+            //taskManager.Add(newTask);
+
             //create DA TaskItem from new TaskItem
             //add task to task repo, check for errors
 
             //fill out output data and return
+            Output = new CreateTaskOutput() { Success = false, Error = "TEST" };
         }
     }
 }

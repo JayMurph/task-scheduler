@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 using task_scheduler_entities;
 using task_scheduler_application;
 using task_scheduler_application.Repositories;
-using task_scheduler_application.UseCases.AddTask;
+using task_scheduler_application.UseCases.CreateTask;
 
 namespace task_scheduler_presentation
 {
@@ -42,6 +42,7 @@ namespace task_scheduler_presentation
             return false;
         }
     }
+
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
@@ -57,27 +58,8 @@ namespace task_scheduler_presentation
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
-            //get database data 
-
-            //create domain entities
-            BasicNotificationManager notificationManager = new BasicNotificationManager();
-            BasicTaskManager taskManager = new BasicTaskManager();
-            DummyTaskRepo taskRepo = new DummyTaskRepo();
-            RealTimeClock clock = new RealTimeClock();
-
-            //instantiate domain entities retrieved from database
-
-            //create use-case factories
-            AddTaskUseCaseFactory addTaskUseCaseFactory =
-                new AddTaskUseCaseFactory(
-                    taskManager,
-                    notificationManager,
-                    taskRepo,
-                    clock
-                );
-
             //Instantiate user controller, passing in required factories
-            UserController = new Controllers.UserController(addTaskUseCaseFactory);
+            UserController = CreateUserController();
         }
 
         /// <summary>
@@ -146,5 +128,30 @@ namespace task_scheduler_presentation
             //TODO: Save application state and stop any background activity
             deferral.Complete();
         }
+
+        static private Controllers.UserController CreateUserController() {
+            //get database data 
+
+            //create domain entities
+            BasicNotificationManager notificationManager = new BasicNotificationManager();
+            BasicTaskManager taskManager = new BasicTaskManager();
+            DummyTaskRepo taskRepo = new DummyTaskRepo();
+            RealTimeClock clock = new RealTimeClock();
+
+            //instantiate domain entities retrieved from database
+
+            //create use-case factories
+            CreateTaskUseCaseFactory addTaskUseCaseFactory =
+                new CreateTaskUseCaseFactory(
+                    taskManager,
+                    notificationManager,
+                    taskRepo,
+                    clock
+                );
+
+            //Instantiate user controller, passing in required factories
+            return new Controllers.UserController(addTaskUseCaseFactory);
+        }
+
     }
 }

@@ -5,7 +5,7 @@ namespace task_scheduler_entities {
     /// Interface for classes that can calculate the time when a TaskItem should produce a
     /// notification
     /// </summary>
-    public interface INotificationPeriod {
+    public interface INotificationFrequency {
 
         /// <summary>
         /// Returns the time remaining before a TaskItem should produce a notification

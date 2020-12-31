@@ -29,7 +29,7 @@ namespace task_schedule_entity_tests {
                 return new ControlledClock(Now);
             }
         }
-        internal class ConstPeriod : INotificationPeriod {
+        internal class ConstPeriod : INotificationFrequency {
             TimeSpan period;
             public ConstPeriod(TimeSpan period) {
                 this.period = period;
@@ -86,7 +86,7 @@ namespace task_schedule_entity_tests {
             TaskItem testTask = new TaskItem(
                 "Test",
                 "Test",
-                new Colour(0, 0, 0, 0),
+                new Colour(0, 0, 0),
                 clock.Now,
                 manager,
                 constPeriod,
@@ -110,7 +110,7 @@ namespace task_schedule_entity_tests {
             TaskItem testTask = new TaskItem(
                 "Test",
                 "Test",
-                new Colour(0, 0, 0, 0),
+                new Colour(0, 0, 0),
                 clock.Now,
                 manager,
                 constPeriod,

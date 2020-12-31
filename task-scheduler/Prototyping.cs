@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using System.Threading;
 using task_scheduler_entities;
 using task_scheduler_application;
-using task_scheduler_application.Periods;
+using task_scheduler_application.Repositories;
+using task_scheduler_application.UseCases;
+using task_scheduler_application.Frequencies;
 
 namespace task_scheduler {
 
@@ -24,10 +26,10 @@ namespace task_scheduler {
                 new TaskItem(
                     "New task",
                     "New task",
-                    new Colour(255, 255, 255, 255),
+                    new Colour(255, 255, 255),
                     DateTime.Now,
                     manager,
-                    new ConstantPeriod(new TimeSpan(0, 0, 5)),
+                    new ConstantFrequency(new TimeSpan(0, 0, 5)),
                     new RealTimeClock(),
                     fake.AddSeconds(80),
                     Guid.NewGuid()
@@ -71,7 +73,7 @@ namespace task_scheduler {
                     input.Colour,
                     input.StartTime,
                     notificationManager,
-                    new ConstantPeriod(new TimeSpan(0, 0, 15)),
+                    new ConstantFrequency(new TimeSpan(0, 0, 15)),
                     clock
                     );
 
@@ -182,7 +184,7 @@ namespace task_scheduler {
             uc.Input = new AddTaskUseCaseInput {
                 Title = "Test",
                 Comment = "Test",
-                Colour = new Colour(1, 1, 1, 1),
+                Colour = new Colour(1, 1, 1),
                 StartTime = DateTime.Now
             };
             uc.Execute();

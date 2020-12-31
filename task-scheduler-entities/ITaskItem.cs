@@ -14,7 +14,7 @@ namespace task_scheduler_entities {
         /// <summary>
         /// Extra descriptive information for the ITaskItem
         /// </summary>
-        string Comment { get; set; }
+        string Description { get; set; }
 
         /// <summary>
         /// The time at which the ITaskItem was created
@@ -30,7 +30,7 @@ namespace task_scheduler_entities {
         /// <param name="period">
         /// To be assigned to the ITaskItem
         /// </param>
-        void ChangePeriod(INotificationPeriod period);
+        void ChangeFrequency(INotificationFrequency period);
 
         /// <summary>
         /// Stops the ITaskItem from producing anymore notifications for the remainder of its

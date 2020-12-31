@@ -116,17 +116,18 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AddTaskButtonControl.xaml.cs">
+    <Compile Include="Views\AddTaskButtonControl.xaml.cs">
       <DependentUpon>AddTaskButtonControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AddTaskFlyoutControl.xaml.cs">
+    <Compile Include="Views\AddTaskFlyoutControl.xaml.cs">
       <DependentUpon>AddTaskFlyoutControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Views\IAddTaskView.cs" />
+    <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\NotificationPage.xaml.cs">
@@ -157,15 +158,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="AddTaskButtonControl.xaml">
+    <Page Include="Views\AddTaskButtonControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AddTaskFlyoutControl.xaml">
+    <Page Include="Views\AddTaskFlyoutControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -193,6 +194,7 @@
       <Name>task_scheduler_application</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
