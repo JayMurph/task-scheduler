@@ -22,6 +22,7 @@ namespace task_scheduler_entities {
         DateTime StartTime { get; set; }
         DateTime LastNotificationTime { get; }
         bool IsActive { get; }
+        Guid ID { get; }
 
         /// <summary>
         /// Assigns a new INotificationPeriod to the ITaskItem to use for determining notification

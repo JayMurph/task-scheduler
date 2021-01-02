@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using task_scheduler_presentation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -19,11 +21,17 @@ namespace task_scheduler_presentation.Views {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class TaskPage : Page {
+    public sealed partial class TaskPage : Page, ITasksView{
+        public ObservableCollection<TaskItemModel> TaskItems { get; set; } = new ObservableCollection<TaskItemModel>();
 
         //list of observable task models
         public TaskPage() {
             this.InitializeComponent();
+
+            App.UserController.ViewTasks(this);
+
+            //should this be done by the controller?????????????
+            this.taskListView.ItemsSource = TaskItems;
         }
     }
 }

@@ -116,6 +116,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models\TaskItemModel.cs" />
     <Compile Include="Views\AddTaskButtonControl.xaml.cs">
       <DependentUpon>AddTaskButtonControl.xaml</DependentUpon>
     </Compile>
@@ -127,6 +128,7 @@
     </Compile>
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Views\IAddTaskView.cs" />
+    <Compile Include="Views\ITasksView.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -194,9 +196,7 @@
       <Name>task_scheduler_application</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

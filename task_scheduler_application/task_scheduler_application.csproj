@@ -5,16 +5,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\task-scheduler-data-access\task-scheduler-data-access.csproj" />
     <ProjectReference Include="..\task-scheduler-entities\task-scheduler-entities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Repositories\" />
     <Folder Include="UseCases\DeleteTask\" />
     <Folder Include="UseCases\DismissNotification\" />
     <Folder Include="UseCases\EditTask\" />
     <Folder Include="UseCases\ViewTaskDetails\" />
     <Folder Include="UseCases\ViewNotifications\" />
-    <Folder Include="UseCases\ViewTasks\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="5.0.0" />
   </ItemGroup>
 
 </Project>

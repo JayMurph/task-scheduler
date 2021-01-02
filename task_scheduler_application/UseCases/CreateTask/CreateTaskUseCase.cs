@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using task_scheduler_application.Repositories;
 using task_scheduler_entities;
+using task_scheduler_application.Frequencies;
+using task_scheduler_data_access;
 
 namespace task_scheduler_application.UseCases.CreateTask {
     public class CreateTaskUseCase : IUseCase<CreateTaskInput, CreateTaskOutput> {
 
         private readonly ITaskManager taskManager;
         private readonly INotificationManager notificationManager;
-        private readonly ITaskItemRepository taskRepo;
         private readonly IClock clock;
 
         #region AddTaskUseCase Constructor
@@ -17,12 +17,10 @@ namespace task_scheduler_application.UseCases.CreateTask {
         public CreateTaskUseCase(
             ITaskManager taskManager,
             INotificationManager notificationManager,
-            ITaskItemRepository taskRepo,
             IClock clock) {
 
             this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
             this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));
-            this.taskRepo = taskRepo ?? throw new ArgumentNullException(nameof(taskRepo));
             this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
         }
 
@@ -40,7 +38,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
                 Input.Title,
                 Input.Description,
                 new task_scheduler_entities.Colour(
-                    Input.R, Input.B, Input.G
+                    Input.R, Input.G, Input.B
                 ),
                 Input.StartTime,
                 notificationManager,
@@ -51,8 +49,30 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
             //add task to task manager, check for errors
             if (taskManager.Add(newTask)) {
+
                 //create DA TaskItem from new TaskItem
+                TaskItemUnitOfWork work = new TaskItemUnitOfWork();
+
+                NotificationFrequencyDAL freq = new NotificationFrequencyDAL() {
+                    NotificationFrequencyDALId = newTask.ID,
+                    Frequency = Input.CustomFrequency
+                };
+
+                work.Repository.Insert(new TaskItemDAL() {
+                    TaskItemDALId = newTask.ID,
+                    Title = newTask.Title,
+                    Description = newTask.Description,
+                    R = newTask.Colour.R,
+                    G = newTask.Colour.G,
+                    B = newTask.Colour.B,
+                    StartTime = newTask.StartTime,
+                    /*using custome frequency for now*/
+                    FrequencyType = "Custom",
+                    NotificationFrequency = freq
+                });
+
                 //add task to task repo, check for errors
+                work.Save();
 
                 //fill out output data and return
                 Output = new CreateTaskOutput() { Success = true };
@@ -61,7 +81,6 @@ namespace task_scheduler_application.UseCases.CreateTask {
               //fill out output data and return
               Output = new CreateTaskOutput() { Success = false, Error = "ERROR" };
             }
-
         }
     }
 }

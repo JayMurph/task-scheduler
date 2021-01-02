@@ -2,7 +2,7 @@
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace task_scheduler_presentation {
+namespace task_scheduler_presentation.Views {
     public interface IAddTaskView {
         string Title { get; set; } 
         string Description { get; set; }

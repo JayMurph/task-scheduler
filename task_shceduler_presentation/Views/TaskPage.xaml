@@ -9,6 +9,15 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Text="TASKS" FontSize="100"/>
+        <StackPanel>
+            <TextBlock Text="TASKS" FontSize="100" HorizontalAlignment="Center"/>
+            <ListView x:Name="taskListView">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="local:TaskItemModel">
+                        <TextBlock Foreground="White" Text="{Binding Title}"/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
     </Grid>
 </Page>

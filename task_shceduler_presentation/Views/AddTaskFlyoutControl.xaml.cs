@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using task_scheduler_presentation.Views;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -73,6 +74,8 @@ namespace task_scheduler_presentation {
 
         private void FrequencyComboBox_FrequencyChanged(object sender, SelectionChangedEventArgs e) {
             if(customFrequencyPanel != null && frequencyComboBox != null) {
+                //need to get the string out of here.
+                //maybe some method in the controller.
                 if(((ComboBoxItem)frequencyComboBox.SelectedItem).Content.ToString() == "Custom") {
                     customFrequencyPanel.Visibility = Visibility.Visible;
                 }

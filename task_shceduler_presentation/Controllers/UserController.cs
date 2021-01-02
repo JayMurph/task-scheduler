@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using task_scheduler_application.UseCases.CreateTask;
+using UC = task_scheduler_application.UseCases;
 using task_scheduler_application.Frequencies;
+using task_scheduler_application.DTO;
+using task_scheduler_presentation.Views;
 
 namespace task_scheduler_presentation.Controllers {
     public class UserController {
-        private CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
+        private UC.CreateTask.CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
+        private UC.ViewTasks.ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
 
         //this mapping should probably go elsewhere
         private Dictionary<string, FrequencyTypes> stringToFrequencyMap =
@@ -22,15 +25,32 @@ namespace task_scheduler_presentation.Controllers {
         public IEnumerable<string> FrequencyTypeStrings { get => stringToFrequencyMap.Keys; }
 
         public UserController(
-            CreateTaskUseCaseFactory createTaskUseCaseFactory
+            UC.CreateTask.CreateTaskUseCaseFactory createTaskUseCaseFactory,
+            UC.ViewTasks.ViewTasksUseCaseFactory viewTasksUseCaseFactory
             ) {
             this.CreateTaskUseCaseFactory = createTaskUseCaseFactory;
+            this.ViewTasksUseCaseFactory = viewTasksUseCaseFactory;
+        }
+
+        public void ViewTasks(ITasksView view) {
+
+            //create view tasks use case, pass input, execute, then get output
+            var uc = ViewTasksUseCaseFactory.New();
+
+            uc.Execute();
+
+            //could maybe hook the view up to the TaskAdded callback here???????????????
+
+            //apply the output to the view
+            foreach(TaskItemDTO item in uc.Output.TaskItems) {
+                view.TaskItems.Add(new TaskItemModel() { Title = item.Title });
+            }
         }
 
         public void CreateTask(IAddTaskView view) {
 
             //get and VALIDATE input values from view
-            CreateTaskInput input = new CreateTaskInput {
+            UC.CreateTask.CreateTaskInput input = new UC.CreateTask.CreateTaskInput {
                 Title = view.Title,
                 Description = view.Description,
                 StartTime = view.StartTime,
@@ -53,8 +73,9 @@ namespace task_scheduler_presentation.Controllers {
             uc.Execute();
 
             //get Use Case output and handle errors
-            CreateTaskOutput output = uc.Output;
+            UC.CreateTask.CreateTaskOutput output = uc.Output;
             if (output.Success) {
+                //need to close the view from here somehow, and clear the values
             }
             else {
                 view.Error = output.Error;

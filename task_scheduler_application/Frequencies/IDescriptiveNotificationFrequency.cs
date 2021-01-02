@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using task_scheduler_entities;
 
 namespace task_scheduler_application.Frequencies {
-    public enum FrequencyTypes {
-        Daily, Every_Other_Day, Review, Custom
+    public interface IDescriptiveNotificationFrequency : INotificationFrequency{
+
     }
 }
