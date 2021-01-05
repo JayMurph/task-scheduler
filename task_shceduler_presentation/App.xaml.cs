@@ -110,7 +110,6 @@ namespace task_scheduler_presentation
             //pulling in data and creating domain entities should be done elsewhere
             //get database data 
 
-
             //create domain entities
             BasicNotificationManager notificationManager = new BasicNotificationManager();
             BasicTaskManager taskManager = new BasicTaskManager();

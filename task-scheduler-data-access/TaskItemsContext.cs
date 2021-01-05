@@ -9,5 +9,9 @@ namespace task_scheduler_data_access {
     public class TaskItemsContext : DbContext {
         public DbSet<TaskItemDAL> TaskItems { get; set; }
         public DbSet<NotificationFrequencyDAL> NotificationFrequencies {get;set;}
+
+        public TaskItemsContext() : base("name=DefaultConnection") {
+            this.Database.CreateIfNotExists();
+        }
     }
 }
