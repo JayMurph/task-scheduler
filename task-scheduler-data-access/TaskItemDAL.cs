@@ -10,7 +10,7 @@ namespace task_scheduler_data_access {
 
     public class TaskItemDAL {
 
-        public Guid TaskItemDALId { get; set; }
+        public Guid Id { get; set; }
 
         public string Title { get; set; }
 
@@ -24,7 +24,5 @@ namespace task_scheduler_data_access {
         public byte B;
         
         public string FrequencyType;
-
-        public NotificationFrequencyDAL NotificationFrequency { get; set; }
     }
 }

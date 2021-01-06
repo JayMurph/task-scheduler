@@ -11,6 +11,7 @@ using task_scheduler_application.UseCases;
 using task_scheduler_application.Frequencies;
 using task_scheduler_data_access;
 using System.Data.SQLite;
+using System.Data;
 
 namespace task_scheduler {
 
@@ -20,43 +21,50 @@ namespace task_scheduler {
 
             using (var conn = new SQLiteConnection("Data Source=../../testdb.db")) {
 
+                Guid id = Guid.NewGuid();
+
                 using (var insertCommand = 
-                    new SQLiteCommand($"INSERT INTO Tasks VALUES('{Guid.NewGuid()}', 'TestTitle', 'TestDescription', '{DateTime.Now}')", conn)) {
+                    new SQLiteCommand($"INSERT INTO Tasks VALUES('{id}', 'TestTitle', 'TestDescription', '{DateTime.Now}')", conn)) {
 
                     conn.Open();
                     insertCommand.ExecuteNonQuery();
                     conn.Close();
                 }
 
-                using (var queryCommand = new SQLiteCommand("SELECT * FROM Tasks", conn)) {
+                using (var insertCommand = 
+                    new SQLiteCommand($"INSERT INTO Frequencies VALUES('{id}', '{TimeSpan.Zero}')", conn)) {
+
                     conn.Open();
-
-                    using (var reader = queryCommand.ExecuteReader()) {
-
-                        while (reader.Read()) {
-
-                            Guid id = Guid.Parse((string)reader["Id"]);
-                            string title = (string)reader["Title"];
-                            string description = (string)reader["Description"];
-                            DateTime startTime = DateTime.Parse((string)reader["StartTime"]);
-
-                            Console.WriteLine($"Id = {id}");
-                            Console.WriteLine($"Title = {title}");
-                            Console.WriteLine($"Description = {description}");
-                            Console.WriteLine($"StartTime = {startTime}");
-                        }
-                    }
-
+                    insertCommand.ExecuteNonQuery();
                     conn.Close();
                 }
 
-                using (var deleteCommand = new SQLiteCommand("DELETE FROM Tasks", conn)) {
-                    conn.Open();
+                DataSet set = new DataSet();
+                SQLiteDataAdapter taskAdapter = new SQLiteDataAdapter("SELECT * FROM Tasks", conn);
+                SQLiteDataAdapter frequencyAdapter = new SQLiteDataAdapter("SELECT * FROM Frequencies", conn);
 
-                    deleteCommand.ExecuteNonQuery();
+                taskAdapter.FillSchema(set, SchemaType.Source);
+                taskAdapter.Fill(set, "Tasks");
 
-                    conn.Close();
+                frequencyAdapter.FillSchema(set, SchemaType.Source);
+                frequencyAdapter.Fill(set, "Frequencies");
+
+                var q = from x in set.Tables["Tasks"].AsEnumerable()
+                        select x;
+
+                foreach(DataRow d in q.AsEnumerable()) {
+                    Console.WriteLine(d.Field<string>("Id"));
                 }
+
+                q = from x in set.Tables["Frequencies"].AsEnumerable()
+                    where x.Field<string>("TaskId") == id.ToString()
+                    select x;
+
+                foreach(DataRow d in q.AsEnumerable()) {
+                    Console.WriteLine(d.Field<string>("TaskId"));
+                    Console.WriteLine(d.Field<string>("Time"));
+                }
+
             }
         }
     }
