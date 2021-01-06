@@ -11,6 +11,8 @@ namespace task_scheduler_presentation.Views {
         string FrequencyType { get; set; }
         TimeSpan CustomFrequency { get; set; }
         string Error { get; set; }
+        void CloseSelf();
+        void ClearFields();
     }
 
 }

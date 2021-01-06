@@ -50,36 +50,16 @@ namespace task_scheduler_application.UseCases.CreateTask {
             //add task to task manager, check for errors
             if (taskManager.Add(newTask)) {
 
-                //create DA TaskItem from new TaskItem
-                TaskItemUnitOfWork work = new TaskItemUnitOfWork();
-
-                NotificationFrequencyDAL freq = new NotificationFrequencyDAL() {
-                    NotificationFrequencyDALId = newTask.ID,
-                    Frequency = Input.CustomFrequency
-                };
-
-                work.Repository.Insert(new TaskItemDAL() {
-                    TaskItemDALId = newTask.ID,
-                    Title = newTask.Title,
-                    Description = newTask.Description,
-                    R = newTask.Colour.R,
-                    G = newTask.Colour.G,
-                    B = newTask.Colour.B,
-                    StartTime = newTask.StartTime,
-                    /*using custome frequency for now*/
-                    FrequencyType = "Custom",
-                    NotificationFrequency = freq
-                });
+                //create DA TaskItem and frequency from new TaskItem
 
                 //add task to task repo, check for errors
-                work.Save();
 
                 //fill out output data and return
                 Output = new CreateTaskOutput() { Success = true };
             }
             else {
-              //fill out output data and return
-              Output = new CreateTaskOutput() { Success = false, Error = "ERROR" };
+                //fill out output data and return
+                Output = new CreateTaskOutput() { Success = false, Error = "ERROR" };
             }
         }
     }

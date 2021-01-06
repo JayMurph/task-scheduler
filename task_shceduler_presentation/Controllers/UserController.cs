@@ -74,8 +74,10 @@ namespace task_scheduler_presentation.Controllers {
 
             //get Use Case output and handle errors
             UC.CreateTask.CreateTaskOutput output = uc.Output;
+
             if (output.Success) {
                 //need to close the view from here somehow, and clear the values
+                view.CloseSelf();
             }
             else {
                 view.Error = output.Error;

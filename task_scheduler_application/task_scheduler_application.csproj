@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
     <Folder Include="UseCases\DeleteTask\" />
     <Folder Include="UseCases\DismissNotification\" />
     <Folder Include="UseCases\EditTask\" />

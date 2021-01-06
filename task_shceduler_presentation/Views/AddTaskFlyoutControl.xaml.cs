@@ -17,9 +17,13 @@ using task_scheduler_presentation.Views;
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace task_scheduler_presentation {
-    public sealed partial class AddTaskFlyoutControl: UserControl, IAddTaskView {
+    public sealed partial class AddTaskFlyoutControl: UserControl{
+        private readonly IAddTaskView owner;
+
         public string Title { get => titleInput.Text; set => titleInput.Text = value; }
+
         public string Description { get => descriptionInput.Text; set => descriptionInput.Text = value; }
+
         public DateTime StartTime { 
             get => dateInput.Date.Value.LocalDateTime + timeInput.Time;
             set {
@@ -53,26 +57,29 @@ namespace task_scheduler_presentation {
         }
 
 
-        public AddTaskFlyoutControl() {
+        public AddTaskFlyoutControl(IAddTaskView owner) {
             this.InitializeComponent();
 
             DataContext = this;
             
-            this.dateInput.MinDate = DateTime.Today;
-            this.dateInput.Date = DateTime.Today;
-            this.timeInput.Time = DateTime.Now - DateTime.Today;
+            dateInput.MinDate = DateTime.Today;
+            dateInput.Date = DateTime.Today;
+            timeInput.Time = DateTime.Now - DateTime.Today;
 
             //add frequency type combo box items
             foreach(string type in App.UserController.FrequencyTypeStrings) {
                 frequencyComboBox.Items.Add(new ComboBoxItem() { Content = type });
             }
+
+            this.owner = owner;
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e) {
-            App.UserController.CreateTask(this);
+            App.UserController.CreateTask(owner);
         }
 
         private void FrequencyComboBox_FrequencyChanged(object sender, SelectionChangedEventArgs e) {
+
             if(customFrequencyPanel != null && frequencyComboBox != null) {
                 //need to get the string out of here.
                 //maybe some method in the controller.
@@ -83,6 +90,7 @@ namespace task_scheduler_presentation {
                     customFrequencyPanel.Visibility = Visibility.Collapsed;
                 }
             }
+
         }
     }
 
