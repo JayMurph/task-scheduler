@@ -23,7 +23,7 @@ using task_scheduler_application.DTO;
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
 
-using task_scheduler_data_access_standard;
+using task_scheduler_data_access_standard.Repositories;
 
 namespace task_scheduler_presentation
 {
@@ -32,7 +32,8 @@ namespace task_scheduler_presentation
     /// </summary>
     sealed partial class App : Application
     {
-        static public Controllers.UserController UserController; 
+        static public Controllers.UserController UserController;
+        static public string connectionStr = "Data Source=../../../databases/TaskSchedulerDB.db";
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -113,6 +114,7 @@ namespace task_scheduler_presentation
         }
 
         static private Controllers.UserController CreateUserController() {
+            //create repository factories
             //pulling in data and creating domain entities should be done elsewhere
             //get database data 
 
