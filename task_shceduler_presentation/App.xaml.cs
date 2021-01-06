@@ -114,8 +114,10 @@ namespace task_scheduler_presentation
         }
 
         static private Controllers.UserController CreateUserController() {
-            //create repository factories
-            //pulling in data and creating domain entities should be done elsewhere
+            //CREATE REPOSITORY FACTORIES
+            TaskItemRepositoryFactory taskItemRepositoryFactory = new TaskItemRepositoryFactory(connectionStr);
+
+            //...pulling in data and creating domain entities should be done elsewhere
             //get database data 
 
             //create domain entities
@@ -130,11 +132,12 @@ namespace task_scheduler_presentation
                 new CreateTaskUseCaseFactory(
                     taskManager,
                     notificationManager,
-                    clock
+                    clock,
+                    taskItemRepositoryFactory
                 );
 
             var viewTasksUseCaseFactory =
-                new ViewTasksUseCaseFactory(taskManager);
+                new ViewTasksUseCaseFactory(taskManager, taskItemRepositoryFactory);
 
             //Instantiate user controller, passing in required factories
             return new Controllers.UserController(

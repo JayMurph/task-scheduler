@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using task_scheduler_entities;
 using task_scheduler_application.Frequencies;
-using task_scheduler_data_access;
+using task_scheduler_data_access_standard.Repositories;
 
 namespace task_scheduler_application.UseCases.CreateTask {
     public class CreateTaskUseCase : IUseCase<CreateTaskInput, CreateTaskOutput> {
@@ -11,17 +11,20 @@ namespace task_scheduler_application.UseCases.CreateTask {
         private readonly ITaskManager taskManager;
         private readonly INotificationManager notificationManager;
         private readonly IClock clock;
+        private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
         #region AddTaskUseCase Constructor
 
         public CreateTaskUseCase(
             ITaskManager taskManager,
             INotificationManager notificationManager,
-            IClock clock) {
+            IClock clock, 
+            ITaskItemRepositoryFactory taskItemRepositoryFactory) {
 
             this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
             this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));
             this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
+            this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
         }
 
         #endregion

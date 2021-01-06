@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Text;
 using task_scheduler_entities;
+using task_scheduler_data_access_standard.Repositories;
 
 namespace task_scheduler_application.UseCases.ViewTasks {
     public class ViewTasksUseCase : IUseCase<ViewTasksInput, ViewTasksOutput> {
         ITaskManager taskManager;
+        ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
-        public ViewTasksUseCase(ITaskManager taskManager) {
+        public ViewTasksUseCase(ITaskManager taskManager, ITaskItemRepositoryFactory taskItemRepositoryFactory) {
             this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
+            this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
         }
 
         public ViewTasksInput Input { set; private get; }
