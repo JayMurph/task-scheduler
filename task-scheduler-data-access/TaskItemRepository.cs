@@ -107,7 +107,36 @@ namespace task_scheduler_data_access {
         }
 
         public bool Update(TaskItemDAL taskItemDAL) {
-            throw new NotImplementedException();
+            var findQuery = from row in table.AsEnumerable()
+                            where row.Field<string>("Id") == taskItemDAL.Id.ToString()
+                            select row;
+
+            if(findQuery.Count() != 1) {
+                return false;
+            }
+            else {
+                DataRow row = findQuery.First();
+
+                try {
+                    row.BeginEdit();
+                    row.SetField("StartTime", taskItemDAL.StartTime.ToString());
+                    row.SetField("Title", taskItemDAL.Title);
+                    row.SetField("Description", taskItemDAL.Description);
+                    row.SetField("LastNotificationTime", taskItemDAL.LastNotificationTime.ToString());
+                    row.SetField("FrequencyType", taskItemDAL.FrequencyType);
+                    row.SetField("R", taskItemDAL.R);
+                    row.SetField("G", taskItemDAL.G);
+                    row.SetField("B", taskItemDAL.B);
+                    row.EndEdit();
+                    row.AcceptChanges();
+                }
+                catch {
+                    row.CancelEdit();
+                    return false;
+                }
+
+                return true;
+            }
         }
 
         public void Dispose() {
