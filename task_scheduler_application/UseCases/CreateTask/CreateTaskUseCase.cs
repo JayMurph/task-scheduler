@@ -4,6 +4,7 @@ using System.Text;
 using task_scheduler_entities;
 using task_scheduler_application.Frequencies;
 using task_scheduler_data_access_standard.Repositories;
+using task_scheduler_data_access_standard.DataObjects;
 
 namespace task_scheduler_application.UseCases.CreateTask {
     public class CreateTaskUseCase : IUseCase<CreateTaskInput, CreateTaskOutput> {
@@ -52,10 +53,24 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
             //add task to task manager, check for errors
             if (taskManager.Add(newTask)) {
-
                 //create DA TaskItem and frequency from new TaskItem
+                ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
 
                 //add task to task repo, check for errors
+                taskItemRepository.Add(
+                    new TaskItemDAL(
+                        newTask.ID,
+                        newTask.Title,
+                        newTask.Description,
+                        newTask.StartTime,
+                        newTask.LastNotificationTime,
+                        newTask.Colour.R,
+                        newTask.Colour.G,
+                        newTask.Colour.B,
+                        //faking custom for now
+                        "Custom"
+                    )
+                );
 
                 //fill out output data and return
                 Output = new CreateTaskOutput() { Success = true };
