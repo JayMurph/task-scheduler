@@ -3,15 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UC = task_scheduler_application.UseCases;
+
+using task_scheduler_application.UseCases.CreateTask;
+using task_scheduler_application.UseCases.ViewTasks;
 using task_scheduler_application.Frequencies;
 using task_scheduler_application.DTO;
+
 using task_scheduler_presentation.Views;
 
 namespace task_scheduler_presentation.Controllers {
     public class UserController {
-        private UC.CreateTask.CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
-        private UC.ViewTasks.ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
+        private CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
+        private ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
 
         //this mapping should probably go elsewhere
         private Dictionary<string, FrequencyTypes> stringToFrequencyMap =
@@ -25,8 +28,8 @@ namespace task_scheduler_presentation.Controllers {
         public IEnumerable<string> FrequencyTypeStrings { get => stringToFrequencyMap.Keys; }
 
         public UserController(
-            UC.CreateTask.CreateTaskUseCaseFactory createTaskUseCaseFactory,
-            UC.ViewTasks.ViewTasksUseCaseFactory viewTasksUseCaseFactory
+            CreateTaskUseCaseFactory createTaskUseCaseFactory,
+            ViewTasksUseCaseFactory viewTasksUseCaseFactory
             ) {
             this.CreateTaskUseCaseFactory = createTaskUseCaseFactory;
             this.ViewTasksUseCaseFactory = viewTasksUseCaseFactory;
@@ -50,7 +53,7 @@ namespace task_scheduler_presentation.Controllers {
         public void CreateTask(IAddTaskView view) {
 
             //get and VALIDATE input values from view
-            UC.CreateTask.CreateTaskInput input = new UC.CreateTask.CreateTaskInput {
+            CreateTaskInput input = new CreateTaskInput {
                 Title = view.Title,
                 Description = view.Description,
                 StartTime = view.StartTime,
@@ -73,7 +76,7 @@ namespace task_scheduler_presentation.Controllers {
             uc.Execute();
 
             //get Use Case output and handle errors
-            UC.CreateTask.CreateTaskOutput output = uc.Output;
+            CreateTaskOutput output = uc.Output;
 
             if (output.Success) {
                 //need to close the view from here somehow, and clear the values

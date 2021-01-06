@@ -5,14 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SQLite;
+using task_scheduler_data_access.DataObjects;
 
-namespace task_scheduler_data_access {
+namespace task_scheduler_data_access.Repositories {
     public class TaskItemRepository : ITaskItemRepository, IDisposable{
         private DataTable table;
         private SQLiteDataAdapter adapter;
 
         public TaskItemRepository(string connStr) {
+
             SQLiteConnection conn = new SQLiteConnection(connStr);
+
             adapter = new SQLiteDataAdapter("SELECT * FROM Tasks", conn);
 
             adapter.InsertCommand =

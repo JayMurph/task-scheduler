@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace task_scheduler_data_access {
+namespace task_scheduler_data_access.DataObjects {
 
     public class TaskItemDAL {
 

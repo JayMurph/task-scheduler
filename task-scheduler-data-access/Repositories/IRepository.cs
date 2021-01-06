@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace task_scheduler_data_access {
+namespace task_scheduler_data_access.Repositories {
     public interface IRepository<T> {
         //this would be nice if I knew how to implement filter and where expressions as parameters
         //IEnumerable<T> Select();
