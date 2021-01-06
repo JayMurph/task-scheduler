@@ -18,7 +18,8 @@ using task_scheduler_presentation.Views;
 
 namespace task_scheduler_presentation {
     public sealed partial class AddTaskFlyoutControl: UserControl{
-        private readonly IAddTaskView owner;
+
+        public IAddTaskView Owner { get; set; }
 
         public string Title { get => titleInput.Text; set => titleInput.Text = value; }
 
@@ -57,7 +58,7 @@ namespace task_scheduler_presentation {
         }
 
 
-        public AddTaskFlyoutControl(IAddTaskView owner) {
+        public AddTaskFlyoutControl() {
             this.InitializeComponent();
 
             DataContext = this;
@@ -70,12 +71,10 @@ namespace task_scheduler_presentation {
             foreach(string type in App.UserController.FrequencyTypeStrings) {
                 frequencyComboBox.Items.Add(new ComboBoxItem() { Content = type });
             }
-
-            this.owner = owner;
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e) {
-            App.UserController.CreateTask(owner);
+            App.UserController.CreateTask(Owner);
         }
 
         private void FrequencyComboBox_FrequencyChanged(object sender, SelectionChangedEventArgs e) {

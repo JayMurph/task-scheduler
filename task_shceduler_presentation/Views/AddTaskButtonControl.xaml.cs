@@ -21,7 +21,8 @@ namespace task_scheduler_presentation {
     public sealed partial class AddTaskButtonControl : UserControl , IAddTaskView{
         public AddTaskButtonControl() {
             InitializeComponent();
-            addTaskControl = new AddTaskFlyoutControl(this);
+
+            addTaskControl.Owner = this;
         }
 
         public string Title { get => addTaskControl.Title; set => addTaskControl.Title = value; }
@@ -33,6 +34,7 @@ namespace task_scheduler_presentation {
         public string Error { get => addTaskControl.Error; set => addTaskControl.Error = value; }
 
         public void ClearFields() {
+            //set fields of add task control back to defaults
             Title = string.Empty;
             Description = string.Empty;
             StartTime = DateTime.Now;
