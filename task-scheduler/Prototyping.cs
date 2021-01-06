@@ -20,6 +20,26 @@ namespace task_scheduler {
 
         static void Main(string[] args) {
 
+            TaskItemRepository repo = new TaskItemRepository("Data Source=../../testdb.db");
+
+            //ADDING
+            //repo.Add(new TaskItemDAL(Guid.NewGuid(), "Test", "Test", DateTime.Now, DateTime.MinValue, 128, 128, 128, "Custom"));
+            //repo.Save();
+
+            //UPDATING
+            //var tasks = repo.GetAll();
+            //foreach(TaskItemDAL task in tasks) {
+            //    task.FrequencyType = "Not-Custom";
+            //    repo.Update(task);
+            //}
+            //repo.Save();
+
+            //DELETING
+            var tasks = repo.GetAll();
+            foreach(TaskItemDAL task in tasks) {
+                repo.Delete(task);
+            }
+            repo.Save();
         }
     }
 }

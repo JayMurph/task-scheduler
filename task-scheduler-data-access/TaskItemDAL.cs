@@ -24,5 +24,30 @@ namespace task_scheduler_data_access {
         public byte B;
         
         public string FrequencyType;
+
+        public TaskItemDAL() {
+        }
+
+        public TaskItemDAL(
+            Guid id,
+            string title,
+            string description,
+            DateTime startTime,
+            DateTime lastNotificationTime,
+            byte r,
+            byte g,
+            byte b,
+            string frequencyType) {
+
+            Id = id;
+            Title = title ?? throw new ArgumentNullException(nameof(title));
+            Description = description ?? throw new ArgumentNullException(nameof(description));
+            StartTime = startTime;
+            LastNotificationTime = lastNotificationTime;
+            R = r;
+            G = g;
+            B = b;
+            FrequencyType = frequencyType ?? throw new ArgumentNullException(nameof(frequencyType));
+        }
     }
 }
