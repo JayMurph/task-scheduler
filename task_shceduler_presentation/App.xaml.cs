@@ -19,11 +19,12 @@ using task_scheduler_entities;
 
 using task_scheduler_application;
 using task_scheduler_application.DTO;
-
+using task_scheduler_application.Frequencies;
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
 
 using task_scheduler_data_access_standard.Repositories;
+using task_scheduler_data_access_standard.DataObjects;
 
 namespace task_scheduler_presentation
 {
@@ -117,17 +118,34 @@ namespace task_scheduler_presentation
             //CREATE REPOSITORY FACTORIES
             TaskItemRepositoryFactory taskItemRepositoryFactory = new TaskItemRepositoryFactory(connectionStr);
 
-            //...pulling in data and creating domain entities should be done elsewhere
-            //get database data 
-
-            //create domain entities
+            //create domain dependencies
             BasicNotificationManager notificationManager = new BasicNotificationManager();
             BasicTaskManager taskManager = new BasicTaskManager();
             RealTimeClock clock = new RealTimeClock();
 
-            //instantiate domain entities retrieved from database
+            //...pulling in data and creating domain entities should be done elsewhere
+            //load database data into domain managers
 
-            //create use-case factories
+            ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
+
+            //read in task items from database. Create domain taskItems from 
+            //data and add items to taskManager
+            foreach(TaskItemDAL dalTaskItems in taskItemRepository.GetAll()) {
+                taskManager.Add(
+                    new TaskItem(
+                        dalTaskItems.Title,
+                        dalTaskItems.Description,
+                        new Colour(dalTaskItems.R, dalTaskItems.G, dalTaskItems.B),
+                        dalTaskItems.StartTime,
+                        notificationManager,
+                        //fake frequency for now until frequency data table built
+                        new ConstantFrequency(new TimeSpan(1,0,0)),
+                        clock
+                    )
+                );
+            }
+
+            //CREATE USE-CASE FACTORIES
             var addTaskUseCaseFactory =
                 new CreateTaskUseCaseFactory(
                     taskManager,
@@ -137,7 +155,7 @@ namespace task_scheduler_presentation
                 );
 
             var viewTasksUseCaseFactory =
-                new ViewTasksUseCaseFactory(taskManager, taskItemRepositoryFactory);
+                new ViewTasksUseCaseFactory(taskManager);
 
             //Instantiate user controller, passing in required factories
             return new Controllers.UserController(
