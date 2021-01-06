@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
-using System.Data.SQLite;
-using task_scheduler_data_access.DataObjects;
+using System.Data.Common;
+using Microsoft.Data.Sqlite;
+using task_scheduler_data_access_core.DataObjects;
 
-namespace task_scheduler_data_access.Repositories {
+namespace task_scheduler_data_access_core.Repositories {
     public class TaskItemRepository : ITaskItemRepository, IDisposable{
 
         private readonly DataTable table;

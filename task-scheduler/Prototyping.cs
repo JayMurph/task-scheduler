@@ -10,7 +10,8 @@ using task_scheduler_entities;
 using task_scheduler_application;
 using task_scheduler_application.UseCases;
 using task_scheduler_application.Frequencies;
-using task_scheduler_data_access;
+using task_scheduler_data_access_standard.DataObjects;
+using task_scheduler_data_access_standard.Repositories;
 using System.Data.SQLite;
 using System.Data;
 
@@ -35,11 +36,11 @@ namespace task_scheduler {
             //repo.Save();
 
             //DELETING
-            var tasks = repo.GetAll();
-            foreach(TaskItemDAL task in tasks) {
-                repo.Delete(task);
-            }
-            repo.Save();
+            //var tasks = repo.GetAll();
+            //foreach(TaskItemDAL task in tasks) {
+            //    repo.Delete(task);
+            //}
+            //repo.Save();
         }
     }
 }

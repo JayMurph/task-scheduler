@@ -14,10 +14,16 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+
 using task_scheduler_entities;
+
 using task_scheduler_application;
 using task_scheduler_application.DTO;
-using UC = task_scheduler_application.UseCases;
+
+using task_scheduler_application.UseCases.CreateTask;
+using task_scheduler_application.UseCases.ViewTasks;
+
+using task_scheduler_data_access_standard;
 
 namespace task_scheduler_presentation
 {
@@ -119,14 +125,14 @@ namespace task_scheduler_presentation
 
             //create use-case factories
             var addTaskUseCaseFactory =
-                new UC.CreateTask.CreateTaskUseCaseFactory(
+                new CreateTaskUseCaseFactory(
                     taskManager,
                     notificationManager,
                     clock
                 );
 
             var viewTasksUseCaseFactory =
-                new UC.ViewTasks.ViewTasksUseCaseFactory(taskManager);
+                new ViewTasksUseCaseFactory(taskManager);
 
             //Instantiate user controller, passing in required factories
             return new Controllers.UserController(
