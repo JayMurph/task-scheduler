@@ -17,6 +17,7 @@ namespace task_scheduler_data_access {
         public string Description { get; set; }
 
         public DateTime StartTime {get;set;}
+        public DateTime LastNotificationTime { get; set; }
              
         public byte R;
         public byte G;
