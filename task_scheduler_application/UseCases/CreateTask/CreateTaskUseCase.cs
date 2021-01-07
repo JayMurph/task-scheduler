@@ -38,7 +38,14 @@ namespace task_scheduler_application.UseCases.CreateTask {
             //validate input data
 
             //create appropriate frequency for new TaskItem
-            //TODO
+            //TODO : abstract away magic string
+            IDescriptiveNotificationFrequency frequency = null;
+            if(Input.FrequencyType == "Custom") {
+                frequency = NotificationFrequencyFactory.New(Input.FrequencyType, Input.CustomFrequency);
+            }
+            else {
+                frequency = NotificationFrequencyFactory.New(Input.FrequencyType);
+            }
 
             //create new TaskItem from input data
             TaskItem newTask = new TaskItem(
@@ -49,8 +56,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
                 ),
                 Input.StartTime,
                 notificationManager,
-                /*assuming custom frequency for now*/
-                new Frequencies.CustomFrequency(Input.CustomFrequency),
+                frequency,
                 clock
             );
 
@@ -70,10 +76,15 @@ namespace task_scheduler_application.UseCases.CreateTask {
                         newTask.Colour.R,
                         newTask.Colour.G,
                         newTask.Colour.B,
-                        //faking custom for now
-                        "Custom"
+                        frequency.Description
                     )
                 );
+
+                //TODO : abstract away magic string
+                if(frequency.Description == "Custom") {
+                    //TODO : save custom frequency data to database
+                }
+
                 taskItemRepository.Save();
 
                 //fill out output data and return
