@@ -5,6 +5,6 @@ using task_scheduler_entities;
 
 namespace task_scheduler_application.Frequencies {
     public interface IDescriptiveNotificationFrequency : INotificationFrequency{
-
+        string Description { get; }
     }
 }

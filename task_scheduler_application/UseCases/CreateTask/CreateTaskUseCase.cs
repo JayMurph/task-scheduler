@@ -50,7 +50,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
                 Input.StartTime,
                 notificationManager,
                 /*assuming custom frequency for now*/
-                new Frequencies.ConstantFrequency(Input.CustomFrequency),
+                new Frequencies.CustomFrequency(Input.CustomFrequency),
                 clock
             );
 

@@ -161,7 +161,7 @@ namespace task_scheduler_presentation
                         dalTaskItems.StartTime,
                         notificationManager,
                         //fake frequency for now until frequency data table built
-                        new ConstantFrequency(new TimeSpan(1,0,0)),
+                        new CustomFrequency(new TimeSpan(1,0,0)),
                         clock
                     )
                 );
