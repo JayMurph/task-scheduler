@@ -26,6 +26,7 @@ using task_scheduler_application.Frequencies;
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
 
+using task_scheduler_data_access_standard;
 using task_scheduler_data_access_standard.Repositories;
 using task_scheduler_data_access_standard.DataObjects;
 
@@ -41,7 +42,6 @@ namespace task_scheduler_presentation
         static public string dbPath;
         static public string connectionStr = $"Data Source={dataSource}";
         static StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-        static StorageFile dbFile;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -126,41 +126,9 @@ namespace task_scheduler_presentation
 
             //create database file if it does not exist
             await storageFolder.CreateFileAsync(dataSource, CreationCollisionOption.OpenIfExists);
-
             dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dataSource);
             connectionStr = $"Data Source={dbPath};";
-
-            //ALL THE FOLLOWING DATABASE STUFF SHOULD BE MOVED ELSEWHERE
-
-            try {
-                //create database tables
-                using (var conn = new System.Data.SQLite.SQLiteConnection(connectionStr)) {
-                    using (var command = new System.Data.SQLite.SQLiteCommand()) {
-                        command.Connection = conn;
-                        command.CommandText =
-                            "CREATE TABLE 'Tasks'" +
-                                "( " +
-                                "'Id'    TEXT NOT NULL UNIQUE, " +
-                                "'Title' TEXT NOT NULL, " +
-                                "'Description'   TEXT NOT NULL, " +
-                                "'StartTime' TEXT NOT NULL, " +
-                                "'LastNotificationTime'  TEXT NOT NULL, " +
-                                "'FrequencyType' TEXT NOT NULL, " +
-                                "'R' INTEGER NOT NULL, " +
-                                "'G' INTEGER NOT NULL, " +
-                                "'B' INTEGER NOT NULL, " +
-                                "PRIMARY KEY('Id')" +
-                                ") ";
-
-                        conn.Open();
-                        command.ExecuteNonQuery();
-                        conn.Close();
-                    }
-                }
-            }
-            catch {
-
-            }
+            DataAccess.InitializeDatabase(connectionStr);
 
             //CREATE REPOSITORY FACTORIES
             TaskItemRepositoryFactory taskItemRepositoryFactory = new TaskItemRepositoryFactory(connectionStr);
