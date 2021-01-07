@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "task_scheduler_application": {
+      "commandName": "Project"
+    }
+  }
+}

@@ -31,8 +31,8 @@ namespace task_scheduler_presentation.Controllers {
             CreateTaskUseCaseFactory createTaskUseCaseFactory,
             ViewTasksUseCaseFactory viewTasksUseCaseFactory
             ) {
-            this.CreateTaskUseCaseFactory = createTaskUseCaseFactory;
-            this.ViewTasksUseCaseFactory = viewTasksUseCaseFactory;
+            CreateTaskUseCaseFactory = createTaskUseCaseFactory;
+            ViewTasksUseCaseFactory = viewTasksUseCaseFactory;
         }
 
         public void ViewTasks(ITasksView view) {

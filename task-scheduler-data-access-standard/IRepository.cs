@@ -15,5 +15,6 @@ namespace task_scheduler_data_access_standard.Repositories {
         bool Add(T t);
         bool Delete(T t);
         bool Delete(object id);
+        void Save();
     }
 }

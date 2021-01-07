@@ -71,6 +71,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
                         "Custom"
                     )
                 );
+                taskItemRepository.Save();
 
                 //fill out output data and return
                 Output = new CreateTaskOutput() { Success = true };
