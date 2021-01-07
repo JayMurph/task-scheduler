@@ -15,17 +15,16 @@ namespace task_scheduler_application.Frequencies {
         }
 
         public DateTime NextNotificationTime(DateTime taskStartTime, DateTime now) {
-            TimeSpan periodAccum = period;
-
-            while(taskStartTime + periodAccum <= now) {
-                periodAccum = periodAccum.Add(period);
-            }
-
-            return taskStartTime + periodAccum;
+            return FrequencyUtility.NextNotificationTime(taskStartTime, now, period);
         }
 
         public TimeSpan TimeUntilNextNotification(DateTime taskStartTime, DateTime now) {
-            return now.Subtract(NextNotificationTime(taskStartTime, now));
+            return FrequencyUtility.TimeUntilNextNotification(
+                taskStartTime,
+                now,
+                period,
+                NextNotificationTime
+            );
         }
     }
 }
