@@ -17,12 +17,12 @@ namespace task_scheduler_presentation.Controllers {
         private ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
 
         //this mapping should probably go elsewhere
-        private Dictionary<string, FrequencyTypes> stringToFrequencyMap =
-            new Dictionary<string, FrequencyTypes>() {
-                { "Daily", FrequencyTypes.Daily},
-                { "Every Other Day", FrequencyTypes.Every_Other_Day},
-                { "Review", FrequencyTypes.Review},
-                { "Custom", FrequencyTypes.Custom},
+        private Dictionary<string, FrequencyType> stringToFrequencyMap =
+            new Dictionary<string, FrequencyType>() {
+                { "Daily", FrequencyType.Daily},
+                { "Every Other Day", FrequencyType.Every_Other_Day},
+                { "Review", FrequencyType.Review},
+                { "Custom", FrequencyType.Custom},
             };
 
         public IEnumerable<string> FrequencyTypeStrings { get => stringToFrequencyMap.Keys; }
@@ -64,7 +64,7 @@ namespace task_scheduler_presentation.Controllers {
             };
 
             //check for "Custom" frequency and handle that
-            if(input.FrequencyType == FrequencyTypes.Custom) {
+            if(input.FrequencyType == FrequencyType.Custom) {
                 input.CustomFrequency = view.CustomFrequency;
             }
 

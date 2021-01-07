@@ -16,7 +16,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
         public byte G;
         public byte B;
 
-        public FrequencyTypes FrequencyType;
+        public FrequencyType FrequencyType;
 
         public TimeSpan CustomFrequency;
     }

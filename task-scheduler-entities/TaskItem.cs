@@ -114,10 +114,10 @@ namespace task_scheduler_entities {
             Guid id
             ) {
 
-            this.Title = title;
-            this.Description = description;
-            this.Colour = colour;
-            this.LastNotificationTime = lastNotificationTime;
+            Title = title;
+            Description = description;
+            Colour = colour;
+            LastNotificationTime = lastNotificationTime;
 
             this.id = id;
 

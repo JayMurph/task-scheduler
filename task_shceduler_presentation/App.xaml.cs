@@ -122,6 +122,7 @@ namespace task_scheduler_presentation
             deferral.Complete();
         }
 
+
         static private async Task<Controllers.UserController> CreateUserController() {
 
             //create database filename path 
@@ -136,7 +137,8 @@ namespace task_scheduler_presentation
             }
 
             //CREATE REPOSITORY FACTORIES
-            TaskItemRepositoryFactory taskItemRepositoryFactory = new TaskItemRepositoryFactory(connectionStr);
+            TaskItemRepositoryFactory taskItemRepositoryFactory = 
+                new TaskItemRepositoryFactory(connectionStr);
 
             //create domain dependencies
             BasicNotificationManager notificationManager = new BasicNotificationManager();

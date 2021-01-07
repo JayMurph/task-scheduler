@@ -3,11 +3,13 @@ using task_scheduler_entities;
 
 namespace task_scheduler_application.Frequencies {
     public class ConstantFrequency : INotificationFrequency {
+
         private readonly TimeSpan period; 
 
         public ConstantFrequency(TimeSpan period) {
             this.period = period;
         }
+
         public DateTime NextNotificationTime(DateTime taskStartTime, DateTime now) {
             TimeSpan periodAccum = period;
 
