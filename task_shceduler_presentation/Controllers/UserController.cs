@@ -16,6 +16,11 @@ namespace task_scheduler_presentation.Controllers {
         private CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
         private ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
 
+        //TODO : abstract these strings out of the presentation layer
+        public IEnumerable<string> FrequencyTypeStrings { 
+            get => new List<string>(){ "Daily", "Every Other Day", "Review", "Custom"};
+        }
+
         public UserController(
             CreateTaskUseCaseFactory createTaskUseCaseFactory,
             ViewTasksUseCaseFactory viewTasksUseCaseFactory
