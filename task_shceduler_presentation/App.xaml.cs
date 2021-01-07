@@ -124,11 +124,16 @@ namespace task_scheduler_presentation
 
         static private async Task<Controllers.UserController> CreateUserController() {
 
-            //create database file if it does not exist
-            await storageFolder.CreateFileAsync(dataSource, CreationCollisionOption.OpenIfExists);
+            //create database filename path 
             dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dataSource);
             connectionStr = $"Data Source={dbPath};";
-            DataAccess.InitializeDatabase(connectionStr);
+
+            //check if database file already exists
+            if(await storageFolder.TryGetItemAsync(dataSource) == null) {
+                //create and initialize database file if it does not exist
+                await storageFolder.CreateFileAsync(dataSource);
+                DataAccess.InitializeDatabase(connectionStr);
+            }
 
             //CREATE REPOSITORY FACTORIES
             TaskItemRepositoryFactory taskItemRepositoryFactory = new TaskItemRepositoryFactory(connectionStr);

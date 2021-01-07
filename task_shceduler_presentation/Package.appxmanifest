@@ -4,7 +4,7 @@
   xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
   xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
   xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
-  IgnorableNamespaces="uap mp rescap">
+  IgnorableNamespaces="uap mp">
 
   <Identity
     Name="d669babf-6a8c-4d55-ab91-2433a24913e4"
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="task_scdeduler_presentation.App">
+      EntryPoint="task_scheduler_presentation.App">
       <uap:VisualElements
-        DisplayName="task_scheduler_presentation"
+        DisplayName="Task Scheduler:w"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="task_scheduler_presentation"
+        Description="Task Scheduler"
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />

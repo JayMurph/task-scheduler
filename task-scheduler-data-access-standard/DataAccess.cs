@@ -4,7 +4,7 @@ using System.Text;
 
 namespace task_scheduler_data_access_standard {
     public static class DataAccess {
-        public static void InitializeDatabase(string connectionString) {
+        public static void InitializeDatabase(string connectionStr) {
             try {
                 //create database tables
                 using (var conn = new System.Data.SQLite.SQLiteConnection(connectionStr)) {
