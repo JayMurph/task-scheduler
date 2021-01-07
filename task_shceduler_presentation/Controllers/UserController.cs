@@ -16,17 +16,6 @@ namespace task_scheduler_presentation.Controllers {
         private CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
         private ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
 
-        //this mapping should probably go elsewhere
-        private Dictionary<string, FrequencyType> stringToFrequencyMap =
-            new Dictionary<string, FrequencyType>() {
-                { "Daily", FrequencyType.Daily},
-                { "Every Other Day", FrequencyType.Every_Other_Day},
-                { "Review", FrequencyType.Review},
-                { "Custom", FrequencyType.Custom},
-            };
-
-        public IEnumerable<string> FrequencyTypeStrings { get => stringToFrequencyMap.Keys; }
-
         public UserController(
             CreateTaskUseCaseFactory createTaskUseCaseFactory,
             ViewTasksUseCaseFactory viewTasksUseCaseFactory
