@@ -22,7 +22,6 @@ namespace task_scheduler_application.Frequencies {
             return FrequencyUtility.TimeUntilNextNotification(
                 taskStartTime,
                 now,
-                period,
                 NextNotificationTime
             );
         }

@@ -17,7 +17,6 @@ namespace task_scheduler_application.Frequencies {
         public static TimeSpan TimeUntilNextNotification(
             DateTime taskStartTime,
             DateTime now,
-            TimeSpan period,
             Func<DateTime, DateTime, DateTime> NextNotificationTimeProc) {
 
             return now.Subtract(NextNotificationTimeProc(taskStartTime, now));
