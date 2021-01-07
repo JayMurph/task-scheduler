@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\task-scheduler-data-access-standard\task-scheduler-data-access-standard.csproj" />
-    <ProjectReference Include="..\task-scheduler-data-access\task-scheduler-data-access.csproj" />
     <ProjectReference Include="..\task-scheduler-entities\task-scheduler-entities.csproj" />
   </ItemGroup>
 
