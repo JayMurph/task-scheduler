@@ -15,7 +15,7 @@ namespace task_scheduler_application.DTO {
         public byte G;
         public byte B;
         
-        public FrequencyType FrequencyType;
+        public string FrequencyType;
         
         public TimeSpan CustomFrequency;
         

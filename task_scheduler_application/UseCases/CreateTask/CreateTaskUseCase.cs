@@ -37,6 +37,9 @@ namespace task_scheduler_application.UseCases.CreateTask {
         public void Execute() {
             //validate input data
 
+            //create appropriate frequency for new TaskItem
+            //TODO
+
             //create new TaskItem from input data
             TaskItem newTask = new TaskItem(
                 Input.Title,

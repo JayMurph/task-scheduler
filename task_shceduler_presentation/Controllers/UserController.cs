@@ -60,11 +60,12 @@ namespace task_scheduler_presentation.Controllers {
                 R = view.Color.R,
                 G = view.Color.G,
                 B = view.Color.B,
-                FrequencyType = stringToFrequencyMap[view.FrequencyType]
+                FrequencyType = view.FrequencyType
             };
 
             //check for "Custom" frequency and handle that
-            if(input.FrequencyType == FrequencyType.Custom) {
+            //TODO : abstract away 'magic' string
+            if(input.FrequencyType == "Custom") {
                 input.CustomFrequency = view.CustomFrequency;
             }
 
