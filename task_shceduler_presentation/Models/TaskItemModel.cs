@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using task_scheduler_application.DTO;
 
-namespace task_scheduler_presentation{
+namespace task_scheduler_presentation.Models{
     public class TaskItemModel {
         public string Title { get; set; }
         public string Desciption { get; set; }

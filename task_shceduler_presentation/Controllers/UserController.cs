@@ -10,6 +10,7 @@ using task_scheduler_application.Frequencies;
 using task_scheduler_application.DTO;
 
 using task_scheduler_presentation.Views;
+using task_scheduler_presentation.Models;
 
 namespace task_scheduler_presentation.Controllers {
     public class UserController {

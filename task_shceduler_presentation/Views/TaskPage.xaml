@@ -2,7 +2,8 @@
     x:Class="task_scheduler_presentation.Views.TaskPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:task_scheduler_presentation"
+    xmlns:models="using:task_scheduler_presentation.Models"
+    xmlns:views="using:task_scheduler_presentation.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -11,28 +12,10 @@
     <Grid>
         <StackPanel>
             <TextBlock Text="TASKS" FontSize="100" HorizontalAlignment="Center"/>
-            <ListView x:Name="taskListView">
+            <ListView x:Name="taskListView" HorizontalAlignment="Center">
                 <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="local:TaskItemModel">
-                        <Grid BorderBrush="{Binding Color}" BorderThickness="4">
-                            <Grid.Resources>
-                                <local:NotificationFrequencyConverter x:Key="FrequencyFormatConverter">
-                                </local:NotificationFrequencyConverter>
-                            </Grid.Resources>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Foreground="White" Text="{Binding Title}"/>
-                            <TextBlock Grid.Column="1" Foreground="White" Text="{Binding Desciption}"/>
-                            <TextBlock Grid.Column="2" Foreground="White" Text="{Binding StartTime}"/>
-                            <TextBlock Grid.Column="3" Foreground="White" Text="{Binding FrequencyType}"/>
-                            <TextBlock Grid.Column="4" Foreground="White" Text="{Binding NotificationFrequency,  Converter={StaticResource FrequencyFormatConverter}}">
-                            </TextBlock>
-                        </Grid>
+                    <DataTemplate x:DataType="models:TaskItemModel">
+                        <views:TaskItemControl />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
