@@ -39,7 +39,6 @@ namespace task_scheduler_presentation
     {
         static public Controllers.UserController UserController;
         static public string dataSource = "TaskSchedulerDB.db";
-        static public string dbPath;
         static public string connectionStr = $"Data Source={dataSource}";
         static StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
 
@@ -47,13 +46,27 @@ namespace task_scheduler_presentation
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
         /// </summary>
-        public App()
-        {
+        public App() {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
 
+            //create database filename path 
+            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dataSource);
+            connectionStr = $"Data Source={dbPath};";
+
+            CreateDatabaseFileIfNecessary().Wait();//TODO go somewhere else
+
             //Instantiate user controller, passing in required factories
-            UserController = CreateUserController().Result;
+            UserController = CreateUserController();
+        }
+
+        private static async Task CreateDatabaseFileIfNecessary() {
+
+            //check if database file already exists
+            if (await storageFolder.TryGetItemAsync(dataSource) == null) {
+                //create and initialize database file if it does not exist
+                await storageFolder.CreateFileAsync(dataSource);
+            }
         }
 
         /// <summary>
@@ -123,18 +136,8 @@ namespace task_scheduler_presentation
         }
 
 
-        static private async Task<Controllers.UserController> CreateUserController() {
-
-            //create database filename path 
-            dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dataSource);
-            connectionStr = $"Data Source={dbPath};";
-
-            //check if database file already exists
-            if(await storageFolder.TryGetItemAsync(dataSource) == null) {
-                //create and initialize database file if it does not exist
-                await storageFolder.CreateFileAsync(dataSource);
-                DataAccess.InitializeDatabase(connectionStr);
-            }
+        static private Controllers.UserController CreateUserController() {
+            DataAccess.InitializeDatabase(connectionStr);
 
             //CREATE REPOSITORY FACTORIES
             TaskItemRepositoryFactory taskItemRepositoryFactory = 

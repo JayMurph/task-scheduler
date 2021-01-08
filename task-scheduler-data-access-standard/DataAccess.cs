@@ -35,12 +35,12 @@ namespace task_scheduler_data_access_standard {
                     using (var command = new System.Data.SQLite.SQLiteCommand()) {
                         command.Connection = conn;
                         command.CommandText =
-                            "CREATE TABLE \"Frequencies\"" +
+                            "CREATE TABLE IF NOT EXISTS \"Frequencies\"" +
                                 "( " +
                                 "\"TaskId\"    TEXT NOT NULL UNIQUE, " +
                                 "\"Time\" TEXT NOT NULL, " +
-                                "FOREIGN KEY(\"TaskItemId\") REFERENCES \"Tasks\"(\"Id\"), " +
-                                "PRIMARY KEY(\"TaskItemId\") " +
+                                "FOREIGN KEY(\"TaskId\") REFERENCES \"Tasks\"(\"Id\"), " +
+                                "PRIMARY KEY(\"TaskId\") " +
                                 ") ";
 
                         conn.Open();
