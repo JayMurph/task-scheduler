@@ -39,8 +39,7 @@ namespace task_scheduler_presentation
     {
         static public Controllers.UserController UserController;
         static public string dataSource = "TaskSchedulerDB.db";
-        static public string connectionStr = $"Data Source={dataSource}";
-        static StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+        static public string connectionStr = string.Empty;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -61,11 +60,10 @@ namespace task_scheduler_presentation
         }
 
         private static async Task CreateDatabaseFileIfNecessary() {
-
             //check if database file already exists
-            if (await storageFolder.TryGetItemAsync(dataSource) == null) {
+            if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(dataSource) == null) {
                 //create and initialize database file if it does not exist
-                await storageFolder.CreateFileAsync(dataSource);
+                await ApplicationData.Current.LocalFolder.CreateFileAsync(dataSource);
             }
         }
 
