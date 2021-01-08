@@ -40,7 +40,13 @@ namespace task_scheduler_presentation.Controllers {
 
             //apply the output to the view
             foreach(TaskItemDTO item in uc.Output.TaskItems) {
-                view.TaskItems.Add(new TaskItemModel() { Title = item.Title });
+                view.TaskItems.Add(
+                    new TaskItemModel() {
+                        Title = item.Title,
+                        Desciption = item.Description,
+                        
+                    }
+                    );
             }
         }
 

@@ -9,5 +9,8 @@ namespace task_scheduler_presentation{
     public class TaskItemModel {
         public string Title { get; set; }
         public string Desciption { get; set; }
+        public DateTime StartTime { get; set; }
+        public string FrequencyType { get; set; }
+        public DateTime NotificationFrequency { get; set; }
     }
 }
