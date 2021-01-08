@@ -8,7 +8,7 @@ using System.Data.SQLite;
 using task_scheduler_data_access_standard.DataObjects;
 
 namespace task_scheduler_data_access_standard.Repositories {
-    public class TaskItemRepository : ITaskItemRepository, IDisposable{
+    public class TaskItemRepository : ITaskItemRepository{
 
         private readonly DataTable table;
         private readonly SQLiteDataAdapter adapter;
@@ -189,7 +189,7 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public void Save() {
-            int updated = adapter.Update(table);
+            adapter.Update(table);
         }
 
         private static TaskItemDAL DataToTaskItemDAL(DataRow row) {
