@@ -21,13 +21,31 @@ namespace task_scheduler {
 
         static void Main(string[] args) {
 
-            TaskItemRepository repo = new TaskItemRepository("Data Source=../../testdb.db");
+            TaskItemRepository taskRepo = new TaskItemRepository("Data Source=../../testdb.db");
+            FrequencyRepository freqRepo = new FrequencyRepository("Data Source=../../testdb.db");
 
-            //ADDING
-            //repo.Add(new TaskItemDAL(Guid.NewGuid(), "Test", "Test", DateTime.Now, DateTime.MinValue, 128, 128, 128, "Custom"));
-            //repo.Save();
+            //TaskItemDAL newTaskDAL =
+            //    new TaskItemDAL(
+            //        Guid.NewGuid(),
+            //        "Test",
+            //        "Test",
+            //        DateTime.Now,
+            //        DateTime.MinValue,
+            //        128,
+            //        128,
+            //        128,
+            //        "Custom"
+            //    );
 
-            //UPDATING
+            //ADDING taskItem
+            //taskRepo.Add(newTaskDAL);
+            //taskRepo.Save();
+
+            //ADDING Frequency
+            //freqRepo.Add(new NotificationFrequencyDAL(newTaskDAL.Id, new TimeSpan(1, 0, 0)));
+            //freqRepo.Save();
+
+            //UPDATING taskItem
             //var tasks = repo.GetAll();
             //foreach(TaskItemDAL task in tasks) {
             //    task.FrequencyType = "Not-Custom";
@@ -35,7 +53,7 @@ namespace task_scheduler {
             //}
             //repo.Save();
 
-            //DELETING
+            //DELETING taskItem
             //var tasks = repo.GetAll();
             //foreach(TaskItemDAL task in tasks) {
             //    repo.Delete(task);

@@ -7,7 +7,7 @@ using System.Data.SQLite;
 using task_scheduler_data_access_standard.DataObjects;
 
 namespace task_scheduler_data_access_standard.Repositories {
-    class FrequencyRepository : IFrequencyRepository {
+    public class FrequencyRepository : IFrequencyRepository {
 
         private readonly DataTable table;
         private readonly SQLiteDataAdapter adapter;
@@ -59,6 +59,7 @@ namespace task_scheduler_data_access_standard.Repositories {
                 return false;
             }
 
+            table.Rows.Add(row);
             return true;
         }
 
