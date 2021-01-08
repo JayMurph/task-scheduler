@@ -116,6 +116,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="NotificationFrequencyConverter.cs" />
     <Compile Include="Models\TaskItemModel.cs" />
     <Compile Include="Views\AddTaskButtonControl.xaml.cs">
       <DependentUpon>AddTaskButtonControl.xaml</DependentUpon>
@@ -136,6 +137,9 @@
       <DependentUpon>NotificationPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\TaskItemControl.xaml.cs">
+      <DependentUpon>TaskItemControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TaskPage.xaml.cs">
       <DependentUpon>TaskPage.xaml</DependentUpon>
     </Compile>
@@ -173,6 +177,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\NotificationPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TaskItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
