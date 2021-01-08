@@ -13,19 +13,22 @@ namespace task_scheduler_application.UseCases.CreateTask {
         private readonly INotificationManager notificationManager;
         private readonly IClock clock;
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
+        private readonly IFrequencyRepositoryFactory frequencyRepositoryFactory;
 
         #region AddTaskUseCase Constructor
 
         public CreateTaskUseCase(
             ITaskManager taskManager,
             INotificationManager notificationManager,
-            IClock clock, 
-            ITaskItemRepositoryFactory taskItemRepositoryFactory) {
+            IClock clock,
+            ITaskItemRepositoryFactory taskItemRepositoryFactory, 
+            IFrequencyRepositoryFactory frequencyRepositoryFactory) {
 
             this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
             this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));
             this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
+            this.frequencyRepositoryFactory = frequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(frequencyRepositoryFactory));
         }
 
         #endregion
@@ -37,9 +40,10 @@ namespace task_scheduler_application.UseCases.CreateTask {
         public void Execute() {
             //validate input data
 
+            IDescriptiveNotificationFrequency frequency = null;
+
             //create appropriate frequency for new TaskItem
             //TODO : abstract away magic string
-            IDescriptiveNotificationFrequency frequency = null;
             if(Input.FrequencyType == "Custom") {
                 frequency = NotificationFrequencyFactory.New(Input.FrequencyType, Input.CustomFrequency);
             }
@@ -80,12 +84,28 @@ namespace task_scheduler_application.UseCases.CreateTask {
                     )
                 );
 
+                IFrequencyRepository frequencyRepository = null; 
+
+                //add task frequency to database if it is a custom frequency
                 //TODO : abstract away magic string
                 if(frequency.Description == "Custom") {
-                    //TODO : save custom frequency data to database
+                    frequencyRepository = frequencyRepositoryFactory.New();
+
+                    // save custom frequency data to database
+                    NotificationFrequencyDAL newFrequencyDAL = new NotificationFrequencyDAL(
+                        newTask.ID,
+                        Input.CustomFrequency
+                    );
+
+                    frequencyRepository.Add(newFrequencyDAL);
                 }
 
                 taskItemRepository.Save();
+
+                //save frequency database if we created to save a custom frequency
+                if(frequencyRepository != null) {
+                    frequencyRepository.Save();
+                }
 
                 //fill out output data and return
                 Output = new CreateTaskOutput() { Success = true };
