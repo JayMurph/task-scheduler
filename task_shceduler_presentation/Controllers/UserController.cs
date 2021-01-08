@@ -36,8 +36,6 @@ namespace task_scheduler_presentation.Controllers {
 
             uc.Execute();
 
-            //could maybe hook the view up to the TaskAdded callback here???????????????
-
             //add taskItemDTOs from UseCase to observable collection for view
             foreach(TaskItemDTO item in uc.Output.TaskItems) {
                 view.TaskItems.Add(
