@@ -12,18 +12,18 @@ namespace task_scheduler_data_access_standard {
                     using (var command = new System.Data.SQLite.SQLiteCommand()) {
                         command.Connection = conn;
                         command.CommandText =
-                            "CREATE TABLE IF NOT EXISTS 'Tasks'" +
+                            "CREATE TABLE IF NOT EXISTS \"Tasks\"" +
                                 "( " +
-                                "'Id'    TEXT NOT NULL UNIQUE, " +
-                                "'Title' TEXT NOT NULL, " +
-                                "'Description'   TEXT NOT NULL, " +
-                                "'StartTime' TEXT NOT NULL, " +
-                                "'LastNotificationTime'  TEXT NOT NULL, " +
-                                "'FrequencyType' TEXT NOT NULL, " +
-                                "'R' INTEGER NOT NULL, " +
-                                "'G' INTEGER NOT NULL, " +
-                                "'B' INTEGER NOT NULL, " +
-                                "PRIMARY KEY('Id')" +
+                                "\"Id\"    TEXT NOT NULL UNIQUE, " +
+                                "\"Title\" TEXT NOT NULL, " +
+                                "\"Description\"   TEXT NOT NULL, " +
+                                "\"StartTime\" TEXT NOT NULL, " +
+                                "\"LastNotificationTime\"  TEXT NOT NULL, " +
+                                "\"FrequencyType\" TEXT NOT NULL, " +
+                                "\"R\" INTEGER NOT NULL, " +
+                                "\"G\" INTEGER NOT NULL, " +
+                                "\"B\" INTEGER NOT NULL, " +
+                                "PRIMARY KEY(\"Id\")" +
                                 ") ";
 
                         conn.Open();
@@ -35,12 +35,12 @@ namespace task_scheduler_data_access_standard {
                     using (var command = new System.Data.SQLite.SQLiteCommand()) {
                         command.Connection = conn;
                         command.CommandText =
-                            "CREATE TABLE 'Frequencies'" +
+                            "CREATE TABLE \"Frequencies\"" +
                                 "( " +
-                                "'TaskItemId'    TEXT NOT NULL UNIQUE, " +
-                                "'Frequency' TEXT NOT NULL, " +
-                                "FOREIGN KEY('TaskItemId') REFERENCES 'Tasks'('Id'), " +
-                                "PRIMARY KEY('TaskItemId') " +
+                                "\"TaskItemId\"    TEXT NOT NULL UNIQUE, " +
+                                "\"Frequency\" TEXT NOT NULL, " +
+                                "FOREIGN KEY(\"TaskItemId\") REFERENCES \"Tasks\"(\"Id\"), " +
+                                "PRIMARY KEY(\"TaskItemId\") " +
                                 ") ";
 
                         conn.Open();
