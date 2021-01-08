@@ -11,17 +11,20 @@ namespace task_scheduler_application.UseCases.CreateTask {
         private readonly INotificationManager notificationManager;
         private readonly IClock clock;
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
+        private readonly IFrequencyRepositoryFactory frequencyRepositoryFactory;
 
         public CreateTaskUseCaseFactory(
             ITaskManager taskManager,
             INotificationManager notificationManager,
-            IClock clock, 
-            ITaskItemRepositoryFactory taskItemRepositoryFactory) {
+            IClock clock,
+            ITaskItemRepositoryFactory taskItemRepositoryFactory, 
+            IFrequencyRepositoryFactory frequencyRepositoryFactory) {
 
             this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
             this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));
             this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
+            this.frequencyRepositoryFactory = frequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(frequencyRepositoryFactory));
         }
 
         public CreateTaskUseCase New() {
@@ -29,7 +32,8 @@ namespace task_scheduler_application.UseCases.CreateTask {
                 taskManager,
                 notificationManager,
                 clock,
-                taskItemRepositoryFactory
+                taskItemRepositoryFactory,
+                frequencyRepositoryFactory
             );
         }
     }
