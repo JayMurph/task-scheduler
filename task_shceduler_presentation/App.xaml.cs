@@ -139,6 +139,9 @@ namespace task_scheduler_presentation
             //CREATE REPOSITORY FACTORIES
             TaskItemRepositoryFactory taskItemRepositoryFactory = 
                 new TaskItemRepositoryFactory(connectionStr);
+            FrequencyRepositoryFactory frequencyRepositoryFactory =
+                new FrequencyRepositoryFactory(connectionStr);
+
 
             //create domain dependencies
             BasicNotificationManager notificationManager = new BasicNotificationManager();
@@ -149,19 +152,35 @@ namespace task_scheduler_presentation
             //load database data into domain managers
 
             ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
+            IFrequencyRepository frequencyRepository = frequencyRepositoryFactory.New();
 
             //read in task items from database. Create domain taskItems from 
             //data and add items to taskManager
-            foreach(TaskItemDAL dalTaskItems in taskItemRepository.GetAll()) {
+            foreach(TaskItemDAL task in taskItemRepository.GetAll()) {
+
+                INotificationFrequency notificationFrequency = null;
+
+                //TODO abstract out magic string
+                if(task.FrequencyType == "Custom") {
+
+                    NotificationFrequencyDAL notificationFrequencyDAL = 
+                        frequencyRepository.GetById(task.Id);
+
+                    notificationFrequency = 
+                        NotificationFrequencyFactory.New(task.FrequencyType, notificationFrequencyDAL.Time);
+                }
+                else {
+                    notificationFrequency = NotificationFrequencyFactory.New(task.FrequencyType);
+                }
+
                 taskManager.Add(
                     new TaskItem(
-                        dalTaskItems.Title,
-                        dalTaskItems.Description,
-                        new Colour(dalTaskItems.R, dalTaskItems.G, dalTaskItems.B),
-                        dalTaskItems.StartTime,
+                        task.Title,
+                        task.Description,
+                        new Colour(task.R, task.G, task.B),
+                        task.StartTime,
                         notificationManager,
-                        //fake frequency for now until frequency data table built
-                        new CustomFrequency(new TimeSpan(1,0,0)),
+                        notificationFrequency,
                         clock
                     )
                 );

@@ -36,6 +36,14 @@ namespace task_scheduler {
             //        128,
             //        "Custom"
             //    );
+            //GETTING Frequencies
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            foreach(NotificationFrequencyDAL n in freqRepo.GetAll()) {
+                Console.WriteLine(n.TaskId + " " + n.Time);
+            }
+            timer.Stop();
+            Console.WriteLine(timer.ElapsedMilliseconds);
 
             //ADDING taskItem
             //taskRepo.Add(newTaskDAL);
