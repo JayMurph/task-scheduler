@@ -37,8 +37,8 @@ namespace task_scheduler_data_access_standard {
                         command.CommandText =
                             "CREATE TABLE \"Frequencies\"" +
                                 "( " +
-                                "\"TaskItemId\"    TEXT NOT NULL UNIQUE, " +
-                                "\"Frequency\" TEXT NOT NULL, " +
+                                "\"TaskId\"    TEXT NOT NULL UNIQUE, " +
+                                "\"Time\" TEXT NOT NULL, " +
                                 "FOREIGN KEY(\"TaskItemId\") REFERENCES \"Tasks\"(\"Id\"), " +
                                 "PRIMARY KEY(\"TaskItemId\") " +
                                 ") ";
