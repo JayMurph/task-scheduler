@@ -9,12 +9,13 @@
     mc:Ignorable="d"
     d:DesignHeight="100"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <custom:NotificationFrequencyConverter 
+            x:Key="FrequencyFormatConverter"
+            />
+    </UserControl.Resources>
 
     <Grid BorderBrush="{x:Bind TaskItem.Color}" BorderThickness="4">
-        <Grid.Resources>
-            <custom:NotificationFrequencyConverter x:Key="FrequencyFormatConverter">
-            </custom:NotificationFrequencyConverter>
-        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="120"/>
             <ColumnDefinition Width="120"/>

@@ -17,7 +17,7 @@ using Windows.UI;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace task_scheduler_presentation {
+namespace task_scheduler_presentation.Views {
     public sealed partial class AddTaskButtonControl : UserControl , IAddTaskView{
         public AddTaskButtonControl() {
             InitializeComponent();

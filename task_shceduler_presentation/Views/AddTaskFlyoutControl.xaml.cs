@@ -12,11 +12,10 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using task_scheduler_presentation.Views;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace task_scheduler_presentation {
+namespace task_scheduler_presentation.Views {
     public sealed partial class AddTaskFlyoutControl: UserControl{
 
         public IAddTaskView Owner { get; set; }

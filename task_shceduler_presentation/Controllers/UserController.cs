@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
-using task_scheduler_application.Frequencies;
 using task_scheduler_application.DTO;
 
 using task_scheduler_presentation.Views;
@@ -16,6 +15,11 @@ namespace task_scheduler_presentation.Controllers {
     public class UserController {
         private CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
         private ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
+
+        //protected event EventHandler<TaskItemModel> TaskCreated;
+        //protected void OnTaskCreated(TaskItemModel taskItem) {
+        //    TaskCreated?.Invoke(this, taskItem);
+        //}
 
         //TODO : abstract these strings out of the presentation layer
         public IEnumerable<string> FrequencyTypeStrings { 
@@ -38,18 +42,19 @@ namespace task_scheduler_presentation.Controllers {
             uc.Execute();
 
             //add taskItemDTOs from UseCase to observable collection for view
-            foreach(TaskItemDTO item in uc.Output.TaskItems) {
-                view.TaskItems.Add(
-                    new TaskItemModel() {
-                        Title = item.Title,
-                        Desciption = item.Description,
-                        FrequencyType = item.FrequencyType,
-                        NotificationFrequency = item.CustomFrequency,
-                        StartTime = item.StartTime,
-                        Color = new Windows.UI.Xaml.Media.SolidColorBrush(
-                            Windows.UI.Color.FromArgb(255, item.R, item.G, item.B))
-                    }
-                );
+            foreach(TaskItemDTO taskItemDTO in uc.Output.TaskItems) {
+
+                TaskItemModel taskItemModel = new TaskItemModel() {
+                    Title = taskItemDTO.Title,
+                    Desciption = taskItemDTO.Description,
+                    FrequencyType = taskItemDTO.FrequencyType,
+                    NotificationFrequency = taskItemDTO.CustomFrequency,
+                    StartTime = taskItemDTO.StartTime,
+                    Color = new Windows.UI.Xaml.Media.SolidColorBrush(
+                        Windows.UI.Color.FromArgb(255, taskItemDTO.R, taskItemDTO.G, taskItemDTO.B))
+                };
+
+                view.TaskItems.Add(taskItemModel);
             }
         }
 

@@ -29,6 +29,7 @@ namespace task_scheduler_presentation.Views {
         //list of observable task models
         public TaskPage() {
             this.InitializeComponent();
+            Debug.WriteLine("TaskPage constructor");
 
             App.UserController.ViewTasks(this);
 
