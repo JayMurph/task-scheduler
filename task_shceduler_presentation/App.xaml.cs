@@ -188,12 +188,13 @@ namespace task_scheduler_presentation
             }
 
             //CREATE USE-CASE FACTORIES
-            var addTaskUseCaseFactory =
+            var createTaskUseCaseFactory =
                 new CreateTaskUseCaseFactory(
                     taskManager,
                     notificationManager,
                     clock,
-                    taskItemRepositoryFactory
+                    taskItemRepositoryFactory,
+                    frequencyRepositoryFactory
                 );
 
             var viewTasksUseCaseFactory =
@@ -201,7 +202,7 @@ namespace task_scheduler_presentation
 
             //Instantiate user controller, passing in required factories
             return new Controllers.UserController(
-                addTaskUseCaseFactory,
+                createTaskUseCaseFactory,
                 viewTasksUseCaseFactory
             );
         }
