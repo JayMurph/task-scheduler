@@ -38,15 +38,19 @@ namespace task_scheduler_presentation.Controllers {
 
             //could maybe hook the view up to the TaskAdded callback here???????????????
 
-            //apply the output to the view
+            //add taskItemDTOs from UseCase to observable collection for view
             foreach(TaskItemDTO item in uc.Output.TaskItems) {
                 view.TaskItems.Add(
                     new TaskItemModel() {
                         Title = item.Title,
                         Desciption = item.Description,
-                        
+                        FrequencyType = item.FrequencyType,
+                        NotificationFrequency = item.CustomFrequency,
+                        StartTime = item.StartTime,
+                        Color = new Windows.UI.Xaml.Media.SolidColorBrush(
+                            Windows.UI.Color.FromArgb(255, item.R, item.G, item.B))
                     }
-                    );
+                );
             }
         }
 

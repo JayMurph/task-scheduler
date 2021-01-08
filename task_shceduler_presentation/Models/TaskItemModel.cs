@@ -11,6 +11,7 @@ namespace task_scheduler_presentation{
         public string Desciption { get; set; }
         public DateTime StartTime { get; set; }
         public string FrequencyType { get; set; }
-        public DateTime NotificationFrequency { get; set; }
+        public TimeSpan NotificationFrequency { get; set; }
+        public Windows.UI.Xaml.Media.Brush Color { get; set; }
     }
 }

@@ -6,14 +6,16 @@ using task_scheduler_data_access_standard.Repositories;
 
 namespace task_scheduler_application.UseCases.ViewTasks {
     public class ViewTasksUseCaseFactory : IUseCaseFactory<ViewTasksUseCase> {
-        ITaskManager taskManager;
+        private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
+        private readonly IFrequencyRepositoryFactory frequencyRepositoryFactory;
 
-        public ViewTasksUseCaseFactory(ITaskManager taskManager) {
-            this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
+        public ViewTasksUseCaseFactory(ITaskItemRepositoryFactory taskItemRepositoryFactory, IFrequencyRepositoryFactory frequencyRepositoryFactory) {
+            this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
+            this.frequencyRepositoryFactory = frequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(frequencyRepositoryFactory));
         }
 
         public ViewTasksUseCase New() {
-            return new ViewTasksUseCase(taskManager);
+            return new ViewTasksUseCase(taskItemRepositoryFactory, frequencyRepositoryFactory);
         }
     }
 }

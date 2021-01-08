@@ -198,7 +198,10 @@ namespace task_scheduler_presentation
                 );
 
             var viewTasksUseCaseFactory =
-                new ViewTasksUseCaseFactory(taskManager);
+                new ViewTasksUseCaseFactory(
+                    taskItemRepositoryFactory,
+                    frequencyRepositoryFactory
+                );
 
             //Instantiate user controller, passing in required factories
             return new Controllers.UserController(

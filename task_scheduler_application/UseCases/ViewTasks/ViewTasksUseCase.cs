@@ -3,13 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 using task_scheduler_entities;
 using task_scheduler_data_access_standard.Repositories;
+using task_scheduler_data_access_standard.DataObjects;
 
 namespace task_scheduler_application.UseCases.ViewTasks {
     public class ViewTasksUseCase : IUseCase<ViewTasksInput, ViewTasksOutput> {
-        ITaskManager taskManager;
+        private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
+        private readonly IFrequencyRepositoryFactory frequencyRepositoryFactory;
 
-        public ViewTasksUseCase(ITaskManager taskManager) {
-            this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
+        public ViewTasksUseCase(
+            ITaskItemRepositoryFactory taskItemRepositoryFactory,
+            IFrequencyRepositoryFactory frequencyRepositoryFactory) {
+
+            this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
+            this.frequencyRepositoryFactory = frequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(frequencyRepositoryFactory));
         }
 
         public ViewTasksInput Input { set; private get; }
@@ -17,24 +23,33 @@ namespace task_scheduler_application.UseCases.ViewTasks {
         public ViewTasksOutput Output { get; private set; } = new ViewTasksOutput();
 
         public void Execute() {
-            //is there input data required for this?
-            //possibly in the future
+            ITaskItemRepository taskRepo = taskItemRepositoryFactory.New();
+            IFrequencyRepository freqRepo = frequencyRepositoryFactory.New();
 
-            var taskItems = taskManager.GetAll();
-
-            foreach(TaskItem task in taskItems) {
-                Output.TaskItems.Add(
+            //go through all taskItems in database then add them to the Output
+            //as TaskItemDTO's.
+            foreach(TaskItemDAL taskDAL in taskRepo.GetAll()) {
+                DTO.TaskItemDTO taskDTO =
                     new DTO.TaskItemDTO() {
-                        ID = task.ID,
-                        Title= task.Title,
-                        Description = task.Description,
-                        R = task.Colour.R,
-                        G = task.Colour.G,
-                        B = task.Colour.B,
-                        StartTime = task.StartTime
-                        //how to handle frequencies . . .
-                    }
-                );
+                        Id = taskDAL.Id,
+                        Title = taskDAL.Title,
+                        Description = taskDAL.Description,
+                        R = taskDAL.R,
+                        G = taskDAL.G,
+                        B = taskDAL.B,
+                        StartTime = taskDAL.StartTime,
+                        FrequencyType = taskDAL.FrequencyType
+                    };
+
+                //if the current taskItem has a custom frequency type 
+                //retrieve the custom time fromthe database
+                //TODO: abstract out "Custom"
+                if(taskDAL.FrequencyType == "Custom") {
+                    NotificationFrequencyDAL frequencyDAL = freqRepo.GetById(taskDAL.Id);
+                    taskDTO.CustomFrequency = frequencyDAL.Time;
+                }
+
+                Output.TaskItems.Add(taskDTO);
             }
         }
     }
