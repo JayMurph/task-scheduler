@@ -7,10 +7,10 @@ namespace task_scheduler_application.Frequencies {
         public static IDescriptiveNotificationFrequency New(string type, TimeSpan customPeriod = new TimeSpan()) {
             switch (type) {
                 //TODO : abstract away magic strings
-                case "Daily": return new DailyFrequency();
-                case "Every Other Day": return new EveryOtherDayFrequency();
-                case "Review": return new ReviewFrequency();
-                case "Custom": return new CustomFrequency(customPeriod);
+                case "Daily": return new DailyNotificationFrequency();
+                case "Every Other Day": return new BiDailyNotificationFrequency();
+                case "Review": return new ReviewNotificationFrequency();
+                case "Custom": return new CustomNotificationFrequency(customPeriod);
                 default: return null;
             }
         }

@@ -7,9 +7,9 @@ using task_scheduler_data_access_standard.Repositories;
 namespace task_scheduler_application.UseCases.ViewTasks {
     public class ViewTasksUseCaseFactory : IUseCaseFactory<ViewTasksUseCase> {
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
-        private readonly IFrequencyRepositoryFactory frequencyRepositoryFactory;
+        private readonly INotificationFrequencyRepositoryFactory frequencyRepositoryFactory;
 
-        public ViewTasksUseCaseFactory(ITaskItemRepositoryFactory taskItemRepositoryFactory, IFrequencyRepositoryFactory frequencyRepositoryFactory) {
+        public ViewTasksUseCaseFactory(ITaskItemRepositoryFactory taskItemRepositoryFactory, INotificationFrequencyRepositoryFactory frequencyRepositoryFactory) {
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
             this.frequencyRepositoryFactory = frequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(frequencyRepositoryFactory));
         }

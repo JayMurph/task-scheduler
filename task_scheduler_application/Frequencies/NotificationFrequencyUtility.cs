@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace task_scheduler_application.Frequencies {
-    public static class FrequencyUtility {
+    public static class NotificationFrequencyUtility {
         public static DateTime NextNotificationTime(DateTime taskStartTime, DateTime now, TimeSpan period) {
             TimeSpan periodAccum = period;
 

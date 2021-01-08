@@ -8,11 +8,11 @@ using task_scheduler_data_access_standard.DataObjects;
 namespace task_scheduler_application.UseCases.ViewTasks {
     public class ViewTasksUseCase : IUseCase<ViewTasksInput, ViewTasksOutput> {
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
-        private readonly IFrequencyRepositoryFactory frequencyRepositoryFactory;
+        private readonly INotificationFrequencyRepositoryFactory frequencyRepositoryFactory;
 
         public ViewTasksUseCase(
             ITaskItemRepositoryFactory taskItemRepositoryFactory,
-            IFrequencyRepositoryFactory frequencyRepositoryFactory) {
+            INotificationFrequencyRepositoryFactory frequencyRepositoryFactory) {
 
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
             this.frequencyRepositoryFactory = frequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(frequencyRepositoryFactory));
@@ -24,7 +24,7 @@ namespace task_scheduler_application.UseCases.ViewTasks {
 
         public void Execute() {
             ITaskItemRepository taskRepo = taskItemRepositoryFactory.New();
-            IFrequencyRepository freqRepo = frequencyRepositoryFactory.New();
+            INotificationFrequencyRepository freqRepo = frequencyRepositoryFactory.New();
 
             //go through all taskItems in database then add them to the Output
             //as TaskItemDTO's.

@@ -7,12 +7,12 @@ using System.Data.SQLite;
 using task_scheduler_data_access_standard.DataObjects;
 
 namespace task_scheduler_data_access_standard.Repositories {
-    public class FrequencyRepository : IFrequencyRepository {
+    public class NotificationFrequencyRepository : INotificationFrequencyRepository {
 
         private readonly DataTable table;
         private readonly SQLiteDataAdapter adapter;
 
-        public FrequencyRepository(string connStr) {
+        public NotificationFrequencyRepository(string connStr) {
             SQLiteConnection conn = new SQLiteConnection(connStr);
 
             adapter = new SQLiteDataAdapter("SELECT * FROM Frequencies", conn);

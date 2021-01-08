@@ -13,9 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task_scheduler_presentation
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task_scheduler_application", "task_scheduler_application\task_scheduler_application.csproj", "{2EEF9DB4-2AED-49B0-B0F9-71BFCAB1C302}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-data-access", "task-scheduler-data-access\task-scheduler-data-access.csproj", "{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-data-access-standard", "task-scheduler-data-access-standard\task-scheduler-data-access-standard.csproj", "{BD4FDED9-0992-41CF-9E31-9E22E5157F61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-data-access-standard", "task-scheduler-data-access-standard\task-scheduler-data-access-standard.csproj", "{BD4FDED9-0992-41CF-9E31-9E22E5157F61}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,26 +135,6 @@ Global
 		{2EEF9DB4-2AED-49B0-B0F9-71BFCAB1C302}.Release|x64.Build.0 = Release|Any CPU
 		{2EEF9DB4-2AED-49B0-B0F9-71BFCAB1C302}.Release|x86.ActiveCfg = Release|Any CPU
 		{2EEF9DB4-2AED-49B0-B0F9-71BFCAB1C302}.Release|x86.Build.0 = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|ARM.Build.0 = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|ARM64.ActiveCfg = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|ARM64.Build.0 = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|x64.Build.0 = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Debug|x86.Build.0 = Debug|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|ARM.ActiveCfg = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|ARM.Build.0 = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|ARM64.ActiveCfg = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|ARM64.Build.0 = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|x64.ActiveCfg = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|x64.Build.0 = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|x86.ActiveCfg = Release|Any CPU
-		{EF2A9364-B97F-481B-B6BC-7DA18A35CCB0}.Release|x86.Build.0 = Release|Any CPU
 		{BD4FDED9-0992-41CF-9E31-9E22E5157F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BD4FDED9-0992-41CF-9E31-9E22E5157F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD4FDED9-0992-41CF-9E31-9E22E5157F61}.Debug|ARM.ActiveCfg = Debug|Any CPU

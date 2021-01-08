@@ -140,8 +140,8 @@ namespace task_scheduler_presentation
             //CREATE REPOSITORY FACTORIES
             TaskItemRepositoryFactory taskItemRepositoryFactory = 
                 new TaskItemRepositoryFactory(connectionStr);
-            FrequencyRepositoryFactory frequencyRepositoryFactory =
-                new FrequencyRepositoryFactory(connectionStr);
+            NotificationFrequencyRepositoryFactory frequencyRepositoryFactory =
+                new NotificationFrequencyRepositoryFactory(connectionStr);
 
 
             //create domain dependencies
@@ -153,7 +153,7 @@ namespace task_scheduler_presentation
             //load database data into domain managers
 
             ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
-            IFrequencyRepository frequencyRepository = frequencyRepositoryFactory.New();
+            INotificationFrequencyRepository frequencyRepository = frequencyRepositoryFactory.New();
 
             //read in task items from database. Create domain taskItems from 
             //data and add items to taskManager

@@ -11,14 +11,14 @@ namespace task_scheduler_application.UseCases.CreateTask {
         private readonly INotificationManager notificationManager;
         private readonly IClock clock;
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
-        private readonly IFrequencyRepositoryFactory frequencyRepositoryFactory;
+        private readonly INotificationFrequencyRepositoryFactory frequencyRepositoryFactory;
 
         public CreateTaskUseCaseFactory(
             ITaskManager taskManager,
             INotificationManager notificationManager,
             IClock clock,
             ITaskItemRepositoryFactory taskItemRepositoryFactory, 
-            IFrequencyRepositoryFactory frequencyRepositoryFactory) {
+            INotificationFrequencyRepositoryFactory frequencyRepositoryFactory) {
 
             this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
             this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));

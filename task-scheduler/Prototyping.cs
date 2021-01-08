@@ -22,7 +22,7 @@ namespace task_scheduler {
         static void Main(string[] args) {
 
             TaskItemRepository taskRepo = new TaskItemRepository("Data Source=../../testdb.db");
-            FrequencyRepository freqRepo = new FrequencyRepository("Data Source=../../testdb.db");
+            NotificationFrequencyRepository freqRepo = new NotificationFrequencyRepository("Data Source=../../testdb.db");
 
             //TaskItemDAL newTaskDAL =
             //    new TaskItemDAL(

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace task_scheduler_application.Frequencies {
-    class ReviewFrequency : IDescriptiveNotificationFrequency {
+    class ReviewNotificationFrequency : IDescriptiveNotificationFrequency {
         private readonly TimeSpan startingPeriod = new TimeSpan(12, 0, 0);
 
         //TODO : abstract away magic string
@@ -20,7 +20,7 @@ namespace task_scheduler_application.Frequencies {
         }
 
         public TimeSpan TimeUntilNextNotification(DateTime taskStartTime, DateTime now) {
-            return FrequencyUtility.TimeUntilNextNotification(taskStartTime, now, NextNotificationTime);
+            return NotificationFrequencyUtility.TimeUntilNextNotification(taskStartTime, now, NextNotificationTime);
         }
     }
 }

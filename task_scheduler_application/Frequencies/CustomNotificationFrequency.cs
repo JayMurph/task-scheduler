@@ -2,23 +2,23 @@
 using task_scheduler_entities;
 
 namespace task_scheduler_application.Frequencies {
-    public class CustomFrequency : IDescriptiveNotificationFrequency{
+    public class CustomNotificationFrequency : IDescriptiveNotificationFrequency{
 
         private readonly TimeSpan period; 
 
         //TODO : abstract away magic string
         public string Description { get => "Custom"; }
 
-        public CustomFrequency(TimeSpan period) {
+        public CustomNotificationFrequency(TimeSpan period) {
             this.period = period;
         }
 
         public DateTime NextNotificationTime(DateTime taskStartTime, DateTime now) {
-            return FrequencyUtility.NextNotificationTime(taskStartTime, now, period);
+            return NotificationFrequencyUtility.NextNotificationTime(taskStartTime, now, period);
         }
 
         public TimeSpan TimeUntilNextNotification(DateTime taskStartTime, DateTime now) {
-            return FrequencyUtility.TimeUntilNextNotification(
+            return NotificationFrequencyUtility.TimeUntilNextNotification(
                 taskStartTime,
                 now,
                 NextNotificationTime
