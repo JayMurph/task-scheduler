@@ -31,7 +31,7 @@
         <TextBlock 
             Grid.Column="1" 
             Foreground="White" 
-            Text="{x:Bind TaskItem.Desciption}"
+            Text="{x:Bind TaskItem.Description}"
             TextTrimming="WordEllipsis"
             />
         <TextBlock 

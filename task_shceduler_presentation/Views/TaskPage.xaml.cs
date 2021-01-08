@@ -29,12 +29,26 @@ namespace task_scheduler_presentation.Views {
         //list of observable task models
         public TaskPage() {
             this.InitializeComponent();
-            Debug.WriteLine("TaskPage constructor");
 
             App.UserController.ViewTasks(this);
 
             //should this be done by the controller?????????????
             this.taskListView.ItemsSource = TaskItems;
+        }
+
+        public event EventHandler Closing;
+        private void OnClosing() {
+            Closing?.Invoke(this, null);
+        }
+
+        public void TaskCreatedCallback(object source, TaskItemModel taskItemModel) {
+            TaskItems.Add(taskItemModel);
+        }
+
+        protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
+            Debug.WriteLine("Navigating From");
+            OnClosing();
+            base.OnNavigatingFrom(e);
         }
     }
 }

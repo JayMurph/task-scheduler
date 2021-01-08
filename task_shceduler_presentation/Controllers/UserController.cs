@@ -13,17 +13,19 @@ using task_scheduler_presentation.Models;
 
 namespace task_scheduler_presentation.Controllers {
     public class UserController {
+
+        //factories for creating use-case objects
         private CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
         private ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
-
-        //protected event EventHandler<TaskItemModel> TaskCreated;
-        //protected void OnTaskCreated(TaskItemModel taskItem) {
-        //    TaskCreated?.Invoke(this, taskItem);
-        //}
 
         //TODO : abstract these strings out of the presentation layer
         public IEnumerable<string> FrequencyTypeStrings { 
             get => new List<string>(){ "Daily", "Every Other Day", "Review", "Custom"};
+        }
+
+        public event EventHandler<TaskItemModel> TaskCreated;
+        protected void OnTaskCreated(TaskItemModel taskItem) {
+            TaskCreated?.Invoke(this, taskItem);
         }
 
         public UserController(
@@ -46,7 +48,7 @@ namespace task_scheduler_presentation.Controllers {
 
                 TaskItemModel taskItemModel = new TaskItemModel() {
                     Title = taskItemDTO.Title,
-                    Desciption = taskItemDTO.Description,
+                    Description = taskItemDTO.Description,
                     FrequencyType = taskItemDTO.FrequencyType,
                     NotificationFrequency = taskItemDTO.CustomFrequency,
                     StartTime = taskItemDTO.StartTime,
@@ -56,6 +58,14 @@ namespace task_scheduler_presentation.Controllers {
 
                 view.TaskItems.Add(taskItemModel);
             }
+
+            //subscribe the view to our TaskCreated event
+            TaskCreated += view.TaskCreatedCallback;
+
+            //Subscribe to the views Closing event, so we can unsubscribe the 
+            //view from the TaskCreated event
+            view.Closing += (s, e) => { TaskCreated -= view.TaskCreatedCallback; };
+
         }
 
         public void CreateTask(IAddTaskView view) {
@@ -88,7 +98,22 @@ namespace task_scheduler_presentation.Controllers {
             CreateTaskOutput output = uc.Output;
 
             if (output.Success) {
-                //need to close the view from here somehow, and clear the values
+                //create task item model from taskItemDTO in successful use-case output
+                TaskItemModel newTaskItemModel = new TaskItemModel() {
+                    Title = output.TaskItemDTO.Title,
+                    Description = output.TaskItemDTO.Description,
+                    StartTime = output.TaskItemDTO.StartTime,
+                    FrequencyType = output.TaskItemDTO.FrequencyType,
+                    NotificationFrequency = output.TaskItemDTO.CustomFrequency,
+                    Color = new Windows.UI.Xaml.Media.SolidColorBrush(
+                        Windows.UI.Color.FromArgb(255, output.TaskItemDTO.R, output.TaskItemDTO.G, output.TaskItemDTO.B))
+                };
+
+                //fire the TaskCreated event
+                OnTaskCreated(newTaskItemModel);
+
+                //close the view and 
+                //TODO: Clear the views previous input values
                 view.CloseSelf();
             }
             else {

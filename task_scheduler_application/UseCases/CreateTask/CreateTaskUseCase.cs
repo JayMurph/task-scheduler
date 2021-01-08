@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using task_scheduler_entities;
 using task_scheduler_application.Frequencies;
+using task_scheduler_application.DTO;
 using task_scheduler_data_access_standard.Repositories;
 using task_scheduler_data_access_standard.DataObjects;
 
@@ -107,8 +108,22 @@ namespace task_scheduler_application.UseCases.CreateTask {
                     frequencyRepository.Save();
                 }
 
+                TaskItemDTO taskItemDTO = new TaskItemDTO() {
+                    Title = Input.Title,
+                    Description = Input.Description,
+                    StartTime = Input.StartTime,
+                    CustomFrequency = Input.CustomFrequency,
+                    FrequencyType = Input.FrequencyType,
+                    R = Input.R,
+                    G = Input.G,
+                    B = Input.B
+                };
+
                 //fill out output data and return
-                Output = new CreateTaskOutput() { Success = true };
+                Output = new CreateTaskOutput() { 
+                    Success = true ,
+                    TaskItemDTO = taskItemDTO
+                };
             }
             else {
                 //fill out output data and return

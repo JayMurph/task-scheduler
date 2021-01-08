@@ -8,7 +8,7 @@ using task_scheduler_application.DTO;
 namespace task_scheduler_presentation.Models{
     public class TaskItemModel {
         public string Title { get; set; }
-        public string Desciption { get; set; }
+        public string Description { get; set; }
         public DateTime StartTime { get; set; }
         public string FrequencyType { get; set; }
         public TimeSpan NotificationFrequency { get; set; }

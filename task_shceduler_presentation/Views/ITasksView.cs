@@ -8,6 +8,8 @@ using task_scheduler_presentation.Models;
 
 namespace task_scheduler_presentation.Views {
     public interface ITasksView {
-        ObservableCollection<TaskItemModel> TaskItems { get; set; } 
+        ObservableCollection<TaskItemModel> TaskItems { get; set; }
+        void TaskCreatedCallback(object source, TaskItemModel taskItemModel);
+        event EventHandler Closing;
     }
 }
