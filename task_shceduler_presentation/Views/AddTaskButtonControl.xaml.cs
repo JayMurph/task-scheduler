@@ -23,6 +23,8 @@ namespace task_scheduler_presentation.Views {
             InitializeComponent();
 
             addTaskControl.Owner = this;
+
+            
         }
 
         public string Title { get => addTaskControl.Title; set => addTaskControl.Title = value; }

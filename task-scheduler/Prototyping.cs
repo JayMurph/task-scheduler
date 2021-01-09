@@ -12,7 +12,6 @@ using task_scheduler_application.UseCases;
 using task_scheduler_application.Frequencies;
 using task_scheduler_data_access_standard.DataObjects;
 using task_scheduler_data_access_standard.Repositories;
-using System.Data.SQLite;
 using System.Data;
 
 namespace task_scheduler {
@@ -21,8 +20,30 @@ namespace task_scheduler {
 
         static void Main(string[] args) {
 
-            TaskItemRepository taskRepo = new TaskItemRepository("Data Source=../../testdb.db");
-            NotificationFrequencyRepository freqRepo = new NotificationFrequencyRepository("Data Source=../../testdb.db");
+            INotificationManager notificationManager = new BasicNotificationManager();
+            ITaskManager taskManager = new BasicTaskManager();
+            IClock clock = new RealTimeClock();
+
+            List<TaskItem> tasks = new List<TaskItem>();
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            for(int i = 0; i < 10; i++) {
+                tasks.Add(
+                    new TaskItem("test", "test", new Colour(255, 255, 255),
+                    DateTime.Now, notificationManager, new DailyNotificationFrequency(), clock)
+                );
+            }
+            timer.Stop();
+            Console.WriteLine(timer.ElapsedMilliseconds);
+
+            Console.WriteLine("Hello");
+            Console.ReadLine();
+            foreach(TaskItem t in tasks) {
+                t.Cancel();
+            }
+
+            //TaskItemRepository taskRepo = new TaskItemRepository("Data Source=../../testdb.db");
+            //NotificationFrequencyRepository freqRepo = new NotificationFrequencyRepository("Data Source=../../testdb.db");
 
             //TaskItemDAL newTaskDAL =
             //    new TaskItemDAL(
@@ -37,13 +58,13 @@ namespace task_scheduler {
             //        "Custom"
             //    );
             //GETTING Frequencies
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-            foreach(NotificationFrequencyDAL n in freqRepo.GetAll()) {
-                Console.WriteLine(n.TaskId + " " + n.Time);
-            }
-            timer.Stop();
-            Console.WriteLine(timer.ElapsedMilliseconds);
+            //Stopwatch timer = new Stopwatch();
+            //timer.Start();
+            //foreach(NotificationFrequencyDAL n in freqRepo.GetAll()) {
+            //    Console.WriteLine(n.TaskId + " " + n.Time);
+            //}
+            //timer.Stop();
+            //Console.WriteLine(timer.ElapsedMilliseconds);
 
             //ADDING taskItem
             //taskRepo.Add(newTaskDAL);

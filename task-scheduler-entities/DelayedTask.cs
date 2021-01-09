@@ -51,7 +51,7 @@ namespace task_scheduler_entities {
             this.dueTime = dueTime;
             this.clock = clock;
 
-            asyncTask = Task.Factory.StartNew(() => DelayedOperation(action));
+            asyncTask = Task.Factory.StartNew(() => DelayedOperation(action), TaskCreationOptions.LongRunning);
         }
 
         /// <summary>
