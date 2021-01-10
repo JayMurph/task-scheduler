@@ -23,13 +23,17 @@ namespace task_scheduler_data_access_standard.Repositories {
             taskAdapter.FillSchema(taskTable, SchemaType.Source);
             taskAdapter.Fill(taskTable);
 
+            frequencyAdapter = NewNotificationFrequencyAdapter(connStr);
+
             frequencyTable = new DataTable("Frequencies");
             frequencyAdapter.FillSchema(frequencyTable, SchemaType.Source);
             frequencyAdapter.Fill(frequencyTable);
 
         }
-        private static SQLiteDataAdapter NewNotificationFrequencyAdapter(string connStr) {
-            SQLiteConnection conn = new SQLiteConnection(connStr);
+
+        #region FrequencyAdapter Init Functions
+        private static SQLiteDataAdapter NewNotificationFrequencyAdapter(string connectionStr) {
+            SQLiteConnection conn = new SQLiteConnection(connectionStr);
 
             SQLiteDataAdapter frequencyAdapter = new SQLiteDataAdapter("SELECT * FROM Frequencies", conn);
 
@@ -120,32 +124,55 @@ namespace task_scheduler_data_access_standard.Repositories {
 
             return taskAdapter;
         }
+        #endregion
 
         public bool Add(TaskItemDAL taskItemDAL) {
 
             //create new row 
-            DataRow row = taskTable.NewRow();
+            DataRow taskRow = taskTable.NewRow();
+            DataRow frequencyRow = null;
 
+            //TODO : Get rid of magic string
+            if(taskItemDAL.FrequencyType == "Custom") {
+
+                frequencyRow = frequencyTable.NewRow();
+
+                try {
+                    frequencyRow.SetField("TaskId", taskItemDAL.NotificationFrequency.TaskId.ToString());
+                    frequencyRow.SetField("Time", taskItemDAL.NotificationFrequency.Time.ToString());
+                }
+                catch {
+                    taskRow.Delete();
+                    frequencyRow.Delete();
+                    return false;
+                }
+            }
 
             try {
                 //set all fields of row
-                row.SetField("Id", taskItemDAL.Id.ToString());
-                row.SetField("StartTime", taskItemDAL.StartTime.ToString());
-                row.SetField("Title", taskItemDAL.Title);
-                row.SetField("Description", taskItemDAL.Description);
-                row.SetField("LastNotificationTime", taskItemDAL.LastNotificationTime.ToString());
-                row.SetField("FrequencyType", taskItemDAL.FrequencyType);
-                row.SetField("R", taskItemDAL.R);
-                row.SetField("G", taskItemDAL.G);
-                row.SetField("B", taskItemDAL.B);
+                taskRow.SetField("Id", taskItemDAL.Id.ToString());
+                taskRow.SetField("StartTime", taskItemDAL.StartTime.ToString());
+                taskRow.SetField("Title", taskItemDAL.Title);
+                taskRow.SetField("Description", taskItemDAL.Description);
+                taskRow.SetField("LastNotificationTime", taskItemDAL.LastNotificationTime.ToString());
+                taskRow.SetField("FrequencyType", taskItemDAL.FrequencyType);
+                taskRow.SetField("R", taskItemDAL.R);
+                taskRow.SetField("G", taskItemDAL.G);
+                taskRow.SetField("B", taskItemDAL.B);
             }
             catch {
                 //delete the new row since data could not be added
-                row.Delete();
+                taskRow.Delete();
+                frequencyRow?.Delete();
                 return false;
             }
 
-            taskTable.Rows.Add(row);
+            taskTable.Rows.Add(taskRow);
+
+            if(frequencyRow != null) {
+                frequencyTable.Rows.Add(frequencyRow);
+            }
+
             return true;
         }
 
