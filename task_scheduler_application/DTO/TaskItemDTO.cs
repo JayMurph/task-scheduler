@@ -4,7 +4,7 @@ using System.Text;
 using task_scheduler_application.NotificationFrequencies;
 
 namespace task_scheduler_application.DTO {
-    public class TaskItemDTO {
+    public struct TaskItemDTO {
         public Guid Id { get; set; }
         public string Title{ get; set; }
         public string Description{ get; set; }
