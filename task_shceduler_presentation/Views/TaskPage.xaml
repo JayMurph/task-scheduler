@@ -9,10 +9,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
         <StackPanel>
             <TextBlock Text="TASKS" FontSize="100" HorizontalAlignment="Center"/>
-            <ListView x:Name="taskListView" HorizontalAlignment="Center">
+            <ListView x:Name="taskListView" 
+                      HorizontalAlignment="Center"
+                      Height="700"
+                      >
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:TaskItemModel">
                         <views:TaskItemControl />
@@ -20,5 +22,4 @@
                 </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
-    </Grid>
 </Page>
