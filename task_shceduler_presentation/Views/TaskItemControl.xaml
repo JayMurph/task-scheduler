@@ -7,48 +7,54 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="100"
-    d:DesignWidth="400">
+    >
     <UserControl.Resources>
         <custom:NotificationFrequencyConverter 
             x:Key="FrequencyFormatConverter"
             />
     </UserControl.Resources>
 
-    <Grid BorderBrush="{x:Bind TaskItem.Color}" BorderThickness="4">
+    <Grid 
+        BorderBrush="{x:Bind TaskItem.Color}" BorderThickness="4">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
-            <ColumnDefinition Width="120"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <TextBlock 
-            Grid.Column="0" 
-            Foreground="White" 
             Text="{x:Bind TaskItem.Title}"
+            Grid.Column="0" 
+            FontSize="20"
+            Foreground="White" 
+            HorizontalAlignment="Center"
             />
         <TextBlock 
+            Text="{x:Bind TaskItem.Description}"
             Grid.Column="1" 
             Foreground="White" 
-            Text="{x:Bind TaskItem.Description}"
             TextTrimming="WordEllipsis"
+            VerticalAlignment="Center"
             />
         <TextBlock 
+            Text="{x:Bind TaskItem.StartTime}"
             Grid.Column="2" 
             Foreground="White" 
-            Text="{x:Bind TaskItem.StartTime}"
+            VerticalAlignment="Center"
             />
         <TextBlock 
+            Text="{x:Bind TaskItem.FrequencyType}"
             Grid.Column="3" 
             Foreground="White" 
-            Text="{x:Bind TaskItem.FrequencyType}"
+            VerticalAlignment="Center"
             />
         <TextBlock 
-            Grid.Column="4" 
-            Foreground="White" 
             Text="{x:Bind TaskItem.NotificationFrequency,  
                 Converter={StaticResource FrequencyFormatConverter}}"
+            Grid.Column="4" 
+            Foreground="White" 
+            VerticalAlignment="Center"
             />
     </Grid>
 </UserControl>
