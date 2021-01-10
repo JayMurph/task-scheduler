@@ -70,7 +70,6 @@ namespace task_scheduler_entities {
             set {
                 startTime = value;
                 if (IsActive) {
-                    //notifier?.Cancel();
                     ScheduleNextNotification();
                 }
             }
