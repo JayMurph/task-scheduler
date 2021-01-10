@@ -48,23 +48,6 @@ namespace task_scheduler_presentation
         public App() {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
-
-            //create database filename path 
-            string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dataSource);
-            connectionStr = $"Data Source={dbPath};";
-
-            CreateDatabaseFileIfNecessary().Wait();//TODO go somewhere else
-
-            //Instantiate user controller, passing in required factories
-            UserController = CreateUserController();
-        }
-
-        private static async Task CreateDatabaseFileIfNecessary() {
-            //check if database file already exists
-            if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(dataSource) == null) {
-                //create and initialize database file if it does not exist
-                await ApplicationData.Current.LocalFolder.CreateFileAsync(dataSource);
-            }
         }
 
         /// <summary>
@@ -81,6 +64,18 @@ namespace task_scheduler_presentation
             // just ensure that the window is active
             if (rootFrame == null)
             {
+
+                //create database filename path 
+                string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dataSource);
+                connectionStr = $"Data Source={dbPath};";
+
+                //not good practice to use wait, but i don't want to make
+                //this startup code async
+                CreateDatabaseFileIfNecessary().Wait();//TODO go somewhere else
+
+                //Instantiate user controller, passing in required factories
+                UserController = CreateUserController();
+
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
@@ -109,6 +104,8 @@ namespace task_scheduler_presentation
             }
         }
 
+        #region BoilerPlate
+
         /// <summary>
         /// Invoked when Navigation to a certain page fails
         /// </summary>
@@ -133,6 +130,7 @@ namespace task_scheduler_presentation
             deferral.Complete();
         }
 
+        #endregion
 
         static private Controllers.UserController CreateUserController() {
             DataAccess.InitializeDatabase(connectionStr);
@@ -209,6 +207,14 @@ namespace task_scheduler_presentation
                 viewTasksUseCaseFactory
             );
         }
+        private static async Task CreateDatabaseFileIfNecessary() {
+            //check if database file already exists
+            if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(dataSource) == null) {
+                //create and initialize database file if it does not exist
+                await ApplicationData.Current.LocalFolder.CreateFileAsync(dataSource);
+            }
+        }
+
 
     }
 }
