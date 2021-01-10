@@ -23,6 +23,8 @@ namespace task_scheduler_data_access_standard.DataObjects {
         
         public string FrequencyType { get; set; }
 
+        public NotificationFrequencyDAL NotificationFrequency { get; set; }
+
         public TaskItemDAL() {
         }
 
