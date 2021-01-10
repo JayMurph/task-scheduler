@@ -14,7 +14,6 @@
     <Folder Include="UseCases\DismissNotification\" />
     <Folder Include="UseCases\EditTask\" />
     <Folder Include="UseCases\ViewTaskDetails\" />
-    <Folder Include="UseCases\ViewNotifications\" />
   </ItemGroup>
 
   <ItemGroup>
