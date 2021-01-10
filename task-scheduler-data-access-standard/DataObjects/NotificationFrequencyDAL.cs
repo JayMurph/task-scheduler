@@ -10,11 +10,9 @@ namespace task_scheduler_data_access_standard.DataObjects {
         }
 
         public NotificationFrequencyDAL(Guid taskId, TimeSpan time) {
-            TaskId = taskId;
             Time = time;
         }
 
-        public Guid TaskId{ get; set; }
 
         public TimeSpan Time{ get; set; }
     }
