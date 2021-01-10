@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using task_scheduler_entities;
 using task_scheduler_application;
+using task_scheduler_application.DTO;
 using task_scheduler_application.UseCases;
 using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_data_access_standard.DataObjects;
@@ -21,9 +22,19 @@ namespace task_scheduler {
         static volatile bool stopSignal = false;
 
         static void Main(string[] args) {
-            TaskItemProfiling();
+            //TaskItemProfiling();
 
             //SpinWaitTesting();
+
+            TaskItemDTO taskA = new TaskItemDTO();
+            TaskItemDTO taskB = taskA;
+
+            taskA.Title = "1";
+            taskB.Title = "2";
+
+            Console.WriteLine($"taskA : {taskA.Title}");
+            Console.WriteLine($"taskB : {taskB.Title}");
+
 
 
             //TaskItemRepository taskRepo = new TaskItemRepository("Data Source=../../testdb.db");
