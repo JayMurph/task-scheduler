@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Collections.Generic;
 using System.Text;
 
@@ -48,10 +49,20 @@ namespace task_scheduler_entities {
         /// Provides the current time for the DelayedTask
         /// </param>
         public DelayedTask(Action action, DateTime dueTime, IClock clock) {
+
             this.dueTime = dueTime;
             this.clock = clock;
 
-            asyncTask = Task.Factory.StartNew(() => DelayedOperation(action), TaskCreationOptions.LongRunning);
+            asyncTask = Task.Factory.StartNew(
+                () => {
+                    //wait until dueTime is reached or stopSignal is activated
+                    SpinWait.SpinUntil(() => { return (clock.Now >= dueTime || stopSignal); });
+
+                    //perform the given action if we did not receive the stop signal
+                    if (!stopSignal) { action(); }
+                }, 
+                TaskCreationOptions.LongRunning
+            );
         }
 
         /// <summary>
@@ -70,23 +81,5 @@ namespace task_scheduler_entities {
                 asyncTask.Dispose();
             }
         }
-
-        /// <summary>
-        /// Performs the action provided once the point in time set as the DelayedTask's
-        /// dueTime is reached. Can be exited early by calling the DelayedTask's Cancel method
-        /// </summary>
-        /// <param name="action">
-        /// A method to call after the DelayedTask's dueTime is reached.
-        /// </param>
-        protected virtual void DelayedOperation(Action action) {
-            while(clock.Now < dueTime) {
-                if (stopSignal) {
-                    return;
-                }
-            }
-
-            action();
-        }
-
     }
 }

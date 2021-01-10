@@ -18,29 +18,13 @@ namespace task_scheduler {
 
     class Prototyping {
 
+        static volatile bool stopSignal = false;
+
         static void Main(string[] args) {
+            TaskItemProfiling();
 
-            INotificationManager notificationManager = new BasicNotificationManager();
-            ITaskManager taskManager = new BasicTaskManager();
-            IClock clock = new RealTimeClock();
+            //SpinWaitTesting();
 
-            List<TaskItem> tasks = new List<TaskItem>();
-            Stopwatch timer = new Stopwatch();
-            timer.Start();
-            for(int i = 0; i < 10; i++) {
-                tasks.Add(
-                    new TaskItem("test", "test", new Colour(255, 255, 255),
-                    DateTime.Now, notificationManager, new DailyNotificationFrequency(), clock)
-                );
-            }
-            timer.Stop();
-            Console.WriteLine(timer.ElapsedMilliseconds);
-
-            Console.WriteLine("Hello");
-            Console.ReadLine();
-            foreach(TaskItem t in tasks) {
-                t.Cancel();
-            }
 
             //TaskItemRepository taskRepo = new TaskItemRepository("Data Source=../../testdb.db");
             //NotificationFrequencyRepository freqRepo = new NotificationFrequencyRepository("Data Source=../../testdb.db");
@@ -88,6 +72,45 @@ namespace task_scheduler {
             //    repo.Delete(task);
             //}
             //repo.Save();
+        }
+
+        private static void SpinWaitTesting() {
+            Task task = Task.Factory.StartNew(() => {
+                SpinWait.SpinUntil(() => { return stopSignal; });
+                Console.WriteLine("Done");
+            });
+
+            Thread.Sleep(1000);
+            Console.WriteLine("Stopping");
+            stopSignal = true;
+            Thread.Sleep(1000);
+        }
+
+        private static void TaskItemProfiling() {
+            INotificationManager notificationManager = new BasicNotificationManager();
+            ITaskManager taskManager = new BasicTaskManager();
+            IClock clock = new RealTimeClock();
+
+            List<TaskItem> tasks = new List<TaskItem>();
+            Stopwatch timer = new Stopwatch();
+            timer.Start();
+            for (int i = 0; i < 50; i++) {
+                tasks.Add(
+                    new TaskItem("test", "test", new Colour(255, 255, 255),
+                    DateTime.Now, notificationManager, new DailyNotificationFrequency(), clock)
+                );
+            }
+            timer.Stop();
+            Console.WriteLine(timer.ElapsedMilliseconds);
+
+            Console.WriteLine("Hello");
+            Console.ReadLine();
+            timer.Restart();
+            foreach (TaskItem t in tasks) {
+                t.Cancel();
+            }
+            timer.Stop();
+            Console.WriteLine(timer.ElapsedMilliseconds);
         }
     }
 }
