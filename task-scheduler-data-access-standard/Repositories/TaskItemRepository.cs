@@ -181,14 +181,24 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public bool Delete(object id) {
+
             //find the item to delete
-            var findQuery = from row in taskTable.AsEnumerable()
+            var findTaskQuery = from row in taskTable.AsEnumerable()
                             where row.Field<string>("Id") == id.ToString()
                             select row;
 
+            var findFrequencyQuery = from row in frequencyTable.AsEnumerable()
+                                     where row.Field<string>("TaskId") == id.ToString()
+                                     select row;
+
             //ensure we only found 1 item
-            if(findQuery.Count() == 1) {
-                findQuery.First().Delete();
+            if(findTaskQuery.Count() == 1) {
+
+                if(findFrequencyQuery.Count() == 1) {
+                    findFrequencyQuery.First().Delete();
+                }
+
+                findTaskQuery.First().Delete();
             }
             else {
                 return false;
