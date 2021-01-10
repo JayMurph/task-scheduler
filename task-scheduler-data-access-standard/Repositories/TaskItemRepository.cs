@@ -10,16 +10,62 @@ using task_scheduler_data_access_standard.DataObjects;
 namespace task_scheduler_data_access_standard.Repositories {
     public class TaskItemRepository : ITaskItemRepository{
 
-        private readonly DataTable table;
-        private readonly SQLiteDataAdapter adapter;
+        private readonly DataTable taskTable;
+        private readonly SQLiteDataAdapter taskAdapter;
 
+        private readonly DataTable frequencyTable;
+        private readonly SQLiteDataAdapter frequencyAdapter;
         public TaskItemRepository(string connStr) {
 
+            taskAdapter = NewTaskItemAdapter(connStr);
+
+            taskTable = new DataTable("Tasks");
+            taskAdapter.FillSchema(taskTable, SchemaType.Source);
+            taskAdapter.Fill(taskTable);
+
+            frequencyTable = new DataTable("Frequencies");
+            frequencyAdapter.FillSchema(frequencyTable, SchemaType.Source);
+            frequencyAdapter.Fill(frequencyTable);
+
+        }
+        private static SQLiteDataAdapter NewNotificationFrequencyAdapter(string connStr) {
             SQLiteConnection conn = new SQLiteConnection(connStr);
 
-            adapter = new SQLiteDataAdapter("SELECT * FROM Tasks", conn);
+            SQLiteDataAdapter frequencyAdapter = new SQLiteDataAdapter("SELECT * FROM Frequencies", conn);
 
-            adapter.InsertCommand =
+            frequencyAdapter.InsertCommand = new SQLiteCommand(
+                "INSERT INTO Frequencies VALUES(" +
+                "@taskId, " +
+                "@time)",
+                conn
+            );
+
+            frequencyAdapter.InsertCommand.Parameters.Add("@taskId", DbType.String, 1, "TaskId");
+            frequencyAdapter.InsertCommand.Parameters.Add("@time", DbType.String, 1, "Time");
+
+            frequencyAdapter.UpdateCommand = new SQLiteCommand(
+                "UPDATE Frequencies SET " +
+                "Time=@time " + 
+                "WHERE TaskId=@taskId",
+                conn
+            );
+
+            frequencyAdapter.UpdateCommand.Parameters.Add("@time", DbType.String, 1, "Time");
+            frequencyAdapter.UpdateCommand.Parameters.Add("@taskId", DbType.String, 1, "TaskId");
+
+            frequencyAdapter.DeleteCommand = 
+                new SQLiteCommand("DELETE FROM Frequencies WHERE TaskId=@taskId", conn);
+            frequencyAdapter.DeleteCommand.Parameters.Add("@taskId", DbType.String, 1, "TaskId");
+
+            return frequencyAdapter;
+        }
+
+        private static SQLiteDataAdapter NewTaskItemAdapter(string connectionStr) {
+            SQLiteConnection conn = new SQLiteConnection(connectionStr);
+
+            SQLiteDataAdapter taskAdapter = new SQLiteDataAdapter("SELECT * FROM Tasks", conn);
+
+            taskAdapter.InsertCommand =
                 new SQLiteCommand(
                     "INSERT INTO Tasks VALUES(" +
                     "@id, " +
@@ -34,20 +80,20 @@ namespace task_scheduler_data_access_standard.Repositories {
                     conn
                 );
 
-            adapter.InsertCommand.Parameters.Add("@id", DbType.String, 1, "Id");
-            adapter.InsertCommand.Parameters.Add("@startTime", DbType.String, 1, "StartTime");
-            adapter.InsertCommand.Parameters.Add("@title", DbType.String, 1, "Title");
-            adapter.InsertCommand.Parameters.Add("@description", DbType.String, 1, "Description");
-            adapter.InsertCommand.Parameters.Add("@lastNotificationTime", DbType.String, 1, "LastNotificationTime");
-            adapter.InsertCommand.Parameters.Add("@frequencyType", DbType.String, 1, "FrequencyType");
-            adapter.InsertCommand.Parameters.Add("@r", DbType.Int64, 1, "R");
-            adapter.InsertCommand.Parameters.Add("@g", DbType.Int64, 1, "G");
-            adapter.InsertCommand.Parameters.Add("@b", DbType.Int64, 1, "B");
+            taskAdapter.InsertCommand.Parameters.Add("@id", DbType.String, 1, "Id");
+            taskAdapter.InsertCommand.Parameters.Add("@startTime", DbType.String, 1, "StartTime");
+            taskAdapter.InsertCommand.Parameters.Add("@title", DbType.String, 1, "Title");
+            taskAdapter.InsertCommand.Parameters.Add("@description", DbType.String, 1, "Description");
+            taskAdapter.InsertCommand.Parameters.Add("@lastNotificationTime", DbType.String, 1, "LastNotificationTime");
+            taskAdapter.InsertCommand.Parameters.Add("@frequencyType", DbType.String, 1, "FrequencyType");
+            taskAdapter.InsertCommand.Parameters.Add("@r", DbType.Int64, 1, "R");
+            taskAdapter.InsertCommand.Parameters.Add("@g", DbType.Int64, 1, "G");
+            taskAdapter.InsertCommand.Parameters.Add("@b", DbType.Int64, 1, "B");
 
-            adapter.DeleteCommand = new SQLiteCommand("DELETE FROM Tasks WHERE Id=@id", conn);
-            adapter.DeleteCommand.Parameters.Add("@id", DbType.String, 1, "Id");
+            taskAdapter.DeleteCommand = new SQLiteCommand("DELETE FROM Tasks WHERE Id=@id", conn);
+            taskAdapter.DeleteCommand.Parameters.Add("@id", DbType.String, 1, "Id");
 
-            adapter.UpdateCommand =
+            taskAdapter.UpdateCommand =
                 new SQLiteCommand(
                     "UPDATE Tasks SET " +
                     "StartTime=@startTime, " +
@@ -62,27 +108,23 @@ namespace task_scheduler_data_access_standard.Repositories {
                     conn
                 );
 
-            adapter.UpdateCommand.Parameters.Add("@id", DbType.String, 1, "Id");
-            adapter.UpdateCommand.Parameters.Add("@startTime", DbType.String, 1, "StartTime");
-            adapter.UpdateCommand.Parameters.Add("@title", DbType.String, 1, "Title");
-            adapter.UpdateCommand.Parameters.Add("@description", DbType.String, 1, "Description");
-            adapter.UpdateCommand.Parameters.Add("@lastNotificationTime", DbType.String, 1, "LastNotificationTime");
-            adapter.UpdateCommand.Parameters.Add("@frequencyType", DbType.String, 1, "FrequencyType");
-            adapter.UpdateCommand.Parameters.Add("@r", DbType.Int64, 1, "R");
-            adapter.UpdateCommand.Parameters.Add("@g", DbType.Int64, 1, "G");
-            adapter.UpdateCommand.Parameters.Add("@b", DbType.Int64, 1, "B");
+            taskAdapter.UpdateCommand.Parameters.Add("@id", DbType.String, 1, "Id");
+            taskAdapter.UpdateCommand.Parameters.Add("@startTime", DbType.String, 1, "StartTime");
+            taskAdapter.UpdateCommand.Parameters.Add("@title", DbType.String, 1, "Title");
+            taskAdapter.UpdateCommand.Parameters.Add("@description", DbType.String, 1, "Description");
+            taskAdapter.UpdateCommand.Parameters.Add("@lastNotificationTime", DbType.String, 1, "LastNotificationTime");
+            taskAdapter.UpdateCommand.Parameters.Add("@frequencyType", DbType.String, 1, "FrequencyType");
+            taskAdapter.UpdateCommand.Parameters.Add("@r", DbType.Int64, 1, "R");
+            taskAdapter.UpdateCommand.Parameters.Add("@g", DbType.Int64, 1, "G");
+            taskAdapter.UpdateCommand.Parameters.Add("@b", DbType.Int64, 1, "B");
 
-
-            table = new DataTable("Tasks");
-
-            adapter.FillSchema(table, SchemaType.Source);
-            adapter.Fill(table);
+            return taskAdapter;
         }
 
         public bool Add(TaskItemDAL taskItemDAL) {
 
             //create new row 
-            DataRow row = table.NewRow();
+            DataRow row = taskTable.NewRow();
 
 
             try {
@@ -103,7 +145,7 @@ namespace task_scheduler_data_access_standard.Repositories {
                 return false;
             }
 
-            table.Rows.Add(row);
+            taskTable.Rows.Add(row);
             return true;
         }
 
@@ -113,7 +155,7 @@ namespace task_scheduler_data_access_standard.Repositories {
 
         public bool Delete(object id) {
             //find the item to delete
-            var findQuery = from row in table.AsEnumerable()
+            var findQuery = from row in taskTable.AsEnumerable()
                             where row.Field<string>("Id") == id.ToString()
                             select row;
 
@@ -132,7 +174,7 @@ namespace task_scheduler_data_access_standard.Repositories {
 
             List<TaskItemDAL> taskItems = new List<TaskItemDAL>();
 
-            foreach(DataRow row in table.AsEnumerable()) {
+            foreach(DataRow row in taskTable.AsEnumerable()) {
                 taskItems.Add(DataToTaskItemDAL(row)); 
             }
 
@@ -140,7 +182,7 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public TaskItemDAL GetById(object id) {
-            var findQuery = from row in table.AsEnumerable()
+            var findQuery = from row in taskTable.AsEnumerable()
                             where row.Field<string>("Id") == id.ToString()
                             select row;
 
@@ -153,7 +195,7 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public bool Update(TaskItemDAL taskItemDAL) {
-            var findQuery = from row in table.AsEnumerable()
+            var findQuery = from row in taskTable.AsEnumerable()
                             where row.Field<string>("Id") == taskItemDAL.Id.ToString()
                             select row;
 
@@ -185,11 +227,11 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public void Dispose() {
-            adapter?.Dispose();
+            taskAdapter?.Dispose();
         }
 
         public void Save() {
-            adapter.Update(table);
+            taskAdapter.Update(taskTable);
         }
 
         private static TaskItemDAL DataToTaskItemDAL(DataRow row) {

@@ -9,46 +9,46 @@ using task_scheduler_data_access_standard.DataObjects;
 namespace task_scheduler_data_access_standard.Repositories {
     public class NotificationFrequencyRepository : INotificationFrequencyRepository {
 
-        private readonly DataTable table;
-        private readonly SQLiteDataAdapter adapter;
+        private readonly DataTable frequencyTable;
+        private readonly SQLiteDataAdapter frequencyAdapter;
 
         public NotificationFrequencyRepository(string connStr) {
             SQLiteConnection conn = new SQLiteConnection(connStr);
 
-            adapter = new SQLiteDataAdapter("SELECT * FROM Frequencies", conn);
+            frequencyAdapter = new SQLiteDataAdapter("SELECT * FROM Frequencies", conn);
 
-            adapter.InsertCommand = new SQLiteCommand(
+            frequencyAdapter.InsertCommand = new SQLiteCommand(
                 "INSERT INTO Frequencies VALUES(" +
                 "@taskId, " +
                 "@time)",
                 conn
             );
 
-            adapter.InsertCommand.Parameters.Add("@taskId", DbType.String, 1, "TaskId");
-            adapter.InsertCommand.Parameters.Add("@time", DbType.String, 1, "Time");
+            frequencyAdapter.InsertCommand.Parameters.Add("@taskId", DbType.String, 1, "TaskId");
+            frequencyAdapter.InsertCommand.Parameters.Add("@time", DbType.String, 1, "Time");
 
-            adapter.UpdateCommand = new SQLiteCommand(
+            frequencyAdapter.UpdateCommand = new SQLiteCommand(
                 "UPDATE Frequencies SET " +
                 "Time=@time " + 
                 "WHERE TaskId=@taskId",
                 conn
             );
 
-            adapter.UpdateCommand.Parameters.Add("@time", DbType.String, 1, "Time");
-            adapter.UpdateCommand.Parameters.Add("@taskId", DbType.String, 1, "TaskId");
+            frequencyAdapter.UpdateCommand.Parameters.Add("@time", DbType.String, 1, "Time");
+            frequencyAdapter.UpdateCommand.Parameters.Add("@taskId", DbType.String, 1, "TaskId");
 
-            adapter.DeleteCommand = 
+            frequencyAdapter.DeleteCommand = 
                 new SQLiteCommand("DELETE FROM Frequencies WHERE TaskId=@taskId", conn);
-            adapter.DeleteCommand.Parameters.Add("@taskId", DbType.String, 1, "TaskId");
+            frequencyAdapter.DeleteCommand.Parameters.Add("@taskId", DbType.String, 1, "TaskId");
 
-            table = new DataTable("Frequencies");
+            frequencyTable = new DataTable("Frequencies");
 
-            adapter.FillSchema(table, SchemaType.Source);
-            adapter.Fill(table);
+            frequencyAdapter.FillSchema(frequencyTable, SchemaType.Source);
+            frequencyAdapter.Fill(frequencyTable);
         }
 
         public bool Add(NotificationFrequencyDAL frequencyDAL) {
-            DataRow row = table.NewRow();
+            DataRow row = frequencyTable.NewRow();
 
             try {
                 row.SetField("TaskId", frequencyDAL.TaskId);
@@ -59,7 +59,7 @@ namespace task_scheduler_data_access_standard.Repositories {
                 return false;
             }
 
-            table.Rows.Add(row);
+            frequencyTable.Rows.Add(row);
             return true;
         }
 
@@ -68,7 +68,7 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public bool Delete(object taskId) {
-            var findQuery = from row in table.AsEnumerable()
+            var findQuery = from row in frequencyTable.AsEnumerable()
                             where row.Field<string>("TaskId") == taskId.ToString()
                             select row;
 
@@ -87,7 +87,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             List<NotificationFrequencyDAL> frequencyItems =
                 new List<NotificationFrequencyDAL>();
 
-            foreach(DataRow row in table.AsEnumerable()) {
+            foreach(DataRow row in frequencyTable.AsEnumerable()) {
                 frequencyItems.Add(DataToNotificationFrequencyDAL(row));
             }
 
@@ -95,7 +95,7 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public NotificationFrequencyDAL GetById(object taskId) {
-            var findQuery = from row in table.AsEnumerable()
+            var findQuery = from row in frequencyTable.AsEnumerable()
                             where row.Field<string>("TaskId") == taskId.ToString()
                             select row;
 
@@ -108,11 +108,11 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public void Save() {
-            adapter.Update(table);
+            frequencyAdapter.Update(frequencyTable);
         }
 
         public bool Update(NotificationFrequencyDAL frequencyDAL) {
-            var findQuery = from row in table.AsEnumerable()
+            var findQuery = from row in frequencyTable.AsEnumerable()
                             where row.Field<string>("TaskId") == frequencyDAL.TaskId.ToString()
                             select row;
 
@@ -144,7 +144,7 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public void Dispose() {
-            adapter?.Dispose();
+            frequencyAdapter?.Dispose();
         }
     }
 }
