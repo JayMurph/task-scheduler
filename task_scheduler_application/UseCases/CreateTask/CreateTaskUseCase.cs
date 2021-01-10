@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using task_scheduler_entities;
-using task_scheduler_application.Frequencies;
+using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.DTO;
 using task_scheduler_data_access_standard.Repositories;
 using task_scheduler_data_access_standard.DataObjects;

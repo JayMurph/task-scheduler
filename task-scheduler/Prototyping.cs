@@ -9,7 +9,7 @@ using System.Threading;
 using task_scheduler_entities;
 using task_scheduler_application;
 using task_scheduler_application.UseCases;
-using task_scheduler_application.Frequencies;
+using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_data_access_standard.DataObjects;
 using task_scheduler_data_access_standard.Repositories;
 using System.Data;

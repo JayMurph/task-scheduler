@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using task_scheduler_entities;
-using task_scheduler_application.Frequencies;
+using task_scheduler_application.NotificationFrequencies;
 
 namespace task_scheduler_application.UseCases.CreateTask {
     public class CreateTaskInput {

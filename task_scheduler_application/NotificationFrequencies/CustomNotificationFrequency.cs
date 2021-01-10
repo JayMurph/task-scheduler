@@ -1,13 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using task_scheduler_entities;
 
-namespace task_scheduler_application.Frequencies {
-    public class DailyNotificationFrequency : IDescriptiveNotificationFrequency {
-        private readonly TimeSpan period = new TimeSpan(1, 0, 0, 0);
+namespace task_scheduler_application.NotificationFrequencies {
+    public class CustomNotificationFrequency : IDescriptiveNotificationFrequency{
+
+        private readonly TimeSpan period; 
 
         //TODO : abstract away magic string
-        public string Description { get => "Daily"; }
+        public string Description { get => "Custom"; }
+
+        public CustomNotificationFrequency(TimeSpan period) {
+            this.period = period;
+        }
 
         public DateTime NextNotificationTime(DateTime taskStartTime, DateTime now) {
             return NotificationFrequencyUtility.NextNotificationTime(taskStartTime, now, period);

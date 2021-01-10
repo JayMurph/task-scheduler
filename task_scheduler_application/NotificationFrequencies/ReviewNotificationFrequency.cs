@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace task_scheduler_application.Frequencies {
+namespace task_scheduler_application.NotificationFrequencies {
     class ReviewNotificationFrequency : IDescriptiveNotificationFrequency {
         private readonly TimeSpan startingPeriod = new TimeSpan(12, 0, 0);
 

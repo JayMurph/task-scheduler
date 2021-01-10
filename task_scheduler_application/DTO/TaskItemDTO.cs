@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using task_scheduler_application.Frequencies;
+using task_scheduler_application.NotificationFrequencies;
 
 namespace task_scheduler_application.DTO {
     public class TaskItemDTO {

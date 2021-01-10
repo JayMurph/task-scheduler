@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace task_scheduler_application.Frequencies {
+namespace task_scheduler_application.NotificationFrequencies {
     public static class NotificationFrequencyFactory {
         public static IDescriptiveNotificationFrequency New(string type, TimeSpan customPeriod = new TimeSpan()) {
             switch (type) {

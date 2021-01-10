@@ -22,7 +22,7 @@ using task_scheduler_entities;
 
 using task_scheduler_application;
 using task_scheduler_application.DTO;
-using task_scheduler_application.Frequencies;
+using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
 
