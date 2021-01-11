@@ -7,7 +7,7 @@ namespace task_scheduler_entities {
     /// Can be scheduled to produce notifications at pre-determined intervals.
     /// </summary>
     public class TaskItem : ITaskItem{
-        
+        #region Fields 
         /// <summary>
         /// Used to determine times at which the TaskItem should produce a Notification
         /// </summary>
@@ -33,11 +33,14 @@ namespace task_scheduler_entities {
         /// INotificationManager as an asynchronous operation after a set period of time
         /// </summary>
         private DelayedTask notifier;
+        #endregion
 
+        #region Properties
         /// <summary>
         /// The time at which the TaskItem is scheduled to begin producing notifications 
         /// </summary>
         private DateTime startTime;
+        private bool disposedValue;
 
         /// <summary>
         /// Title of the TaskItem
@@ -85,6 +88,9 @@ namespace task_scheduler_entities {
         /// </summary>
         public bool IsActive { get; private set; } = false;
 
+        #endregion
+
+        #region Constructors
         /// <summary>
         /// Creates a new TaskItem, assigns the incoming parameters to the appropriate properties,
         /// and makes the TaskItem active
@@ -168,6 +174,7 @@ namespace task_scheduler_entities {
                 Guid.NewGuid()
                 ) {
         }
+        #endregion
 
         /// <summary>
         /// Assigns an INotificationFrequency to the TaskItem, for it to use to determine
@@ -196,6 +203,49 @@ namespace task_scheduler_entities {
                 throw new InvalidOperationException($"{nameof(TaskItem)} is not longer active");
             }
         }
+
+        /// <summary>
+        /// Stops the TaskItem from producing Notifications, making it inactive. The TaskItem
+        /// cannot be restarted once this method is called.
+        /// </summary>
+        public void Cancel() {
+            notifier.Cancel();
+            IsActive = false;
+        }
+
+        /// <summary>
+        /// Disposes of the TaskItem's resources and makes it Inactive
+        /// </summary>
+        public void Dispose() {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (!disposedValue) {
+                if (disposing) {
+                    // TODO: dispose managed state (managed objects)
+                    //if the TaskItem is active, then cancel it
+                    if (IsActive) {
+                        Cancel();
+                    }
+                    notifier.Dispose();
+                    notifier = null;
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~TaskItem()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
 
         /// <summary>
         /// Indicates if the TaskItem is overdue for producing a Notification.
@@ -239,29 +289,5 @@ namespace task_scheduler_entities {
             manager.Add(notification);
         }
 
-        /// <summary>
-        /// Stops the TaskItem from producing Notifications, making it inactive. The TaskItem
-        /// cannot be restarted once this method is called.
-        /// </summary>
-        public void Cancel() {
-            notifier?.Cancel();
-            IsActive = false;
-        }
-
-        /// <summary>
-        /// Disposes of the TaskItem's resources and makes it Inactive
-        /// </summary>
-        public void Dispose() {
-            notifier?.Cancel();
-            notifier = null;
-            IsActive = false;
-        }
-
-        /// <summary>
-        /// Disposes of the TaskItem's resources when it is garbage collected
-        /// </summary>
-        ~TaskItem() {
-            Dispose();
-        }
     }
 }
