@@ -47,6 +47,22 @@ namespace task_scheduler_data_access_standard {
                         command.ExecuteNonQuery();
                         conn.Close();
                     }
+
+                    //create Notifications table
+                    using (var command = new System.Data.SQLite.SQLiteCommand()) {
+                        command.Connection = conn;
+                        command.CommandText =
+                            "CREATE TABLE IF NOT EXISTS \"Notifications\"( " +
+                                "\"TaskId\"    TEXT NOT NULL, " +
+                                "\"Time\"  TEXT NOT NULL, " +
+                                "FOREIGN KEY(\"TaskId\") REFERENCES \"Tasks\"(\"Id\"), " +
+                                "PRIMARY KEY(\"TaskId\", \"Time\") " +
+                            ")";
+
+                        conn.Open();
+                        command.ExecuteNonQuery();
+                        conn.Close();
+                    }
                 }
             }
             catch {
