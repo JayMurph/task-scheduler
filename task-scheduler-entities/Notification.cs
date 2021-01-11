@@ -8,6 +8,7 @@ namespace task_scheduler_entities {
     /// </summary>
     public class Notification {
 
+        #region Properties
         /// <summary>
         /// Unique identifier for the Notification
         /// </summary>
@@ -27,7 +28,9 @@ namespace task_scheduler_entities {
         /// The time at which the Notification was produced
         /// </summary>
         public DateTime Time { get; private set; }
+        #endregion
 
+        #region Constructors
         /// <summary>
         /// Creates a new Notification. Assigns the incoming parameter's to the appropriate
         /// properties
@@ -64,5 +67,6 @@ namespace task_scheduler_entities {
         public Notification(ITaskItem producer, DateTime timeOfNotification) 
             :this(Guid.NewGuid(), producer, timeOfNotification){
         }
+        #endregion
     }
 }
