@@ -8,7 +8,7 @@ namespace task_scheduler_entities {
     /// <summary>
     /// Performs an asynchronous operation at a pre-determined point in time.
     /// </summary>
-    public class DelayedTask {
+    public class DelayedTask : IDisposable{
         /// <summary>
         /// The time at which the DelayedTask should execute its assigned action
         /// </summary>
@@ -28,6 +28,8 @@ namespace task_scheduler_entities {
         /// Flag for stopping the DelayedTasks assigned action from executing
         /// </summary>
         private volatile bool stopSignal = false;
+
+        private bool disposedValue;
 
 
         /// <summary>
@@ -72,10 +74,38 @@ namespace task_scheduler_entities {
                 }
                 catch (Exception ex){
                 }
-                finally {
+            }
+        }
+
+        protected virtual void Dispose(bool disposing) {
+            if (!disposedValue) {
+
+                //cancel the DelayedTask if it is active
+                if (!stopSignal) {
+                    Cancel();
+                }
+
+                if (disposing) {
                     asyncTask.Dispose();
                 }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
             }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~DelayedTask()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose() {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
