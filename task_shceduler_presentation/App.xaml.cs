@@ -160,16 +160,16 @@ namespace task_scheduler_presentation
                 INotificationFrequency notificationFrequency = null;
 
                 //TODO abstract out magic string
-                if(task.FrequencyType == "Custom") {
+                if(task.NotificationFrequencyType == "Custom") {
 
                     NotificationFrequencyDAL notificationFrequencyDAL = 
                         frequencyRepository.GetById(task.Id);
 
                     notificationFrequency = 
-                        NotificationFrequencyFactory.New(task.FrequencyType, notificationFrequencyDAL.Time);
+                        NotificationFrequencyFactory.New(task.NotificationFrequencyType, notificationFrequencyDAL.Time);
                 }
                 else {
-                    notificationFrequency = NotificationFrequencyFactory.New(task.FrequencyType);
+                    notificationFrequency = NotificationFrequencyFactory.New(task.NotificationFrequencyType);
                 }
 
                 taskManager.Add(

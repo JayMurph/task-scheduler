@@ -38,13 +38,13 @@ namespace task_scheduler_application.UseCases.ViewTasks {
                         G = taskDAL.G,
                         B = taskDAL.B,
                         StartTime = taskDAL.StartTime,
-                        FrequencyType = taskDAL.FrequencyType
+                        FrequencyType = taskDAL.NotificationFrequencyType
                     };
 
                 //if the current taskItem has a custom frequency type 
                 //retrieve the custom time fromthe database
                 //TODO: abstract out "Custom"
-                if(taskDAL.FrequencyType == "Custom") {
+                if(taskDAL.NotificationFrequencyType == "Custom") {
                     NotificationFrequencyDAL frequencyDAL = freqRepo.GetById(taskDAL.Id);
                     taskDTO.CustomFrequency = frequencyDAL.Time;
                 }

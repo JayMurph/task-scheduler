@@ -229,15 +229,25 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public TaskItemDAL GetById(object id) {
-            var findQuery = from row in taskTable.AsEnumerable()
+            var findTaskQuery = from row in taskTable.AsEnumerable()
                             where row.Field<string>("Id") == id.ToString()
                             select row;
 
-            if(findQuery.Count() != 1) {
+            if(findTaskQuery.Count() != 1) {
                 return null;
             }
             else {
-                return DataToTaskItemDAL(findQuery.First());
+
+                var findFrequencyQuery = from row in frequencyTable.AsEnumerable()
+                                         where row.Field<string>("TaskId") == id.ToString()
+                                         select row;
+
+                if(findFrequencyQuery.Count() == 1) {
+                    return DataToTaskItemDAL(findTaskQuery.First(), findFrequencyQuery.First()); 
+                }
+                else {
+                    return DataToTaskItemDAL(findTaskQuery.First());
+                }
             }
         }
 
