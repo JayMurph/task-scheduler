@@ -164,6 +164,7 @@ namespace task_scheduler_presentation
                     notificationFrequency = NotificationFrequencyFactory.New(task.NotificationFrequencyType);
                 }
 
+
                 taskManager.Add(
                     new TaskItem(
                         task.Title,
