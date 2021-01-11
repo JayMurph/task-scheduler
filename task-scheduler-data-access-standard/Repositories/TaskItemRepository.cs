@@ -252,30 +252,69 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public bool Update(TaskItemDAL taskItemDAL) {
-            var findQuery = from row in taskTable.AsEnumerable()
+            var findTaskQuery = from row in taskTable.AsEnumerable()
                             where row.Field<string>("Id") == taskItemDAL.Id.ToString()
                             select row;
 
-            if(findQuery.Count() != 1) {
+            if(findTaskQuery.Count() != 1) {
                 return false;
             }
             else {
-                DataRow row = findQuery.First();
+                DataRow taskRow = findTaskQuery.First();
+
+                var findFrequencyQuery = from row in frequencyTable.AsEnumerable()
+                                         where row.Field<string>("TaskId") == taskItemDAL.Id.ToString()
+                                         select row;
 
                 try {
-                    row.BeginEdit();
-                    row.SetField("StartTime", taskItemDAL.StartTime.ToString());
-                    row.SetField("Title", taskItemDAL.Title);
-                    row.SetField("Description", taskItemDAL.Description);
-                    row.SetField("LastNotificationTime", taskItemDAL.LastNotificationTime.ToString());
-                    row.SetField("FrequencyType", taskItemDAL.NotificationFrequencyType);
-                    row.SetField("R", taskItemDAL.R);
-                    row.SetField("G", taskItemDAL.G);
-                    row.SetField("B", taskItemDAL.B);
-                    row.EndEdit();
+                    taskRow.BeginEdit();
+                    taskRow.SetField("StartTime", taskItemDAL.StartTime.ToString());
+                    taskRow.SetField("Title", taskItemDAL.Title);
+                    taskRow.SetField("Description", taskItemDAL.Description);
+                    taskRow.SetField("LastNotificationTime", taskItemDAL.LastNotificationTime.ToString());
+                    taskRow.SetField("FrequencyType", taskItemDAL.NotificationFrequencyType);
+                    taskRow.SetField("R", taskItemDAL.R);
+                    taskRow.SetField("G", taskItemDAL.G);
+                    taskRow.SetField("B", taskItemDAL.B);
+                    taskRow.EndEdit();
+
+                    if(findFrequencyQuery.Count() == 1) {
+                        //if a custom frequency exists for this taskitem
+                        DataRow frequencyRow = findFrequencyQuery.First();
+
+                        if(taskItemDAL.NotificationFrequencyType != "Custom") {
+                            //if taskitem no long has a custom frequency
+                            frequencyRow.Delete();
+                        }
+                        else {
+                            //edit the notificationfrequency to update it
+                            frequencyRow.BeginEdit();
+                            frequencyRow.SetField("Time", taskItemDAL.CustomNotificationFrequency.ToString());
+                            frequencyRow.EndEdit();
+                        }
+
+                    }
+                    else if(taskItemDAL.NotificationFrequencyType == "Custom") {
+                        //if taskItemDAL has a custom frequency now
+
+                        //create new custom frequency row
+                        DataRow frequencyRow = frequencyTable.NewRow();
+
+                        //set information in row
+                        try {
+                            frequencyRow.SetField("TaskId", taskItemDAL.Id.ToString());
+                            frequencyRow.SetField("Time", taskItemDAL.CustomNotificationFrequency.ToString());
+                        }
+                        catch (Exception ex){
+                            frequencyRow.Delete();
+                            throw ex;
+                        }
+
+                    }
+
                 }
                 catch {
-                    row.CancelEdit();
+                    taskRow.CancelEdit();
                     return false;
                 }
 
