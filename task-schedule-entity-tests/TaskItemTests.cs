@@ -7,6 +7,8 @@ using task_scheduler_entities;
 namespace task_schedule_entity_tests {
     [TestClass]
     public class TaskItemTests {
+
+        #region Supporting Interfaces
         internal class ControlledClock : IClock {
             private DateTime time;
             public DateTime Now {
@@ -29,9 +31,10 @@ namespace task_schedule_entity_tests {
                 return new ControlledClock(Now);
             }
         }
-        internal class ConstPeriod : INotificationFrequency {
+
+        internal class ConstNotificationFrequency : INotificationFrequency {
             TimeSpan period;
-            public ConstPeriod(TimeSpan period) {
+            public ConstNotificationFrequency(TimeSpan period) {
                 this.period = period;
             }
             public DateTime NextNotificationTime(DateTime taskStartTime, DateTime now) {
@@ -48,6 +51,7 @@ namespace task_schedule_entity_tests {
                 return now.Subtract(NextNotificationTime(taskStartTime, now));
             }
         }
+
         internal class NotificationManager : INotificationManager {
             private List<Notification> notifications = new List<Notification>();
             public event EventHandler<Notification> NotificationAdded;
@@ -76,53 +80,128 @@ namespace task_schedule_entity_tests {
             }
         }
 
+        internal class ControlledTaskItemMockDependencies {
+            public ControlledClock Clock { get; set; }
+            public NotificationManager Manager { get; set; }
+            public ConstNotificationFrequency Frequency { get; set; }
+
+            public ControlledTaskItemMockDependencies(TimeSpan notificationFrequency) {
+                this.Clock = new ControlledClock(DateTime.Now);
+                this.Manager = new NotificationManager();
+                this.Frequency = new ConstNotificationFrequency(notificationFrequency);
+            }
+        }
+
+        #endregion
+
         [TestMethod]
         public void TaskItem_ProducesNotification() {
+            ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 2));
 
-            ControlledClock clock = new ControlledClock(DateTime.Now);
-            NotificationManager manager = new NotificationManager();
-            ConstPeriod constPeriod = new ConstPeriod(new TimeSpan(0,0,2));
-
-            TaskItem testTask = new TaskItem(
+            using (TaskItem testTask = new TaskItem(
                 "Test",
                 "Test",
                 new Colour(0, 0, 0),
-                clock.Now,
-                manager,
-                constPeriod,
-                clock
-            );
+                deps.Clock.Now,
+                deps.Manager,
+                deps.Frequency,
+                deps.Clock
+            )) {
+                deps.Clock.AddSeconds(2);
+                Thread.Sleep(2);
+            }
 
-            clock.AddSeconds(2.1);
-            Thread.Sleep(10);
+            Assert.AreEqual(1, deps.Manager.GetAll().Count);
+        }
 
-            testTask.Cancel();
+        [TestMethod]
+        public void TaskItem_ProducesMultipleSequentialNotifications() {
+            ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 2));
 
-            Assert.AreEqual(1, manager.GetAll().Count);
+            using (TaskItem testTask = new TaskItem(
+                "Test",
+                "Test",
+                new Colour(0, 0, 0),
+                deps.Clock.Now,
+                deps.Manager,
+                deps.Frequency,
+                deps.Clock
+            )) {
+                deps.Clock.AddSeconds(2);
+                Thread.Sleep(2);
+                deps.Clock.AddSeconds(2);
+                Thread.Sleep(2);
+            }
+
+            Assert.AreEqual(2, deps.Manager.GetAll().Count);
         }
 
         [TestMethod]
         public void TaskItem_DoesNotProductNotificationWhenCancelled() {
-            ControlledClock clock = new ControlledClock(DateTime.Now);
-            NotificationManager manager = new NotificationManager();
-            ConstPeriod constPeriod = new ConstPeriod(new TimeSpan(0,0,2));
+            ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 2));
 
-            TaskItem testTask = new TaskItem(
+            using (TaskItem testTask = new TaskItem(
                 "Test",
                 "Test",
                 new Colour(0, 0, 0),
-                clock.Now,
-                manager,
-                constPeriod,
-                clock
-            );
+                deps.Clock.Now,
+                deps.Manager,
+                deps.Frequency,
+                deps.Clock
+            )) {
+                testTask.Cancel();
 
-            testTask.Cancel();
+                deps.Clock.AddSeconds(2);
+                Thread.Sleep(2);
+            }
 
-            clock.AddSeconds(2.1);
-            Thread.Sleep(10);
+            Assert.AreEqual(0, deps.Manager.GetAll().Count);
+        }
 
-            Assert.AreEqual(0, manager.GetAll().Count);
+        [TestMethod]
+        public void TaskItem_ProducesNotificationAfterFrequencyChanged() {
+            ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 4));
+
+            using (TaskItem testTask = new TaskItem(
+                "Test",
+                "Test",
+                new Colour(0, 0, 0),
+                deps.Clock.Now,
+                deps.Manager,
+                deps.Frequency,
+                deps.Clock
+            )) {
+                ConstNotificationFrequency newFrequency = new ConstNotificationFrequency(new TimeSpan(0, 0, 2));
+
+                testTask.ChangeFrequency(newFrequency);
+
+                deps.Clock.AddSeconds(2);
+                Thread.Sleep(2);
+            }
+
+            Assert.AreEqual(1, deps.Manager.GetAll().Count);
+        }
+
+        [TestMethod]
+        public void TaskItem_ProducesNotificationWithCorrectTime() {
+            ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 2));
+
+            using (TaskItem testTask = new TaskItem(
+                "Test",
+                "Test",
+                new Colour(0, 0, 0),
+                deps.Clock.Now,
+                deps.Manager,
+                deps.Frequency,
+                deps.Clock
+            )) {
+                deps.Clock.AddSeconds(2);
+                Thread.Sleep(2);
+            }
+
+            Assert.AreEqual(1, deps.Manager.GetAll().Count);
+
+            Assert.AreEqual(deps.Clock.Now, deps.Manager.GetAll()[0].Time);
         }
     }
 }

@@ -127,6 +127,7 @@ namespace task_scheduler_entities {
             this.clock = clock;
 
             while(IsOverdue()){
+                //post over-due notifications until we catch up to the present
                 PostNotification(frequency.NextNotificationTime(this.StartTime, this.LastNotificationTime)); 
             }
 
@@ -169,15 +170,6 @@ namespace task_scheduler_entities {
         }
 
         /// <summary>
-        /// Stops the TaskItem from producing Notifications, making it inactive. The TaskItem
-        /// cannot be restarted once this method is called.
-        /// </summary>
-        public void Cancel() {
-            notifier?.Cancel();
-            IsActive = false;
-        }
-
-        /// <summary>
         /// Assigns an INotificationFrequency to the TaskItem, for it to use to determine
         /// the points in time at which to generate notifications
         /// </summary>
@@ -185,16 +177,24 @@ namespace task_scheduler_entities {
         /// To be assigned to the TaskItem and used for determining when the TaskItem should
         /// produce notifications
         /// </param>
+        ///<exception cref="InvalidOperationException">TaskItem is no longer active</exception>
         public void ChangeFrequency(INotificationFrequency frequency) {
-            this.frequency = frequency ?? throw new ArgumentNullException(nameof(frequency));
+            if (IsActive) {
+                this.frequency = frequency ?? throw new ArgumentNullException(nameof(frequency));
 
-            notifier?.Cancel();
+                //cancel our currently scheduled notification
+                notifier?.Cancel();
 
-            while(IsOverdue()){
-                PostNotification(frequency.NextNotificationTime(this.StartTime, this.LastNotificationTime)); 
+                while(IsOverdue()){
+                    //post any notifications that we missed according to the new frequency
+                    PostNotification(frequency.NextNotificationTime(this.StartTime, this.LastNotificationTime)); 
+                }
+
+                ScheduleNextNotification();
             }
-
-            ScheduleNextNotification();
+            else {
+                throw new InvalidOperationException($"{nameof(TaskItem)} is not longer active");
+            }
         }
 
         /// <summary>
@@ -213,8 +213,10 @@ namespace task_scheduler_entities {
         /// TaskItem's INotificationManager at the time determined by it's INotificationPeriod
         /// </summary>
         private void ScheduleNextNotification() {
+            //calculate the next time to post a notification
             DateTime nextNotificationTime = frequency.NextNotificationTime(StartTime, clock.Now);
 
+            //schedule posting the next notification at the appropriate time
             notifier = 
                 new DelayedTask(
                     () => { PostNotification(clock.Now); ScheduleNextNotification(); }, 
@@ -231,18 +233,33 @@ namespace task_scheduler_entities {
         /// Time-stamp for the new Notification
         /// </param>
         private void PostNotification(DateTime timeOfNotification) {
+            //create new notification and add it to the NotificationManager
             Notification notification = new Notification(Guid.NewGuid(), this, timeOfNotification);
-
             LastNotificationTime = timeOfNotification;
-
             manager.Add(notification);
         }
 
+        /// <summary>
+        /// Stops the TaskItem from producing Notifications, making it inactive. The TaskItem
+        /// cannot be restarted once this method is called.
+        /// </summary>
+        public void Cancel() {
+            notifier?.Cancel();
+            IsActive = false;
+        }
+
+        /// <summary>
+        /// Disposes of the TaskItem's resources and makes it Inactive
+        /// </summary>
         public void Dispose() {
             notifier?.Cancel();
             notifier = null;
+            IsActive = false;
         }
 
+        /// <summary>
+        /// Disposes of the TaskItem's resources when it is garbage collected
+        /// </summary>
         ~TaskItem() {
             Dispose();
         }

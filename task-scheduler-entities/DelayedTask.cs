@@ -20,11 +20,6 @@ namespace task_scheduler_entities {
         public DateTime DueTime{ get { return dueTime; } }
 
         /// <summary>
-        /// Allows the DelayedTask to retrieve the current time
-        /// </summary>
-        private readonly IClock clock;
-
-        /// <summary>
         /// The asynchronous operation (waiting, then action) of the DelayedTask
         /// </summary>
         private readonly Task asyncTask;
@@ -51,7 +46,6 @@ namespace task_scheduler_entities {
         public DelayedTask(Action action, DateTime dueTime, IClock clock) {
 
             this.dueTime = dueTime;
-            this.clock = clock;
 
             asyncTask = Task.Factory.StartNew(
                 () => {
@@ -70,15 +64,17 @@ namespace task_scheduler_entities {
         /// is no longer usable for performing the action after this method is called.
         /// </summary>
         public virtual void Cancel() {
-            stopSignal = true;
+            if (!stopSignal) {
+                stopSignal = true;
 
-            try {
-                asyncTask.Wait();
-            }
-            catch (Exception ex){
-            }
-            finally {
-                asyncTask.Dispose();
+                try {
+                    asyncTask.Wait();
+                }
+                catch (Exception ex){
+                }
+                finally {
+                    asyncTask.Dispose();
+                }
             }
         }
     }

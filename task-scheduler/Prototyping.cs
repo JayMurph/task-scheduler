@@ -25,16 +25,23 @@ namespace task_scheduler {
             //TaskItemProfiling();
 
             //SpinWaitTesting();
+            INotificationManager notificationManager = new BasicNotificationManager();
+            notificationManager.NotificationAdded += NotificationManager_NotificationAdded;
+            INotificationFrequency fiveSecFreq = new CustomNotificationFrequency(new TimeSpan(0, 0, 5));
+            IClock clock = new RealTimeClock();
 
-            TaskItemDTO taskA = new TaskItemDTO();
-            TaskItemDTO taskB = taskA;
+            Console.WriteLine("Task created");
 
-            taskA.Title = "1";
-            taskB.Title = "2";
+            TaskItem testTask = new TaskItem(
+                "Test", "test",
+                new Colour(255, 255, 255),
+                DateTime.Now,
+                notificationManager,
+                fiveSecFreq,
+                clock
+            );
 
-            Console.WriteLine($"taskA : {taskA.Title}");
-            Console.WriteLine($"taskB : {taskB.Title}");
-
+            Console.ReadLine();
 
 
             //TaskItemRepository taskRepo = new TaskItemRepository("Data Source=../../testdb.db");
@@ -83,6 +90,10 @@ namespace task_scheduler {
             //    repo.Delete(task);
             //}
             //repo.Save();
+        }
+
+        private static void NotificationManager_NotificationAdded(object sender, Notification e) {
+            Console.WriteLine(e.Time);
         }
 
         private static void SpinWaitTesting() {
