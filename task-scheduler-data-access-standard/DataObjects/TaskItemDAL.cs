@@ -44,7 +44,7 @@ namespace task_scheduler_data_access_standard.DataObjects {
             }
 
             if (string.IsNullOrEmpty(description)) {
-                throw new ArgumentException($"'{nameof(description)}' cannot be null or empty", nameof(description));
+                throw new ArgumentException($"'{nameof(description)}' cannot be null", nameof(description));
             }
 
             if (string.IsNullOrEmpty(notificationFrequencyType)) {
@@ -72,6 +72,14 @@ namespace task_scheduler_data_access_standard.DataObjects {
             byte g,
             byte b,
             TimeSpan customNotificationFrequency) {
+
+            if (string.IsNullOrEmpty(title)) {
+                throw new ArgumentException($"'{nameof(title)}' cannot be null or empty", nameof(title));
+            }
+
+            if (description == null) {
+                throw new ArgumentException($"'{nameof(description)}' cannot be null", nameof(description));
+            }
 
             Id = id;
             Title = title;
