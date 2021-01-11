@@ -94,6 +94,10 @@ namespace task_schedule_entity_tests {
 
         #endregion
 
+        //A small Thread.Sleep is performed during each test to allow the actual notification 
+        //timing logic running on a separate thread to register that the current time has 
+        //changed and react to it, before checking the result of the operation
+
         [TestMethod]
         public void TaskItem_ProducesNotification() {
             ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 2));
