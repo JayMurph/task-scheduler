@@ -139,7 +139,7 @@ namespace task_scheduler_data_access_standard.Repositories {
 
                 try {
                     frequencyRow.SetField("TaskId", taskItemDAL.Id.ToString());
-                    frequencyRow.SetField("Time", taskItemDAL.NotificationFrequency.Time.ToString());
+                    frequencyRow.SetField("Time", taskItemDAL.CustomNotificationFrequency.ToString());
                 }
                 catch {
                     taskRow.Delete();
@@ -211,8 +211,18 @@ namespace task_scheduler_data_access_standard.Repositories {
 
             List<TaskItemDAL> taskItems = new List<TaskItemDAL>();
 
-            foreach(DataRow row in taskTable.AsEnumerable()) {
-                taskItems.Add(DataToTaskItemDAL(row)); 
+            foreach(DataRow taskRow in taskTable.AsEnumerable()) {
+
+                var findFrequencyQuery = from row in frequencyTable.AsEnumerable()
+                                         where row.Field<string>("TaskId") == taskRow.Field<string>("Id")
+                                         select row;
+
+                if(findFrequencyQuery.Count() == 1) {
+                    taskItems.Add(DataToTaskItemDAL(taskRow, findFrequencyQuery.First())); 
+                }
+                else {
+                    taskItems.Add(DataToTaskItemDAL(taskRow)); 
+                }
             }
 
             return taskItems;
@@ -265,6 +275,7 @@ namespace task_scheduler_data_access_standard.Repositories {
 
         public void Dispose() {
             taskAdapter?.Dispose();
+            frequencyAdapter?.Dispose();
         }
 
         public void Save() {
