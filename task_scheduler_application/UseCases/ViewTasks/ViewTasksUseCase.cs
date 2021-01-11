@@ -8,14 +8,11 @@ using task_scheduler_data_access_standard.DataObjects;
 namespace task_scheduler_application.UseCases.ViewTasks {
     public class ViewTasksUseCase : IUseCase<ViewTasksInput, ViewTasksOutput> {
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
-        private readonly INotificationFrequencyRepositoryFactory frequencyRepositoryFactory;
 
         public ViewTasksUseCase(
-            ITaskItemRepositoryFactory taskItemRepositoryFactory,
-            INotificationFrequencyRepositoryFactory frequencyRepositoryFactory) {
+            ITaskItemRepositoryFactory taskItemRepositoryFactory) {
 
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
-            this.frequencyRepositoryFactory = frequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(frequencyRepositoryFactory));
         }
 
         public ViewTasksInput Input { set; private get; }
@@ -24,7 +21,6 @@ namespace task_scheduler_application.UseCases.ViewTasks {
 
         public void Execute() {
             ITaskItemRepository taskRepo = taskItemRepositoryFactory.New();
-            INotificationFrequencyRepository freqRepo = frequencyRepositoryFactory.New();
 
             //go through all taskItems in database then add them to the Output
             //as TaskItemDTO's.
@@ -38,15 +34,14 @@ namespace task_scheduler_application.UseCases.ViewTasks {
                         G = taskDAL.G,
                         B = taskDAL.B,
                         StartTime = taskDAL.StartTime,
-                        FrequencyType = taskDAL.NotificationFrequencyType
+                        FrequencyType = taskDAL.NotificationFrequencyType,
                     };
 
                 //if the current taskItem has a custom frequency type 
                 //retrieve the custom time fromthe database
                 //TODO: abstract out "Custom"
                 if(taskDAL.NotificationFrequencyType == "Custom") {
-                    NotificationFrequencyDAL frequencyDAL = freqRepo.GetById(taskDAL.Id);
-                    taskDTO.CustomFrequency = frequencyDAL.Time;
+                    taskDTO.CustomFrequency = taskDAL.CustomNotificationFrequency;
                 }
 
                 Output.TaskItems.Add(taskDTO);

@@ -138,9 +138,6 @@ namespace task_scheduler_presentation
             //CREATE REPOSITORY FACTORIES
             TaskItemRepositoryFactory taskItemRepositoryFactory = 
                 new TaskItemRepositoryFactory(connectionStr);
-            NotificationFrequencyRepositoryFactory frequencyRepositoryFactory =
-                new NotificationFrequencyRepositoryFactory(connectionStr);
-
 
             //create domain dependencies
             BasicNotificationManager notificationManager = new BasicNotificationManager();
@@ -151,7 +148,6 @@ namespace task_scheduler_presentation
             //load database data into domain managers
 
             ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
-            INotificationFrequencyRepository frequencyRepository = frequencyRepositoryFactory.New();
 
             //read in task items from database. Create domain taskItems from 
             //data and add items to taskManager
@@ -161,12 +157,8 @@ namespace task_scheduler_presentation
 
                 //TODO abstract out magic string
                 if(task.NotificationFrequencyType == "Custom") {
-
-                    NotificationFrequencyDAL notificationFrequencyDAL = 
-                        frequencyRepository.GetById(task.Id);
-
                     notificationFrequency = 
-                        NotificationFrequencyFactory.New(task.NotificationFrequencyType, notificationFrequencyDAL.Time);
+                        NotificationFrequencyFactory.New(task.NotificationFrequencyType, task.CustomNotificationFrequency);
                 }
                 else {
                     notificationFrequency = NotificationFrequencyFactory.New(task.NotificationFrequencyType);
@@ -191,14 +183,12 @@ namespace task_scheduler_presentation
                     taskManager,
                     notificationManager,
                     clock,
-                    taskItemRepositoryFactory,
-                    frequencyRepositoryFactory
+                    taskItemRepositoryFactory
                 );
 
             var viewTasksUseCaseFactory =
                 new ViewTasksUseCaseFactory(
-                    taskItemRepositoryFactory,
-                    frequencyRepositoryFactory
+                    taskItemRepositoryFactory
                 );
 
             //Instantiate user controller, passing in required factories
