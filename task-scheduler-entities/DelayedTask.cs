@@ -9,15 +9,11 @@ namespace task_scheduler_entities {
     /// Performs an asynchronous operation at a pre-determined point in time.
     /// </summary>
     public class DelayedTask : IDisposable{
+        #region Fields
         /// <summary>
         /// The time at which the DelayedTask should execute its assigned action
         /// </summary>
         private readonly DateTime dueTime;
-
-        /// <summary>
-        /// The time at which the DelayedTask should execute its assigned action
-        /// </summary>
-        public DateTime DueTime{ get { return dueTime; } }
 
         /// <summary>
         /// The asynchronous operation (waiting, then action) of the DelayedTask
@@ -30,6 +26,14 @@ namespace task_scheduler_entities {
         private volatile bool stopSignal = false;
 
         private bool disposedValue;
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// The time at which the DelayedTask should execute its assigned action
+        /// </summary>
+        public DateTime DueTime{ get { return dueTime; } }
+        #endregion
 
 
         /// <summary>
@@ -77,6 +81,7 @@ namespace task_scheduler_entities {
             }
         }
 
+        #region IDisposable Implementation and Finalizer
         protected virtual void Dispose(bool disposing) {
             if (!disposedValue) {
 
@@ -107,5 +112,6 @@ namespace task_scheduler_entities {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+        #endregion
     }
 }

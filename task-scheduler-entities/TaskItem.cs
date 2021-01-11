@@ -213,6 +213,7 @@ namespace task_scheduler_entities {
             IsActive = false;
         }
 
+        #region IDisposable Implementation And Finalizer
         /// <summary>
         /// Disposes of the TaskItem's resources and makes it Inactive
         /// </summary>
@@ -246,6 +247,8 @@ namespace task_scheduler_entities {
         //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
         //     Dispose(disposing: false);
         // }
+
+        #endregion
 
         /// <summary>
         /// Indicates if the TaskItem is overdue for producing a Notification.

@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="TaskItemTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DelayedTaskTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

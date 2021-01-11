@@ -99,7 +99,7 @@ namespace task_schedule_entity_tests {
         //changed and react to it, before checking the result of the operation
 
         [TestMethod]
-        public void TaskItem_ProducesNotification() {
+        public void ProducesNotification() {
             ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 2));
 
             using (TaskItem testTask = new TaskItem(
@@ -119,7 +119,7 @@ namespace task_schedule_entity_tests {
         }
 
         [TestMethod]
-        public void TaskItem_ProducesMultipleSequentialNotifications() {
+        public void ProducesMultipleSequentialNotifications() {
             ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 2));
 
             using (TaskItem testTask = new TaskItem(
@@ -141,7 +141,7 @@ namespace task_schedule_entity_tests {
         }
 
         [TestMethod]
-        public void TaskItem_DoesNotProductNotificationWhenCancelled() {
+        public void DoesNotProductNotificationWhenCancelled() {
             ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 2));
 
             using (TaskItem testTask = new TaskItem(
@@ -163,7 +163,7 @@ namespace task_schedule_entity_tests {
         }
 
         [TestMethod]
-        public void TaskItem_ProducesNotificationAfterFrequencyChanged() {
+        public void ProducesNotificationAfterFrequencyChanged() {
             ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 4));
 
             using (TaskItem testTask = new TaskItem(
@@ -187,7 +187,33 @@ namespace task_schedule_entity_tests {
         }
 
         [TestMethod]
-        public void TaskItem_ProducesNotificationWithCorrectTime() {
+        public void ProducesNotificationAfterFrequencyChangeWithCorrectTime() {
+            ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 4));
+
+            using (TaskItem testTask = new TaskItem(
+                "Test",
+                "Test",
+                new Colour(0, 0, 0),
+                deps.Clock.Now,
+                deps.Manager,
+                deps.Frequency,
+                deps.Clock
+            )) {
+                ConstNotificationFrequency newFrequency = new ConstNotificationFrequency(new TimeSpan(0, 0, 2));
+
+                testTask.ChangeFrequency(newFrequency);
+
+                deps.Clock.AddSeconds(2);
+                Thread.Sleep(2);
+            }
+
+            Assert.AreEqual(1, deps.Manager.GetAll().Count);
+
+            Assert.AreEqual(deps.Clock.Now, deps.Manager.GetAll()[0].Time);
+        }
+
+        [TestMethod]
+        public void ProducesNotificationWithCorrectTime() {
             ControlledTaskItemMockDependencies deps = new ControlledTaskItemMockDependencies(new TimeSpan(0, 0, 2));
 
             using (TaskItem testTask = new TaskItem(
