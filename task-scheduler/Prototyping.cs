@@ -25,24 +25,6 @@ namespace task_scheduler {
             //TaskItemProfiling();
 
             //SpinWaitTesting();
-            INotificationManager notificationManager = new BasicNotificationManager();
-            notificationManager.NotificationAdded += NotificationManager_NotificationAdded;
-            INotificationFrequency fiveSecFreq = new CustomNotificationFrequency(new TimeSpan(0, 0, 5));
-            IClock clock = new RealTimeClock();
-
-            Console.WriteLine("Task created");
-
-            TaskItem testTask = new TaskItem(
-                "Test", "test",
-                new Colour(255, 255, 255),
-                DateTime.Now,
-                notificationManager,
-                fiveSecFreq,
-                clock
-            );
-
-            Console.ReadLine();
-
 
             //TaskItemRepository taskRepo = new TaskItemRepository("Data Source=../../testdb.db");
             //NotificationFrequencyRepository freqRepo = new NotificationFrequencyRepository("Data Source=../../testdb.db");
