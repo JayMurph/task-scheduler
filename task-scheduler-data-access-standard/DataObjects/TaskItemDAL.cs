@@ -21,9 +21,9 @@ namespace task_scheduler_data_access_standard.DataObjects {
         public byte G { get; set; }
         public byte B { get; set; }
         
-        public string FrequencyType { get; set; }
+        public string NotificationFrequencyType { get; set; }
 
-        public NotificationFrequencyDAL NotificationFrequency { get; set; }
+        public TimeSpan CustomNotificationFrequency { get; set; }
 
         public TaskItemDAL() {
         }
@@ -37,17 +37,52 @@ namespace task_scheduler_data_access_standard.DataObjects {
             byte r,
             byte g,
             byte b,
-            string frequencyType) {
+            string notificationFrequencyType) {
+
+            if (string.IsNullOrEmpty(title)) {
+                throw new ArgumentException($"'{nameof(title)}' cannot be null or empty", nameof(title));
+            }
+
+            if (string.IsNullOrEmpty(description)) {
+                throw new ArgumentException($"'{nameof(description)}' cannot be null or empty", nameof(description));
+            }
+
+            if (string.IsNullOrEmpty(notificationFrequencyType)) {
+                throw new ArgumentException($"'{nameof(notificationFrequencyType)}' cannot be null or empty", nameof(notificationFrequencyType));
+            }
 
             Id = id;
-            Title = title ?? throw new ArgumentNullException(nameof(title));
-            Description = description ?? throw new ArgumentNullException(nameof(description));
+            Title = title;
+            Description = description;
             StartTime = startTime;
             LastNotificationTime = lastNotificationTime;
             R = r;
             G = g;
             B = b;
-            FrequencyType = frequencyType ?? throw new ArgumentNullException(nameof(frequencyType));
+            NotificationFrequencyType = notificationFrequencyType;
+        }
+
+        public TaskItemDAL(
+            Guid id,
+            string title,
+            string description,
+            DateTime startTime,
+            DateTime lastNotificationTime,
+            byte r,
+            byte g,
+            byte b,
+            TimeSpan customNotificationFrequency) {
+
+            Id = id;
+            Title = title;
+            Description = description;
+            StartTime = startTime;
+            LastNotificationTime = lastNotificationTime;
+            R = r;
+            G = g;
+            B = b;
+            CustomNotificationFrequency = customNotificationFrequency;
+            NotificationFrequencyType = "Custom";
         }
     }
 }
