@@ -14,16 +14,20 @@ namespace task_scheduler_data_access_standard.DataObjects {
 
         public string Description { get; set; }
 
-        public DateTime StartTime {get;set;}
+        public DateTime StartTime { get; set; }
         public DateTime LastNotificationTime { get; set; }
-             
+
         public byte R { get; set; }
         public byte G { get; set; }
         public byte B { get; set; }
-        
+
         public string NotificationFrequencyType { get; set; }
 
         public TimeSpan CustomNotificationFrequency { get; set; }
+
+        //public NotificationFrequencyDAL CustomNotificationFrequency {get;set;}
+
+        public List<NotificationDAL> Notifications { get; set; } = new List<NotificationDAL>();
 
         public TaskItemDAL() {
         }
