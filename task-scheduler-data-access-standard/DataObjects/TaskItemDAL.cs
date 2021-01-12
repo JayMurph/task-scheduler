@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace task_scheduler_data_access_standard.DataObjects {
 
+    /// <summary>
+    /// behaviourless Data-layer representation of a TaskItem
+    /// </summary>
     public class TaskItemDAL {
 
         public Guid Id { get; }
@@ -25,7 +24,18 @@ namespace task_scheduler_data_access_standard.DataObjects {
 
         public NotificationFrequencyDAL CustomNotificationFrequency { get; } = null;
 
-
+        /// <summary>
+        /// Constructs a TaskItemDAL which uses a pre-defined Notification Frequency
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="startTime"></param>
+        /// <param name="lastNotificationTime"></param>
+        /// <param name="r"></param>
+        /// <param name="g"></param>
+        /// <param name="b"></param>
+        /// <param name="notificationFrequencyType"></param>
         public TaskItemDAL(
             Guid id,
             string title,
@@ -60,6 +70,18 @@ namespace task_scheduler_data_access_standard.DataObjects {
             NotificationFrequencyType = notificationFrequencyType;
         }
 
+        /// <summary>
+        /// Constructs a TaskItemDAL with a custom Notification Frequency
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="title"></param>
+        /// <param name="description"></param>
+        /// <param name="startTime"></param>
+        /// <param name="lastNotificationTime"></param>
+        /// <param name="r"></param>
+        /// <param name="g"></param>
+        /// <param name="b"></param>
+        /// <param name="customNotificationFrequency"></param>
         public TaskItemDAL(
             Guid id,
             string title,
