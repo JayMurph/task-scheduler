@@ -75,7 +75,14 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public NotificationFrequencyDAL GetById(object id) {
-            throw new NotImplementedException();
+            var findByIdQuery = GetQueryForId(id);
+
+            if(findByIdQuery.Count() != 1) {
+                return null;
+            }
+            else {
+                return DataRowToNotificationFrequencyDAL(findByIdQuery.First());
+            }
         }
 
         public void Save() {
