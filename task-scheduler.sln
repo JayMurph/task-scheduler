@@ -7,11 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler", "task-sche
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-entities", "task-scheduler-entities\task-scheduler-entities.csproj", "{9C4B11BA-1459-4D45-BE95-31FAC5639338}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-entity-tests", "task-schedule-entity-tests\task-scheduler-entity-tests.csproj", "{74627B04-0258-417A-AA29-D98DB9A6FCF5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-entity-tests", "task-scheduler-entity-tests\task-scheduler-entity-tests.csproj", "{74627B04-0258-417A-AA29-D98DB9A6FCF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task_scheduler_presentation", "task_shceduler_presentation\task_scheduler_presentation.csproj", "{54010E79-B7EA-4513-B698-A6AC09F96EDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-presentation", "task-scheduler-presentation\task-scheduler-presentation.csproj", "{54010E79-B7EA-4513-B698-A6AC09F96EDC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task_scheduler_application", "task_scheduler_application\task_scheduler_application.csproj", "{2EEF9DB4-2AED-49B0-B0F9-71BFCAB1C302}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-application", "task-scheduler-application\task-scheduler-application.csproj", "{2EEF9DB4-2AED-49B0-B0F9-71BFCAB1C302}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-data-access-standard", "task-scheduler-data-access-standard\task-scheduler-data-access-standard.csproj", "{BD4FDED9-0992-41CF-9E31-9E22E5157F61}"
 EndProject

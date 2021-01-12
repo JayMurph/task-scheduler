@@ -7,8 +7,8 @@
     <ProjectGuid>{54010E79-B7EA-4513-B698-A6AC09F96EDC}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>task_shceduler_presentation</RootNamespace>
-    <AssemblyName>task_shceduler_presentation</AssemblyName>
+    <RootNamespace>task_scheduler_presentation</RootNamespace>
+    <AssemblyName>task-scheduler-presentation</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.19041.0</TargetPlatformVersion>
@@ -203,9 +203,9 @@
       <Project>{9c4b11ba-1459-4d45-be95-31fac5639338}</Project>
       <Name>task-scheduler-entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\task_scheduler_application\task_scheduler_application.csproj">
+    <ProjectReference Include="..\task-scheduler-application\task-scheduler-application.csproj">
       <Project>{2eef9db4-2aed-49b0-b0f9-71bfcab1c302}</Project>
-      <Name>task_scheduler_application</Name>
+      <Name>task-scheduler-application</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

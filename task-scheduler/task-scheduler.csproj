@@ -70,9 +70,9 @@
       <Project>{9c4b11ba-1459-4d45-be95-31fac5639338}</Project>
       <Name>task-scheduler-entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\task_scheduler_application\task_scheduler_application.csproj">
+    <ProjectReference Include="..\task-scheduler-application\task-scheduler-application.csproj">
       <Project>{2eef9db4-2aed-49b0-b0f9-71bfcab1c302}</Project>
-      <Name>task_scheduler_application</Name>
+      <Name>task-scheduler-application</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
