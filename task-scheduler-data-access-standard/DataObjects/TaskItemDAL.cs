@@ -25,10 +25,6 @@ namespace task_scheduler_data_access_standard.DataObjects {
 
         public NotificationFrequencyDAL CustomNotificationFrequency { get; } = null;
 
-        public List<NotificationDAL> Notifications { get; } = new List<NotificationDAL>();
-
-        public TaskItemDAL() {
-        }
 
         public TaskItemDAL(
             Guid id,
