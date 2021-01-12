@@ -86,7 +86,7 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public void Save() {
-            throw new NotImplementedException();
+            adapter.Update(table);
         }
 
         public bool Update(NotificationFrequencyDAL notificationFrequency) {
