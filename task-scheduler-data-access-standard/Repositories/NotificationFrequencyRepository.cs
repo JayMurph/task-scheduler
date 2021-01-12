@@ -51,15 +51,15 @@ namespace task_scheduler_data_access_standard.Repositories {
 
         public bool Delete(object id) {
 
-            var idQuery = GetQueryForId(id);
+            var findByIdQuery = GetQueryForId(id);
 
-            if(idQuery.Count() != 1) {
+            if(findByIdQuery.Count() != 1) {
                 //row with a matching ID was not found
                 return false;
             }
             else {
                 //delete the found row
-                idQuery.First().Delete();
+                findByIdQuery.First().Delete();
                 return true;
             }
         }
@@ -90,7 +90,30 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public bool Update(NotificationFrequencyDAL notificationFrequency) {
-            throw new NotImplementedException();
+
+            if (notificationFrequency is null) {
+                throw new ArgumentNullException(nameof(notificationFrequency));
+            }
+
+            var findByIdQuery = GetQueryForId(notificationFrequency.TaskId);
+
+            if(findByIdQuery.Count() != 1) {
+                return false;
+            }
+
+            DataRow rowToUpdate = findByIdQuery.First();
+
+            try {
+                rowToUpdate.BeginEdit();
+                rowToUpdate.SetField("Time", notificationFrequency.Time.ToString());
+                rowToUpdate.EndEdit();
+            }
+            catch {
+                rowToUpdate.CancelEdit();
+                return false;
+            }
+
+            return true;
         }
 
         private static SQLiteDataAdapter NewNotificationFrequencyAdapter(string connectionStr) {
