@@ -14,9 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UseCases\DeleteTask\" />
-    <Folder Include="UseCases\DismissNotification\" />
     <Folder Include="UseCases\EditTask\" />
+    <Folder Include="UseCases\DismissNotification\" />
+    <Folder Include="UseCases\DeleteTask\" />
+    <Folder Include="UseCases\ViewNotificationDetails\" />
+    <Folder Include="UseCases\ViewNotifications\" />
     <Folder Include="UseCases\ViewTaskDetails\" />
   </ItemGroup>
 
