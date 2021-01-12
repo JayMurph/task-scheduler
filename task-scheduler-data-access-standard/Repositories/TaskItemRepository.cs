@@ -322,6 +322,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             }
         }
 
+        //TODO : Implement dispose properly 
         public void Dispose() {
             taskAdapter?.Dispose();
             frequencyAdapter?.Dispose();
