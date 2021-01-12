@@ -65,7 +65,13 @@ namespace task_scheduler_data_access_standard.Repositories {
         }
 
         public IEnumerable<NotificationFrequencyDAL> GetAll() {
-            throw new NotImplementedException();
+            List<NotificationFrequencyDAL> notificationFrequencies = new List<NotificationFrequencyDAL>();
+
+            foreach(DataRow row in table.AsEnumerable()) {
+                notificationFrequencies.Add(DataRowToNotificationFrequencyDAL(row));
+            }
+
+            return notificationFrequencies;
         }
 
         public NotificationFrequencyDAL GetById(object id) {
@@ -117,6 +123,13 @@ namespace task_scheduler_data_access_standard.Repositories {
                     where row.Field<string>("TaskId") == id.ToString()
                     select row);
             return findIdQuery;
+        }
+
+        private NotificationFrequencyDAL DataRowToNotificationFrequencyDAL(DataRow row) {
+            return new NotificationFrequencyDAL(
+                Guid.Parse(row.Field<string>("TaskId")),
+                TimeSpan.Parse(row.Field<string>("Time"))
+            );
         }
 
         #region Dispose Implementation and Finalizer
