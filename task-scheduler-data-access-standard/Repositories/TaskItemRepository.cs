@@ -180,7 +180,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             return Delete(taskItemDAL.Id);
         }
 
-        public bool Delete(object id) {
+        public bool Delete(Guid id) {
 
             //find the item to delete
             var findTaskQuery = from row in taskTable.AsEnumerable()
@@ -228,7 +228,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             return taskItems;
         }
 
-        public TaskItemDAL GetById(object id) {
+        public TaskItemDAL GetById(Guid id) {
             var findTaskQuery = from row in taskTable.AsEnumerable()
                             where row.Field<string>("Id") == id.ToString()
                             select row;

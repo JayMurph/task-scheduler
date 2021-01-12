@@ -49,7 +49,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             return Delete(notificationFrequency.TaskId);
         }
 
-        public bool Delete(object id) {
+        public bool Delete(Guid id) {
 
             var findByIdQuery = GetQueryForId(id);
 
@@ -74,7 +74,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             return notificationFrequencies;
         }
 
-        public NotificationFrequencyDAL GetById(object id) {
+        public NotificationFrequencyDAL GetById(Guid id) {
             var findByIdQuery = GetQueryForId(id);
 
             if(findByIdQuery.Count() != 1) {
@@ -148,7 +148,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             return frequencyAdapter;
         }
 
-        private IEnumerable<DataRow> GetQueryForId(object id) {
+        private IEnumerable<DataRow> GetQueryForId(Guid id) {
             var findIdQuery = (from row in table.AsEnumerable()
                     where row.Field<string>("TaskId") == id.ToString()
                     select row);
