@@ -11,16 +11,18 @@ namespace task_scheduler_data_access_standard.Repositories {
     public class TaskItemRepository : ITaskItemRepository{
 
         private readonly DataTable table;
-        private readonly SQLiteDataAdapter taskAdapter;
+        private readonly SQLiteDataAdapter adapter;
 
         private readonly INotificationFrequencyRepository notificationFrequencyRepository;
+        private bool disposedValue;
+
         public TaskItemRepository(string connStr, INotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory) {
 
-            taskAdapter = NewTaskItemAdapter(connStr);
+            adapter = NewTaskItemAdapter(connStr);
 
             table = new DataTable("Tasks");
-            taskAdapter.FillSchema(table, SchemaType.Source);
-            taskAdapter.Fill(table);
+            adapter.FillSchema(table, SchemaType.Source);
+            adapter.Fill(table);
 
             notificationFrequencyRepository = notificationFrequencyRepositoryFactory.New();
         }
@@ -264,15 +266,9 @@ namespace task_scheduler_data_access_standard.Repositories {
             }
         }
 
-        //TODO : Implement dispose properly 
-        public void Dispose() {
-            taskAdapter?.Dispose();
-            notificationFrequencyRepository.Dispose();
-        }
-
         public bool Save() {
             try {
-                taskAdapter.Update(table);
+                adapter.Update(table);
 
                 //TODO: need to figure out a way to undo task table changes
                 //if the following fails
@@ -331,5 +327,37 @@ namespace task_scheduler_data_access_standard.Repositories {
 
             return findIdQuery;
         }
+
+        #region Dispose Implementation and Finalizer
+        protected virtual void Dispose(bool disposing) {
+            if (!disposedValue) {
+                if (disposing) {
+                    // TODO: dispose managed state (managed objects)
+                    adapter.Dispose();
+                    table.Dispose();
+                    notificationFrequencyRepository.Dispose();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+                // TODO: set large fields to null
+                disposedValue = true;
+            }
+        }
+
+        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+        // ~TaskItemRepository()
+        // {
+        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        //     Dispose(disposing: false);
+        // }
+
+        public void Dispose() {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        #endregion
+
     }
 }
