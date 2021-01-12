@@ -288,33 +288,32 @@ namespace task_scheduler_data_access_standard.Repositories {
             TaskItemDAL taskItem = null; 
 
             if(notificationFrequency != null) {
-                //handle TaskItem with custom frequency
-                taskItem = new TaskItemDAL() {
-                    Id = Guid.Parse(taskRow.Field<string>("Id")),
-                    StartTime = DateTime.Parse(taskRow.Field<string>("StartTime")),
-                    Title = taskRow.Field<string>("Title"),
-                    Description = taskRow.Field<string>("Description"),
-                    LastNotificationTime = DateTime.Parse(taskRow.Field<string>("LastNotificationTime")),
-                    R = (byte)taskRow.Field<long>("R"),
-                    G = (byte)taskRow.Field<long>("G"),
-                    B = (byte)taskRow.Field<long>("B"),
-                    NotificationFrequencyType = taskRow.Field<string>("FrequencyType"),
-                    CustomNotificationFrequency = notificationFrequency
-                };
+                //create TaskItemDAL with custom frequency
+                taskItem = new TaskItemDAL(
+                    id : Guid.Parse(taskRow.Field<string>("Id")),
+                    startTime : DateTime.Parse(taskRow.Field<string>("StartTime")),
+                    title : taskRow.Field<string>("Title"),
+                    description : taskRow.Field<string>("Description"),
+                    lastNotificationTime : DateTime.Parse(taskRow.Field<string>("LastNotificationTime")),
+                    r : (byte)taskRow.Field<long>("R"),
+                    g : (byte)taskRow.Field<long>("G"),
+                    b : (byte)taskRow.Field<long>("B"),
+                    customNotificationFrequency : notificationFrequency
+                );
             }
             else {
-                //TaskItem without custom frequency
-                taskItem = new TaskItemDAL() {
-                    Id = Guid.Parse(taskRow.Field<string>("Id")),
-                    StartTime = DateTime.Parse(taskRow.Field<string>("StartTime")),
-                    Title = taskRow.Field<string>("Title"),
-                    Description = taskRow.Field<string>("Description"),
-                    LastNotificationTime = DateTime.Parse(taskRow.Field<string>("LastNotificationTime")),
-                    NotificationFrequencyType = taskRow.Field<string>("FrequencyType"),
-                    R = (byte)taskRow.Field<long>("R"),
-                    G = (byte)taskRow.Field<long>("G"),
-                    B = (byte)taskRow.Field<long>("B")
-                };
+                //create TaskItemDAL without custom frequency
+                taskItem = new TaskItemDAL(
+                    id : Guid.Parse(taskRow.Field<string>("Id")),
+                    startTime : DateTime.Parse(taskRow.Field<string>("StartTime")),
+                    title : taskRow.Field<string>("Title"),
+                    description : taskRow.Field<string>("Description"),
+                    lastNotificationTime : DateTime.Parse(taskRow.Field<string>("LastNotificationTime")),
+                    r : (byte)taskRow.Field<long>("R"),
+                    g : (byte)taskRow.Field<long>("G"),
+                    b : (byte)taskRow.Field<long>("B"),
+                    notificationFrequencyType : taskRow.Field<string>("FrequencyType")
+                );
             }
 
             return taskItem;

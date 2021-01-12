@@ -8,26 +8,24 @@ namespace task_scheduler_data_access_standard.DataObjects {
 
     public class TaskItemDAL {
 
-        public Guid Id { get; set; }
+        public Guid Id { get; }
 
-        public string Title { get; set; }
+        public string Title { get; }
 
-        public string Description { get; set; }
+        public string Description { get; }
 
-        public DateTime StartTime { get; set; }
-        public DateTime LastNotificationTime { get; set; }
+        public DateTime StartTime { get; }
+        public DateTime LastNotificationTime { get; }
 
-        public byte R { get; set; }
-        public byte G { get; set; }
-        public byte B { get; set; }
+        public byte R { get; }
+        public byte G { get; }
+        public byte B { get; }
 
-        public string NotificationFrequencyType { get; set; }
+        public string NotificationFrequencyType { get; }
 
-        //public TimeSpan CustomNotificationFrequency { get; set; }
+        public NotificationFrequencyDAL CustomNotificationFrequency { get; } = null;
 
-        public NotificationFrequencyDAL CustomNotificationFrequency { get; set; } = null;
-
-        public List<NotificationDAL> Notifications { get; set; } = new List<NotificationDAL>();
+        public List<NotificationDAL> Notifications { get; } = new List<NotificationDAL>();
 
         public TaskItemDAL() {
         }
@@ -75,7 +73,7 @@ namespace task_scheduler_data_access_standard.DataObjects {
             byte r,
             byte g,
             byte b,
-            NotificationFrequencyDAL  customNotificationFrequency) {
+            NotificationFrequencyDAL customNotificationFrequency) {
 
             if (string.IsNullOrEmpty(title)) {
                 throw new ArgumentException($"'{nameof(title)}' cannot be null or empty", nameof(title));
@@ -93,7 +91,7 @@ namespace task_scheduler_data_access_standard.DataObjects {
             R = r;
             G = g;
             B = b;
-            CustomNotificationFrequency = customNotificationFrequency;
+            CustomNotificationFrequency = customNotificationFrequency ?? throw new ArgumentNullException(nameof(customNotificationFrequency));
             NotificationFrequencyType = "Custom";
         }
     }
