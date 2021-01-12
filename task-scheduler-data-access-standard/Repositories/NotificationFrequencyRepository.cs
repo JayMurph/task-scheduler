@@ -85,8 +85,14 @@ namespace task_scheduler_data_access_standard.Repositories {
             }
         }
 
-        public void Save() {
-            adapter.Update(table);
+        public bool Save() {
+            try {
+                adapter.Update(table);
+            }
+            catch {
+                return false;
+            }
+            return true;
         }
 
         public bool Update(NotificationFrequencyDAL notificationFrequency) {

@@ -328,9 +328,16 @@ namespace task_scheduler_data_access_standard.Repositories {
             frequencyAdapter?.Dispose();
         }
 
-        public void Save() {
-            taskAdapter.Update(taskTable);
-            frequencyAdapter.Update(frequencyTable);
+        public bool Save() {
+            try {
+                taskAdapter.Update(taskTable);
+                frequencyAdapter.Update(frequencyTable);
+            }
+            catch {
+                return false;
+            }
+
+            return true;
         }
 
         private static TaskItemDAL DataToTaskItemDAL(DataRow taskRow, DataRow frequencyRow = null) {
