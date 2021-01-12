@@ -23,9 +23,9 @@ namespace task_scheduler_data_access_standard.DataObjects {
 
         public string NotificationFrequencyType { get; set; }
 
-        public TimeSpan CustomNotificationFrequency { get; set; }
+        //public TimeSpan CustomNotificationFrequency { get; set; }
 
-        //public NotificationFrequencyDAL CustomNotificationFrequency {get;set;}
+        public NotificationFrequencyDAL CustomNotificationFrequency {get;set;}
 
         public List<NotificationDAL> Notifications { get; set; } = new List<NotificationDAL>();
 
@@ -75,7 +75,7 @@ namespace task_scheduler_data_access_standard.DataObjects {
             byte r,
             byte g,
             byte b,
-            TimeSpan customNotificationFrequency) {
+            NotificationFrequencyDAL  customNotificationFrequency) {
 
             if (string.IsNullOrEmpty(title)) {
                 throw new ArgumentException($"'{nameof(title)}' cannot be null or empty", nameof(title));
