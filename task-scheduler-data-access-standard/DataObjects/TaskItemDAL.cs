@@ -25,7 +25,7 @@ namespace task_scheduler_data_access_standard.DataObjects {
 
         //public TimeSpan CustomNotificationFrequency { get; set; }
 
-        public NotificationFrequencyDAL CustomNotificationFrequency {get;set;}
+        public NotificationFrequencyDAL CustomNotificationFrequency { get; set; } = null;
 
         public List<NotificationDAL> Notifications { get; set; } = new List<NotificationDAL>();
 

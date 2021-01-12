@@ -136,8 +136,11 @@ namespace task_scheduler_presentation
             DataAccess.InitializeDatabase(connectionStr);
 
             //CREATE REPOSITORY FACTORIES
+            NotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory =
+                new NotificationFrequencyRepositoryFactory(connectionStr);
+
             TaskItemRepositoryFactory taskItemRepositoryFactory = 
-                new TaskItemRepositoryFactory(connectionStr);
+                new TaskItemRepositoryFactory(connectionStr, notificationFrequencyRepositoryFactory);
 
             //create domain dependencies
             BasicNotificationManager notificationManager = new BasicNotificationManager();
@@ -158,7 +161,7 @@ namespace task_scheduler_presentation
                 //TODO abstract out magic string
                 if(task.NotificationFrequencyType == "Custom") {
                     notificationFrequency = 
-                        NotificationFrequencyFactory.New(task.NotificationFrequencyType, task.CustomNotificationFrequency);
+                        NotificationFrequencyFactory.New(task.NotificationFrequencyType, task.CustomNotificationFrequency.Time);
                 }
                 else {
                     notificationFrequency = NotificationFrequencyFactory.New(task.NotificationFrequencyType);

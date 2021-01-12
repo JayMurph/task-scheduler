@@ -64,8 +64,34 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
             //add task to task manager, check for errors
             if (taskManager.Add(newTask)) {
-                TaskItemDAL taskItemDAL =
-                    new TaskItemDAL(
+
+                TaskItemDAL taskItemDAL = null;
+
+                //TODO : abstract away magic string
+                //Create a TaskItemDAL to save to the database
+                if(frequency.Description == "Custom") {
+                    //create a notificationFrequencyDAL for the TaskItem, if it has
+                    //a custom notification frequency
+                    NotificationFrequencyDAL notificationFrequency = 
+                        new NotificationFrequencyDAL(
+                            newTask.ID,
+                            Input.CustomFrequency
+                        );
+
+                    taskItemDAL = new TaskItemDAL(
+                        newTask.ID,
+                        newTask.Title,
+                        newTask.Description,
+                        newTask.StartTime,
+                        newTask.LastNotificationTime,
+                        newTask.Colour.R,
+                        newTask.Colour.G,
+                        newTask.Colour.B,
+                        notificationFrequency
+                    );
+                }
+                else {
+                    taskItemDAL = new TaskItemDAL(
                         newTask.ID,
                         newTask.Title,
                         newTask.Description,
@@ -76,20 +102,17 @@ namespace task_scheduler_application.UseCases.CreateTask {
                         newTask.Colour.B,
                         frequency.Description
                     );
-
-                //add task frequency to database if it is a custom frequency
-                //TODO : abstract away magic string
-                if(frequency.Description == "Custom") {
-                    taskItemDAL.CustomNotificationFrequency = Input.CustomFrequency;
                 }
 
                 ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
 
                 //add task to task repo, check for errors
+                //TODO: check for errors when adding and saving
                 taskItemRepository.Add(taskItemDAL);
 
                 taskItemRepository.Save();
 
+                //create DTO to return as Output data
                 TaskItemDTO taskItemDTO = new TaskItemDTO() {
                     Title = Input.Title,
                     Description = Input.Description,
