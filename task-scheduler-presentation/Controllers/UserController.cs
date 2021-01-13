@@ -49,8 +49,8 @@ namespace task_scheduler_presentation.Controllers {
                 TaskItemModel taskItemModel = new TaskItemModel() {
                     Title = taskItemDTO.Title,
                     Description = taskItemDTO.Description,
-                    FrequencyType = taskItemDTO.FrequencyType,
-                    NotificationFrequency = taskItemDTO.CustomFrequency,
+                    FrequencyType = taskItemDTO.NotificationFrequencyType,
+                    NotificationFrequency = taskItemDTO.CustomNotificationFrequency,
                     StartTime = taskItemDTO.StartTime,
                     Color = new Windows.UI.Xaml.Media.SolidColorBrush(
                         Windows.UI.Color.FromArgb(255, taskItemDTO.R, taskItemDTO.G, taskItemDTO.B))
@@ -103,8 +103,8 @@ namespace task_scheduler_presentation.Controllers {
                     Title = output.TaskItemDTO.Title,
                     Description = output.TaskItemDTO.Description,
                     StartTime = output.TaskItemDTO.StartTime,
-                    FrequencyType = output.TaskItemDTO.FrequencyType,
-                    NotificationFrequency = output.TaskItemDTO.CustomFrequency,
+                    FrequencyType = output.TaskItemDTO.NotificationFrequencyType,
+                    NotificationFrequency = output.TaskItemDTO.CustomNotificationFrequency,
                     Color = new Windows.UI.Xaml.Media.SolidColorBrush(
                         Windows.UI.Color.FromArgb(255, output.TaskItemDTO.R, output.TaskItemDTO.G, output.TaskItemDTO.B))
                 };

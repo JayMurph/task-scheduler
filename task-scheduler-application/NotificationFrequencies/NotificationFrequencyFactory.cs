@@ -3,7 +3,30 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace task_scheduler_application.NotificationFrequencies {
+
+    /// <summary>
+    /// Produces different concrete implementations of IDescriptiveNotificationFrequency's
+    /// </summary>
     public static class NotificationFrequencyFactory {
+
+        /// <summary>
+        /// Produces an IDescriptiveNotificationFrequency corresponding to the value of the 'type'
+        /// parameter
+        /// </summary>
+        /// <param name="type">
+        /// String identifying which implementation of
+        /// IDescriptiveNotificationFrequency to produce and return.
+        /// </param>
+        /// <param name="customPeriod">
+        /// A custom time interval to initialize a CustomNotificationFrequency with, if the
+        /// 'type' requested is "Custom"
+        /// </param>
+        /// <returns>
+        /// An implementation of IDescriptiveNotificationFrequency corresponding to the 'type'
+        /// parameter, and initialize with the 'customPeriod' parameter if the value of 'type' is
+        /// "Custom". null is returned if the 'type' parameter value does not describe a pre-defined
+        /// type
+        /// </returns>
         public static IDescriptiveNotificationFrequency New(string type, TimeSpan customPeriod = new TimeSpan()) {
             switch (type) {
                 //TODO : abstract away magic strings

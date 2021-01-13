@@ -61,8 +61,8 @@ namespace task_scheduler_application.UseCases.ViewTasks {
                         G = taskData.G,
                         B = taskData.B,
                         StartTime = taskData.StartTime,
-                        FrequencyType = taskData.NotificationFrequencyType,
-                        CustomFrequency = customFrequencyTime
+                        NotificationFrequencyType = taskData.NotificationFrequencyType,
+                        CustomNotificationFrequency = customFrequencyTime
                     };
 
                 Output.TaskItems.Add(taskDTO);

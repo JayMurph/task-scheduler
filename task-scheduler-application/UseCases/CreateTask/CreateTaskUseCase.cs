@@ -140,8 +140,8 @@ namespace task_scheduler_application.UseCases.CreateTask {
                     Title = Input.Title,
                     Description = Input.Description,
                     StartTime = Input.StartTime,
-                    CustomFrequency = Input.CustomNotificationFrequency,
-                    FrequencyType = Input.NotificationFrequencyType,
+                    CustomNotificationFrequency = Input.CustomNotificationFrequency,
+                    NotificationFrequencyType = Input.NotificationFrequencyType,
                     R = Input.R,
                     G = Input.G,
                     B = Input.B

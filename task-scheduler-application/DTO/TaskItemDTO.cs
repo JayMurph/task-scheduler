@@ -4,6 +4,10 @@ using System.Text;
 using task_scheduler_application.NotificationFrequencies;
 
 namespace task_scheduler_application.DTO {
+
+    /// <summary>
+    /// Encapsulates the essential data elements of a TaskItem
+    /// </summary>
     public struct TaskItemDTO {
         public Guid Id { get; set; }
         public string Title{ get; set; }
@@ -15,8 +19,14 @@ namespace task_scheduler_application.DTO {
         public byte G{get;set;}
         public byte B{get;set;}
         
-        public string FrequencyType{get;set;}
+        /// <summary>
+        /// Describes the type of NotificationFrequency being used by a TaskItem
+        /// </summary>
+        public string NotificationFrequencyType{get;set;}
         
-        public TimeSpan CustomFrequency{get;set;}
+        /// <summary>
+        /// Holds a non-pre-defined NotificationFrequency 
+        /// </summary>
+        public TimeSpan CustomNotificationFrequency{get;set;}
     }
 }
