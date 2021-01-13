@@ -6,8 +6,13 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
 namespace task_scheduler_presentation {
+    /// <summary>
+    /// Converts a TimeSpan to a formatted string, for the purposes of being displayed in 
+    /// <see cref="task_scheduler_presentation.Views.TaskItemControl"/>
+    /// </summary>
     public class NotificationFrequencyConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, string language) {
+
             if(value is TimeSpan) {
                 TimeSpan time = (TimeSpan)value;
 
@@ -19,16 +24,14 @@ namespace task_scheduler_presentation {
                 }
             }
             else {
-                string timeStr = (string)value;
+                string timeStr = value.ToString();
                 if(timeStr == TimeSpan.Zero.ToString()) {
                     return "";
                 }
                 else {
-                    return value.ToString();
+                    return timeStr;
                 }
             }
-
-            return "";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language) {

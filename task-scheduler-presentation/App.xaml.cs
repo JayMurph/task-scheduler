@@ -37,9 +37,15 @@ namespace task_scheduler_presentation
     /// </summary>
     sealed partial class App : Application
     {
+        /// <summary>
+        /// Called upon to execute application functionality in the presentation layer
+        /// </summary>
         static public Controllers.UserController UserController;
+
+        /// <summary>
+        /// name of the database file to store and retrieve application data from
+        /// </summary>
         static public string dataSource = "TaskSchedulerDB.db";
-        static public string connectionStr = string.Empty;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -64,17 +70,20 @@ namespace task_scheduler_presentation
             // just ensure that the window is active
             if (rootFrame == null)
             {
-
-                //create database filename path 
+                /*
+                 * initialize a database connection string that will point to a database file in
+                 * the applications app data storage
+                 */
                 string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dataSource);
-                connectionStr = $"Data Source={dbPath};";
+                string dbConnectionStr = $"Data Source={dbPath};";
 
-                //not good practice to use wait, but i don't want to make
-                //this startup code async
+                /*
+                 * not good practice to use wait, but i don't want to make
+                 * this startup code async
+                 */
                 CreateDatabaseFileIfNecessary().Wait();//TODO go somewhere else
 
-                //Instantiate user controller, passing in required factories
-                UserController = CreateUserController();
+                UserController = CreateUserController(dbConnectionStr);
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
@@ -132,15 +141,16 @@ namespace task_scheduler_presentation
 
         #endregion
 
-        static private Controllers.UserController CreateUserController() {
-            DataAccess.InitializeDatabase(connectionStr);
+        //TODO: this method is doing too much. its doing more than just creating a UserController. It should be split up
+        static private Controllers.UserController CreateUserController(string dbConnectionStr) {
+            DataAccess.InitializeDatabase(dbConnectionStr);
 
             //CREATE REPOSITORY FACTORIES
             NotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory =
-                new NotificationFrequencyRepositoryFactory(connectionStr);
+                new NotificationFrequencyRepositoryFactory(dbConnectionStr);
 
             TaskItemRepositoryFactory taskItemRepositoryFactory = 
-                new TaskItemRepositoryFactory(connectionStr, notificationFrequencyRepositoryFactory);
+                new TaskItemRepositoryFactory(dbConnectionStr, notificationFrequencyRepositoryFactory);
 
             //create domain dependencies
             BasicNotificationManager notificationManager = new BasicNotificationManager();
@@ -181,6 +191,9 @@ namespace task_scheduler_presentation
                 );
             }
 
+            //TODO: read in notifications from database, create domain Notifications from data and
+            //store them in the NotificationManager
+
             //CREATE USE-CASE FACTORIES
             var createTaskUseCaseFactory =
                 new CreateTaskUseCaseFactory(
@@ -201,6 +214,7 @@ namespace task_scheduler_presentation
                 viewTasksUseCaseFactory
             );
         }
+
         private static async Task CreateDatabaseFileIfNecessary() {
             //check if database file already exists
             if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(dataSource) == null) {

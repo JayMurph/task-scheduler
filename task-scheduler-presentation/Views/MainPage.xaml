@@ -27,6 +27,7 @@
             RequestedTheme="Dark" 
             PaneDisplayMode="Top" 
             IsBackButtonVisible="Collapsed"
+            IsSettingsVisible="false"
             Grid.ColumnSpan="3"
             Grid.RowSpan="3"
             >
