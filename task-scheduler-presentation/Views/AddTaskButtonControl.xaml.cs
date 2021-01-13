@@ -18,13 +18,16 @@ using Windows.UI;
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace task_scheduler_presentation.Views {
+    /// <summary>
+    /// Page for creating a new TaskItem
+    /// </summary>
+    //AddTaskButtonControl implements IAddTaskView but uses its AddTaskFlyoutControl as a
+    //surrogate for actually handling user interaction.
     public sealed partial class AddTaskButtonControl : UserControl , IAddTaskView{
         public AddTaskButtonControl() {
             InitializeComponent();
 
             addTaskControl.Owner = this;
-
-            
         }
 
         public string Title { get => addTaskControl.Title; set => addTaskControl.Title = value; }

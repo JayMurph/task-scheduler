@@ -12,18 +12,41 @@ using task_scheduler_presentation.Views;
 using task_scheduler_presentation.Models;
 
 namespace task_scheduler_presentation.Controllers {
+    /// <summary>
+    /// Offers and implements the functionality for a User of the Task-Scheduler application
+    /// </summary>
     public class UserController {
 
-        //factories for creating use-case objects
+        /// <summary>
+        /// For creating new CreateTaskUseCases
+        /// </summary>
         private CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
+
+        /// <summary>
+        /// For creating new ViewTaskUseCases
+        /// </summary>
         private ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
 
         //TODO : abstract these strings out of the presentation layer
+        /// <summary>
+        /// The types of Notification Frequencies available in the application
+        /// </summary>
         public IEnumerable<string> FrequencyTypeStrings { 
             get => new List<string>(){ "Daily", "Every Other Day", "Review", "Custom"};
         }
 
+        /// <summary>
+        /// Event for when a new TaskItem is created in the application
+        /// </summary>
         public event EventHandler<TaskItemModel> TaskCreated;
+
+        /// <summary>
+        /// Executed whenever a new TaskItem is created. Invokes the delegates attached to the
+        /// TaskCreated event.
+        /// </summary>
+        /// <param name="taskItem">
+        /// A newly created TaskItem
+        /// </param>
         protected void OnTaskCreated(TaskItemModel taskItem) {
             TaskCreated?.Invoke(this, taskItem);
         }
@@ -36,6 +59,12 @@ namespace task_scheduler_presentation.Controllers {
             ViewTasksUseCaseFactory = viewTasksUseCaseFactory;
         }
 
+        /// <summary>
+        /// Retrieves the TaskItems in the application and gives them to a ITasksView to display.
+        /// </summary>
+        /// <param name="view">
+        /// Displays TaskItems in the application
+        /// </param>
         public void ViewTasks(ITasksView view) {
 
             //create view tasks use case, pass input, execute, then get output
@@ -68,6 +97,13 @@ namespace task_scheduler_presentation.Controllers {
 
         }
 
+        /// <summary>
+        /// Extracts TaskItem input data from a IAddTaskView and creates a new TaskItem for the
+        /// application.
+        /// </summary>
+        /// <param name="view">
+        /// Where new TaskItem info was inputted
+        /// </param>
         public void CreateTask(IAddTaskView view) {
 
             //get and VALIDATE input values from view
@@ -114,6 +150,7 @@ namespace task_scheduler_presentation.Controllers {
 
                 //close the view and 
                 //TODO: Clear the views previous input values
+                view.ClearFields();
                 view.CloseSelf();
             }
             else {

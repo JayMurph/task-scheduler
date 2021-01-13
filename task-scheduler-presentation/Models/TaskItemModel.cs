@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using task_scheduler_application.DTO;
 
 namespace task_scheduler_presentation.Models{
+    /// <summary>
+    /// Represents a TaskItem so it can be displayed in the presentation layer
+    /// </summary>
     public class TaskItemModel {
         public string Title { get; set; }
         public string Description { get; set; }
