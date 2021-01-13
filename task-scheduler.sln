@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler", "task-scheduler\task-scheduler.csproj", "{DE3CDC69-2AF9-4966-998C-B87EDB3646C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-entities", "task-scheduler-entities\task-scheduler-entities.csproj", "{9C4B11BA-1459-4D45-BE95-31FAC5639338}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-entity", "task-scheduler-entities\task-scheduler-entity.csproj", "{9C4B11BA-1459-4D45-BE95-31FAC5639338}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-entity-tests", "task-scheduler-entity-tests\task-scheduler-entity-tests.csproj", "{74627B04-0258-417A-AA29-D98DB9A6FCF5}"
 EndProject

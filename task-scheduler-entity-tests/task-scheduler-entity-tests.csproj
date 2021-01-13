@@ -57,9 +57,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\task-scheduler-entities\task-scheduler-entities.csproj">
+    <ProjectReference Include="..\task-scheduler-entities\task-scheduler-entity.csproj">
       <Project>{9c4b11ba-1459-4d45-be95-31fac5639338}</Project>
-      <Name>task-scheduler-entities</Name>
+      <Name>task-scheduler-entity</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
