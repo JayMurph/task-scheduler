@@ -78,13 +78,13 @@ namespace task_scheduler_presentation.Controllers {
                 R = view.Color.R,
                 G = view.Color.G,
                 B = view.Color.B,
-                FrequencyType = view.FrequencyType
+                NotificationFrequencyType = view.FrequencyType
             };
 
             //check for "Custom" frequency and handle that
             //TODO : abstract away 'magic' string
-            if(input.FrequencyType == "Custom") {
-                input.CustomFrequency = view.CustomFrequency;
+            if(input.NotificationFrequencyType == "Custom") {
+                input.CustomNotificationFrequency = view.CustomFrequency;
             }
 
             //create UseCase instance and assign input structure to its input port

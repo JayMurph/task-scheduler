@@ -8,12 +8,40 @@ using task_scheduler_data_access_standard.Repositories;
 using task_scheduler_data_access_standard.DataObjects;
 
 namespace task_scheduler_application.UseCases.CreateTask {
+    /// <summary>
+    /// Encapsulates the logic required for creating a new TaskItem
+    /// </summary>
     public class CreateTaskUseCase : IUseCase<CreateTaskInput, CreateTaskOutput> {
 
+        #region Properties
+        /// <summary>
+        /// Holds all currently active TaskItem's in the application. After the Use-Case creates a
+        /// new TaskItem, it will give it to the taskManager.
+        /// </summary>
         private readonly ITaskManager taskManager;
+
+        /// <summary>
+        /// Receives and maintains Notifications produced by TaskItem's. Required for the
+        /// construction of a new TaskItem.
+        /// </summary>
         private readonly INotificationManager notificationManager;
+
+        /// <summary>
+        /// Retrieves the current time. Required for the creation of a new TaskItem.
+        /// </summary>
         private readonly IClock clock;
+
+        /// <summary>
+        /// Produces <see cref="TaskItemRepository"/>s, allowing the Use-Case to add newly created
+        /// TaskItems to a database
+        /// </summary>
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
+
+        public CreateTaskInput Input { set; private get; } = null;
+
+        public CreateTaskOutput Output { get; private set; } = null;
+
+        #endregion 
 
         #region AddTaskUseCase Constructor
 
@@ -31,25 +59,21 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
         #endregion
 
-        public CreateTaskInput Input { set; private get; } = null;
-
-        public CreateTaskOutput Output { get; private set; } = null;
-
         public void Execute() {
-            //validate input data
+            //TODO: Validate input data within the Input property
 
             IDescriptiveNotificationFrequency frequency = null;
 
-            //create appropriate frequency for new TaskItem
-            //TODO : abstract away magic string
-            if(Input.FrequencyType == "Custom") {
-                frequency = NotificationFrequencyFactory.New(Input.FrequencyType, Input.CustomFrequency);
+            //create appropriate NotificationFrequency for the new TaskItem
+            if(Input.CustomNotificationFrequency != TimeSpan.Zero) {
+                //TODO: abstract away "Custom" string
+                frequency = NotificationFrequencyFactory.New("Custom", Input.CustomNotificationFrequency);
             }
             else {
-                frequency = NotificationFrequencyFactory.New(Input.FrequencyType);
+                frequency = NotificationFrequencyFactory.New(Input.NotificationFrequencyType);
             }
 
-            //create new TaskItem from input data
+            //create new Domain TaskItem from the supplied Input data
             TaskItem newTask = new TaskItem(
                 Input.Title,
                 Input.Description,
@@ -67,15 +91,14 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
                 TaskItemDAL taskItemDAL = null;
 
-                //TODO : abstract away magic string
                 //Create a TaskItemDAL to save to the database
-                if(frequency.Description == "Custom") {
-                    //create a notificationFrequencyDAL for the TaskItem, if it has
-                    //a custom notification frequency
+
+                if(Input.CustomNotificationFrequency != TimeSpan.Zero) {
+                    //Create a TaskItemDAL with a custom notification frequency
                     NotificationFrequencyDAL notificationFrequency = 
                         new NotificationFrequencyDAL(
                             newTask.ID,
-                            Input.CustomFrequency
+                            Input.CustomNotificationFrequency
                         );
 
                     taskItemDAL = new TaskItemDAL(
@@ -91,6 +114,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
                     );
                 }
                 else {
+                    //Create TaskItemDAL with predefined NotificationFrequency
                     taskItemDAL = new TaskItemDAL(
                         newTask.ID,
                         newTask.Title,
@@ -104,34 +128,33 @@ namespace task_scheduler_application.UseCases.CreateTask {
                     );
                 }
 
-                ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
+                ITaskItemRepository taskItemRepo = taskItemRepositoryFactory.New();
 
-                //add task to task repo, check for errors
+                //add and save the new TaskItemDAL to database
                 //TODO: check for errors when adding and saving
-                taskItemRepository.Add(taskItemDAL);
-
-                taskItemRepository.Save();
+                taskItemRepo.Add(taskItemDAL);
+                taskItemRepo.Save();
 
                 //create DTO to return as Output data
                 TaskItemDTO taskItemDTO = new TaskItemDTO() {
                     Title = Input.Title,
                     Description = Input.Description,
                     StartTime = Input.StartTime,
-                    CustomFrequency = Input.CustomFrequency,
-                    FrequencyType = Input.FrequencyType,
+                    CustomFrequency = Input.CustomNotificationFrequency,
+                    FrequencyType = Input.NotificationFrequencyType,
                     R = Input.R,
                     G = Input.G,
                     B = Input.B
                 };
 
-                //fill out output data and return
+                //fill output data and return
                 Output = new CreateTaskOutput() { 
                     Success = true ,
                     TaskItemDTO = taskItemDTO
                 };
             }
             else {
-                //fill out output data and return
+                //fill output data and return
                 Output = new CreateTaskOutput() { Success = false, Error = "ERROR" };
             }
         }
