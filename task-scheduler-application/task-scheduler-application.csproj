@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\task-scheduler-data-access-standard\task-scheduler-data-access-standard.csproj" />
-    <ProjectReference Include="..\task-scheduler-entities\task-scheduler-entity.csproj" />
+    <ProjectReference Include="..\task-scheduler-data-access\task-scheduler-data-access.csproj" />
+    <ProjectReference Include="..\task-scheduler-entity\task-scheduler-entity.csproj" />
   </ItemGroup>
 
   <ItemGroup>

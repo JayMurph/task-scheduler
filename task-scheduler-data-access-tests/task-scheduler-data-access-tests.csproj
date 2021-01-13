@@ -56,9 +56,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\task-scheduler-data-access-standard\task-scheduler-data-access-standard.csproj">
+    <ProjectReference Include="..\task-scheduler-data-access\task-scheduler-data-access.csproj">
       <Project>{bd4fded9-0992-41cf-9e31-9e22e5157f61}</Project>
-      <Name>task-scheduler-data-access-standard</Name>
+      <Name>task-scheduler-data-access</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
