@@ -1,0 +1,39 @@
+﻿<UserControl
+    x:Class="task_scheduler_presentation.Views.CustomNotificationFrequencyInputControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:task_scheduler_presentation.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    d:DesignWidth="455">
+
+    <Grid>
+        <StackPanel 
+            x:Name="customFrequencyPanel" 
+            Orientation="Horizontal" 
+            Spacing="30"
+            HorizontalAlignment="Center"
+            >
+            <TextBox 
+                x:Name="dayInput" 
+                PlaceholderText="Days"
+                TextChanged="DayInput_TextChanged"
+                >
+            </TextBox>
+            <TextBox 
+                x:Name="hourInput" 
+                PlaceholderText="Hours"
+                TextChanged="HourInput_TextChanged"
+                >
+            </TextBox>
+            <TextBox 
+                x:Name="minuteInput" 
+                PlaceholderText="Minutes"
+                TextChanged="MinuteInput_TextChanged"
+                >
+            </TextBox>
+        </StackPanel>
+    </Grid>
+</UserControl>
