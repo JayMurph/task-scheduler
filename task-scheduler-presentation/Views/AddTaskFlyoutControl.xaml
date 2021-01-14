@@ -16,47 +16,52 @@
             <Setter Property="Spacing" Value="30"></Setter>
             <Setter Property="HorizontalAlignment" Value="Center"></Setter>
         </Style>
-        <Style TargetType="TextBox" x:Key="TopInputFieldWidths">
-            <Setter Property="Width" Value="200"></Setter> 
-        </Style>
     </UserControl.Resources>
 
     <StackPanel Spacing="10">
-        <StackPanel Style="{StaticResource PanelStyle}">
-            <TextBlock FontSize="20">Title</TextBlock>
-            <TextBox x:Name="titleInput" Style="{StaticResource TopInputFieldWidths}"></TextBox>
-        </StackPanel>
-        <StackPanel Style="{StaticResource PanelStyle}">
-            <TextBlock VerticalAlignment="Center" FontSize="20">Description</TextBlock>
-            <TextBox x:Name="descriptionInput" Style="{StaticResource TopInputFieldWidths}"></TextBox>
-        </StackPanel>
-        <StackPanel Style="{StaticResource PanelStyle}">
-            <TextBlock VerticalAlignment="Center" FontSize="20">Frequency</TextBlock>
+        <Grid RowSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0" FontSize="20" HorizontalAlignment="Right">Title</TextBlock>
+            <TextBox x:Name="titleInput" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" Width="240"></TextBox>
+            <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Right">Description</TextBlock>
+            <TextBox x:Name="descriptionInput" Grid.Row="1" Grid.Column="3" HorizontalAlignment="Left" Width="240"></TextBox>
+            <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" FontSize="20" HorizontalAlignment="Right">Frequency</TextBlock>
             <ComboBox 
                 x:Name="frequencyComboBox" 
-                HorizontalAlignment="Center" 
-                MinWidth="180" 
+                Grid.Row="2" Grid.Column="3" 
+                MinWidth="240" 
                 SelectedIndex="0" 
                 SelectionChanged="FrequencyComboBox_FrequencyChanged"
                 >
             </ComboBox>
-        </StackPanel>
-        <local:CustomNotificationFrequencyInputControl x:Name="customFrequencyInput">
+        </Grid>
+        <local:CustomNotificationFrequencyInputControl 
+            x:Name="customFrequencyInput"
+            >
         </local:CustomNotificationFrequencyInputControl>
         <StackPanel Style="{StaticResource PanelStyle}">
             <CalendarDatePicker x:Name="dateInput"></CalendarDatePicker>
             <TimePicker x:Name="timeInput" ></TimePicker>
         </StackPanel >
-            <ColorPicker
-                HorizontalAlignment="Center"
-                x:Name="colorInput"
-                IsColorChannelTextInputVisible="False"
-                IsColorSliderVisible="False"
-                IsHexInputVisible="False"
-                Width="256"
-                Height="256"
-                >
-            </ColorPicker>
+        <ColorPicker
+            x:Name="colorInput"
+            HorizontalAlignment="Center"
+            IsColorChannelTextInputVisible="False"
+            IsColorSliderVisible="False"
+            IsHexInputVisible="False"
+            Width="256"
+            Height="256"
+            >
+        </ColorPicker>
         <Button 
             Click="CreateButton_Click"
             Content="Create"

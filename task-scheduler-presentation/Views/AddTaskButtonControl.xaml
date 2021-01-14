@@ -20,7 +20,7 @@
             <SymbolIcon Symbol="Add" Width="40" Height="40"></SymbolIcon>
         </Button.Content>
         <Button.Flyout>
-            <Flyout x:Name="addTaskFlyout">
+            <Flyout x:Name="addTaskFlyout" Placement="BottomEdgeAlignedRight" >
                 <local:AddTaskFlyoutControl x:Name="addTaskControl"/>
             </Flyout>
         </Button.Flyout>
