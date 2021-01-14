@@ -40,9 +40,14 @@ namespace task_scheduler_presentation.Views {
 
         /// <summary>
         /// Holds a description of any errors that may have occured during the creation of a new
-        /// TaskItem
+        /// TaskItem in the application layer
         /// </summary>
-        string Error { get; set; }
+        string ApplicationErrorMessage { get; set; }
+
+        /// <summary>
+        /// Signals to the view if Errors occured below the application layer
+        /// </summary>
+        bool ApplicationError { get; set; }
 
         /// <summary>
         /// Closes the AddTaskView page

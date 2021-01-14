@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -71,17 +72,11 @@ namespace task_scheduler_presentation.Views {
         }
 
         /// <summary>
-        /// Field for transmitting errors that occured during the creation of a new TaskItem.
-        /// Currently opens a pop-up to display the error info.
+        /// Carries error messages that need to be transmitted from the application layer
         /// </summary>
-        public string Error {
-            get => "";
-            set {
-                //TODO: do something other than this
-                var dialog = new Windows.UI.Popups.MessageDialog(value);
-                dialog.ShowAsync();
-            }
-        }
+        public string ApplicationErrorMessage { get; set; } = string.Empty;
+
+        public bool ApplicationError { get; set; } = false;
 
 
         /// <summary>
@@ -113,8 +108,23 @@ namespace task_scheduler_presentation.Views {
         /// <param name="e">
         /// Arguments for the event. unused.
         /// </param>
-        private void CreateButton_Click(object sender, RoutedEventArgs e) {
-            App.UserController.CreateTask(Owner);
+        private async void CreateButton_Click(object sender, RoutedEventArgs e) {
+
+            if (HasInputErrors()) {
+                string errors = GetErrorOutput();
+                var dialog = new Windows.UI.Popups.MessageDialog(errors);
+                await dialog.ShowAsync();
+            }
+            else {
+                App.UserController.CreateTask(Owner);
+
+                if (ApplicationError) {
+                    ApplicationError = false;
+                    var dialog = new Windows.UI.Popups.MessageDialog(ApplicationErrorMessage);
+                    await dialog.ShowAsync();
+                    ApplicationErrorMessage = string.Empty;
+                }
+            }
         }
 
         /// <summary>
@@ -144,6 +154,42 @@ namespace task_scheduler_presentation.Views {
                     CustomFrequency = TimeSpan.Zero;
                 }
             }
+        }
+
+        /// <summary>
+        /// Returns true if there are basic errors in the input fields of the AddTaskFlyoutControl
+        /// </summary>
+        /// <returns>
+        /// True if there are errors present in the AddTaskFlyoutControl's input fields, otherwise
+        /// false
+        /// </returns>
+        private bool HasInputErrors() {
+            return string.IsNullOrWhiteSpace(Title);
+        }
+
+        /// <summary>
+        /// Returns a string describing any user-input errors in the AddTaskFlyoutControl
+        /// </summary>
+        /// <returns>
+        /// Describes user-input errors
+        /// </returns>
+        private string GetErrorOutput() {
+            StringBuilder errorBuilder = new StringBuilder();
+
+            if (string.IsNullOrWhiteSpace(Title)) {
+                errorBuilder.AppendLine("Task title cannot be empty.");
+            }
+
+            return errorBuilder.ToString();
+        }
+
+        public void ClearFields() {
+            Title = string.Empty;
+            Description = string.Empty;
+            StartTime = DateTime.Now;
+            Color = Windows.UI.Color.FromArgb(255, 255, 255, 255);
+            CustomFrequency = TimeSpan.Zero;
+
         }
     }
 

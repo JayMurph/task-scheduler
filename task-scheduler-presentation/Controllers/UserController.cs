@@ -21,7 +21,7 @@ namespace task_scheduler_presentation.Controllers {
         /// <summary>
         /// For creating new CreateTaskUseCases
         /// </summary>
-        private CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
+        private readonly CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
 
         /// <summary>
         /// For creating new ViewTaskUseCases
@@ -156,13 +156,12 @@ namespace task_scheduler_presentation.Controllers {
                 //fire the TaskCreated event
                 OnTaskCreated(newTaskItemModel);
 
-                //close the view and 
-                //TODO: Clear the views previous input values
                 view.ClearFields();
                 view.CloseSelf();
             }
             else {
-                view.Error = output.Error;
+                view.ApplicationErrorMessage = output.Error;
+                view.ApplicationError = true;
             }
         }
     }

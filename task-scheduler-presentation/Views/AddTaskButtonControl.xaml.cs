@@ -28,6 +28,7 @@ namespace task_scheduler_presentation.Views {
             InitializeComponent();
 
             addTaskControl.Owner = this;
+            ClearFields();
         }
 
         public string Title { get => addTaskControl.Title; set => addTaskControl.Title = value; }
@@ -36,16 +37,12 @@ namespace task_scheduler_presentation.Views {
         public Color Color { get => addTaskControl.Color; set => addTaskControl.Color = value; }
         public string FrequencyType { get => addTaskControl.FrequencyType; set => addTaskControl.FrequencyType = value; }
         public TimeSpan CustomFrequency { get => addTaskControl.CustomFrequency; set => addTaskControl.CustomFrequency = value; }
-        public string Error { get => addTaskControl.Error; set => addTaskControl.Error = value; }
+        public string ApplicationErrorMessage { get => addTaskControl.ApplicationErrorMessage; set => addTaskControl.ApplicationErrorMessage = value; }
+        public bool ApplicationError { get => addTaskControl.ApplicationError; set => addTaskControl.ApplicationError = value; }
 
         public void ClearFields() {
             //set fields of add task control back to defaults
-            Title = string.Empty;
-            Description = string.Empty;
-            StartTime = DateTime.Now;
-            Color = Windows.UI.Color.FromArgb(255, 255, 255, 255);
-            CustomFrequency = TimeSpan.Zero;
-            //set frequency type
+            addTaskControl.ClearFields();
         }
 
         public void CloseSelf() {
