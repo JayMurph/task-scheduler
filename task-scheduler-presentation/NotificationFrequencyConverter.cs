@@ -13,11 +13,49 @@ namespace task_scheduler_presentation {
     public class NotificationFrequencyConverter : IValueConverter {
         public object Convert(object value, Type targetType, object parameter, string language) {
 
-            if(value is TimeSpan) {
-                TimeSpan time = (TimeSpan)value;
+            if (value is TimeSpan time) {
+                if (time != TimeSpan.Zero) {
 
-                if(time != TimeSpan.Zero) {
-                    return time.ToString("c");
+                    /*
+                     * builds the string representation of the Custom Notification Frequency that
+                     * will be returned
+                     */
+                    StringBuilder builder = new StringBuilder();
+
+                    //add the days if the incoming time value has days in it
+                    if (time.Days > 0) {
+                        string dayStr = "Day";
+
+                        if (time.Days > 1) {
+                            dayStr += "s";
+                        }
+
+                        builder.AppendFormat("{0} {1} ", time.ToString("%d"), dayStr);
+                    }
+
+                    //add hours if the incoming time value has hours in it
+                    if (time.Hours > 0) {
+                        string hourStr = "Hour";
+
+                        if (time.Hours > 1) {
+                            hourStr += "s";
+                        }
+
+                        builder.AppendFormat("{0} {1} ", time.ToString("%h"), hourStr);
+                    }
+
+                    //add minutes if the incoming time value has minutes in it
+                    if (time.Minutes > 0) {
+                        string minuteStr = "Minute";
+
+                        if (time.Minutes > 1) {
+                            minuteStr += "s";
+                        }
+
+                        builder.AppendFormat("{0} {1}", time.ToString("%m"), minuteStr);
+                    }
+
+                    return builder.ToString();
                 }
                 else {
                     return "";
@@ -25,13 +63,14 @@ namespace task_scheduler_presentation {
             }
             else {
                 string timeStr = value.ToString();
-                if(timeStr == TimeSpan.Zero.ToString()) {
+                if (timeStr == TimeSpan.Zero.ToString()) {
                     return "";
                 }
                 else {
                     return timeStr;
                 }
             }
+
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language) {
