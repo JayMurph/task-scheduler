@@ -45,7 +45,7 @@ namespace task_scheduler_presentation
         /// <summary>
         /// name of the database file to store and retrieve application data from
         /// </summary>
-        static public string dataSource = "TaskSchedulerDB.db";
+        public const string DATA_SOURCE_FILENAME = "TaskSchedulerDB.db";
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -67,26 +67,41 @@ namespace task_scheduler_presentation
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
-            if (rootFrame == null)
-            {
+            if (rootFrame == null) {
+
+                await CreateDatabaseFileIfNecessary(DATA_SOURCE_FILENAME);
+
                 /*
                  * initialize a database connection string that will point to a database file in
                  * the applications app data storage
                  */
-                string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dataSource);
+                string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, DATA_SOURCE_FILENAME);
                 string dbConnectionStr = $"Data Source={dbPath};";
 
-                await CreateDatabaseFileIfNecessary();
+                DataAccess.InitializeDatabase(dbConnectionStr);
 
-                UserController = CreateUserController(dbConnectionStr);
+                //CREATE REPOSITORY FACTORIES
+                NotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory =
+                    new NotificationFrequencyRepositoryFactory(dbConnectionStr);
+
+                TaskItemRepositoryFactory taskItemRepositoryFactory =
+                    new TaskItemRepositoryFactory(dbConnectionStr, notificationFrequencyRepositoryFactory);
+
+                //create domain dependencies
+                BasicNotificationManager notificationManager = new BasicNotificationManager();
+                BasicTaskManager taskManager = new BasicTaskManager();
+                RealTimeClock clock = new RealTimeClock();
+
+                InitializeDomainFromDatabase(taskItemRepositoryFactory, notificationManager, taskManager, clock);
+
+                InitializeUserController(taskItemRepositoryFactory, notificationManager, taskManager, clock);
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated) {
                     //TODO: Load state from previously suspended application
                 }
 
@@ -106,6 +121,72 @@ namespace task_scheduler_presentation
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
+        }
+
+        private void InitializeUserController(
+            TaskItemRepositoryFactory taskItemRepositoryFactory,
+            BasicNotificationManager notificationManager,
+            BasicTaskManager taskManager,
+            RealTimeClock clock) {
+
+            //CREATE USE-CASE FACTORIES
+            var createTaskUseCaseFactory =
+                new CreateTaskUseCaseFactory(
+                    taskManager,
+                    notificationManager,
+                    clock,
+                    taskItemRepositoryFactory
+                );
+
+            var viewTasksUseCaseFactory =
+                new ViewTasksUseCaseFactory(taskManager, taskItemRepositoryFactory);
+
+            //Instantiate user controller, passing in required factories
+            UserController = new Controllers.UserController(
+                createTaskUseCaseFactory,
+                viewTasksUseCaseFactory
+            );
+        }
+
+        private void InitializeDomainFromDatabase(
+            TaskItemRepositoryFactory taskItemRepositoryFactory,
+            BasicNotificationManager notificationManager,
+            BasicTaskManager taskManager,
+            RealTimeClock clock) {
+
+            //...pulling in data and creating domain entities should be done elsewhere
+            //load database data into domain managers
+            ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
+
+            //read in task items from database. Create domain taskItems from 
+            //data and add items to taskManager
+            foreach (TaskItemDAL task in taskItemRepository.GetAll()) {
+
+                INotificationFrequency notificationFrequency =
+                    NotificationFrequencyFactory.New(
+                        //TODO: do something safer than just a cast
+                        (NotificationFrequencyType)task.NotificationFrequencyType,
+                        //TODO: do something more sensible than below
+                        (task.CustomNotificationFrequency?.Time ?? TimeSpan.Zero)
+                    );
+
+                taskManager.Add(
+                    new TaskItem(
+                        task.Title,
+                        task.Description,
+                        new Colour(task.R, task.G, task.B),
+                        task.StartTime,
+                        notificationManager,
+                        notificationFrequency,
+                        clock,
+                        task.LastNotificationTime,
+                        task.Id
+                    )
+                );
+            }
+
+            //TODO: read in notifications from database, create domain Notifications from data and
+            //store them in the NotificationManager
         }
 
         #region BoilerPlate
@@ -154,7 +235,6 @@ namespace task_scheduler_presentation
 
             //...pulling in data and creating domain entities should be done elsewhere
             //load database data into domain managers
-
             ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
 
             //read in task items from database. Create domain taskItems from 
@@ -206,11 +286,11 @@ namespace task_scheduler_presentation
             );
         }
 
-        private static async Task CreateDatabaseFileIfNecessary() {
+        private static async Task CreateDatabaseFileIfNecessary(string filename) {
             //check if database file already exists
-            if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(dataSource) == null) {
+            if (await ApplicationData.Current.LocalFolder.TryGetItemAsync(filename) == null) {
                 //create and initialize database file if it does not exist
-                await ApplicationData.Current.LocalFolder.CreateFileAsync(dataSource);
+                await ApplicationData.Current.LocalFolder.CreateFileAsync(filename);
             }
         }
 
