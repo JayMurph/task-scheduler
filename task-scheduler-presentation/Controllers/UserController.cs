@@ -21,12 +21,12 @@ namespace task_scheduler_presentation.Controllers {
         /// <summary>
         /// For creating new CreateTaskUseCases
         /// </summary>
-        private readonly CreateTaskUseCaseFactory CreateTaskUseCaseFactory;
+        private readonly CreateTaskUseCaseFactory createTaskUseCaseFactory;
 
         /// <summary>
         /// For creating new ViewTaskUseCases
         /// </summary>
-        private readonly ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
+        private readonly ViewTasksUseCaseFactory viewTasksUseCaseFactory;
 
         //TODO : abstract these strings out of the presentation layer
         /// <summary>
@@ -65,8 +65,8 @@ namespace task_scheduler_presentation.Controllers {
             CreateTaskUseCaseFactory createTaskUseCaseFactory,
             ViewTasksUseCaseFactory viewTasksUseCaseFactory
             ) {
-            CreateTaskUseCaseFactory = createTaskUseCaseFactory;
-            ViewTasksUseCaseFactory = viewTasksUseCaseFactory;
+            this.createTaskUseCaseFactory = createTaskUseCaseFactory;
+            this.viewTasksUseCaseFactory = viewTasksUseCaseFactory;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace task_scheduler_presentation.Controllers {
         public void ViewTasks(ITasksView view) {
 
             //create view tasks use case, pass input, execute, then get output
-            var uc = ViewTasksUseCaseFactory.New();
+            var uc = viewTasksUseCaseFactory.New();
 
             uc.Execute();
 
@@ -104,7 +104,6 @@ namespace task_scheduler_presentation.Controllers {
             //Subscribe to the views Closing event, so we can unsubscribe the 
             //view from the TaskCreated event
             view.Closing += (s, e) => { TaskCreated -= view.TaskCreatedCallback; };
-
         }
 
         /// <summary>
@@ -131,7 +130,7 @@ namespace task_scheduler_presentation.Controllers {
             };
 
             //create UseCase instance and assign input structure to its input port
-            var uc = App.UserController.CreateTaskUseCaseFactory.New();
+            var uc = createTaskUseCaseFactory.New();
             uc.Input = input;
 
             //run the use case
