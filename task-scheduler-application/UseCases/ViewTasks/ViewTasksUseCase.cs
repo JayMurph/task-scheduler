@@ -4,6 +4,7 @@ using System.Text;
 using task_scheduler_entities;
 using task_scheduler_data_access_standard.Repositories;
 using task_scheduler_data_access_standard.DataObjects;
+using task_scheduler_application.NotificationFrequencies;
 
 namespace task_scheduler_application.UseCases.ViewTasks {
     /// <summary>
@@ -15,6 +16,7 @@ namespace task_scheduler_application.UseCases.ViewTasks {
         /// Produces TaskItemRepository's which allow for retrieving tasks from a database
         /// </summary>
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
+        private readonly ITaskManager taskManager;
 
         public ViewTasksInput Input { set; private get; }
 
@@ -23,13 +25,10 @@ namespace task_scheduler_application.UseCases.ViewTasks {
         /// <summary>
         /// Constructs a new ViewTasksUseCase
         /// </summary>
-        /// <param name="taskItemRepositoryFactory">
-        /// Produces <see cref="TaskItemRepository"/>'s allowing the <see cref="ViewTasksUseCase"/> to retrieve
-        /// TaskItem data from a database
-        /// </param>
-        public ViewTasksUseCase(ITaskItemRepositoryFactory taskItemRepositoryFactory) {
+        public ViewTasksUseCase(ITaskManager taskManager, ITaskItemRepositoryFactory taskItemRepositoryFactory) {
 
-            this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
+            this.taskManager = taskManager;
+            this.taskItemRepositoryFactory = taskItemRepositoryFactory;
         }
 
         /// <summary>
@@ -43,25 +42,34 @@ namespace task_scheduler_application.UseCases.ViewTasks {
              * go through all taskItems in database then add them to the Output property as
              * TaskItemDTO's.
              */
-            foreach(TaskItemDAL taskData in taskRepo.GetAll()) {
+            
+            foreach(TaskItem domainTask in taskManager.GetAll()) {
+
+                //retrieve dataLayer task which carries notification frequency description
+                TaskItemDAL dataLayerTask = taskRepo.GetById(domainTask.ID);
+
+                if(dataLayerTask == null) {
+                    continue;
+                }
 
                 TimeSpan customFrequencyTime = new TimeSpan();
 
                 //if the current taskItem has a custom frequency type, then retrieve its Time value
-                if(taskData.CustomNotificationFrequency != null) {
-                    customFrequencyTime = taskData.CustomNotificationFrequency.Time;
+                if(dataLayerTask.CustomNotificationFrequency != null) {
+                    customFrequencyTime = dataLayerTask.CustomNotificationFrequency.Time;
                 }
 
                 DTO.TaskItemDTO taskDTO =
                     new DTO.TaskItemDTO() {
-                        Id = taskData.Id,
-                        Title = taskData.Title,
-                        Description = taskData.Description,
-                        R = taskData.R,
-                        G = taskData.G,
-                        B = taskData.B,
-                        StartTime = taskData.StartTime,
-                        NotificationFrequencyType = taskData.NotificationFrequencyType,
+                        Id = domainTask.ID,
+                        Title = domainTask.Title,
+                        Description = domainTask.Description,
+                        R = domainTask.Colour.R,
+                        G = domainTask.Colour.G,
+                        B = domainTask.Colour.B,
+                        StartTime = domainTask.StartTime,
+                        NotificationFrequencyType = 
+                            (NotificationFrequencyType)dataLayerTask.NotificationFrequencyType,
                         CustomNotificationFrequency = customFrequencyTime
                     };
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using task_scheduler_entities;
 
 namespace task_scheduler_application.NotificationFrequencies {
     /// <summary>
@@ -8,15 +9,11 @@ namespace task_scheduler_application.NotificationFrequencies {
     /// interval doubles). The frequency is meant to emulate the ideal amount of time to wait
     /// between reviewing newly learnt information.
     /// </summary>
-    class ReviewNotificationFrequency : IDescriptiveNotificationFrequency {
+    class ReviewNotificationFrequency : INotificationFrequency {
         /// <summary>
         /// Amount of time before first Notification. 
         /// </summary>
         private readonly TimeSpan startingPeriod = new TimeSpan(12, 0, 0);
-
-        //TODO : abstract away magic string
-        public string Description { get => "Review"; }
-
 
         /// <summary>
         /// Produces the next point in time at which a Notification should be produced by a TaskItem, according to

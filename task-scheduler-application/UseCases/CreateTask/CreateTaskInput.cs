@@ -41,13 +41,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// </summary>
         public byte B;
 
-        /// <summary>
-        /// Describes the kind of NotificationFrequency that the new TaskItem will have. May be a
-        /// pre-defined value or a value of "Custom" if the TaskItem will have its own unique
-        /// NotificationFrequency. If the value is "Custom", the CustomNotificationFrequency
-        /// property of this object will should set to a non-default TimeSpan value.
-        /// </summary>
-        public string NotificationFrequencyType;
+        public NotificationFrequencyType NotificationFrequencyType;
 
         /// <summary>
         /// A unique NotificationFrequency to dictate when the new TaskItem should produce

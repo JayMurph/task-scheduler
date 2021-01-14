@@ -62,16 +62,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
         public void Execute() {
             //TODO: Validate input data within the Input property
 
-            IDescriptiveNotificationFrequency frequency = null;
-
-            //create appropriate NotificationFrequency for the new TaskItem
-            if(Input.CustomNotificationFrequency != TimeSpan.Zero) {
-                //TODO: abstract away "Custom" string
-                frequency = NotificationFrequencyFactory.New("Custom", Input.CustomNotificationFrequency);
-            }
-            else {
-                frequency = NotificationFrequencyFactory.New(Input.NotificationFrequencyType);
-            }
+            INotificationFrequency frequency = NotificationFrequencyFactory.New(Input.NotificationFrequencyType, Input.CustomNotificationFrequency);
 
             //create new Domain TaskItem from the supplied Input data
             TaskItem newTask = new TaskItem(
@@ -89,44 +80,30 @@ namespace task_scheduler_application.UseCases.CreateTask {
             //add task to task manager, check for errors
             if (taskManager.Add(newTask)) {
 
-                TaskItemDAL taskItemDAL = null;
+                CustomNotificationFrequencyDAL notificationFrequency = null;
+
+                //if the new task should have a custom notification frequency
+                if (Input.NotificationFrequencyType == NotificationFrequencyType.Custom) {
+                    //create a custom notification frequency to save to the database
+                    notificationFrequency = new CustomNotificationFrequencyDAL(
+                        newTask.ID,
+                        Input.CustomNotificationFrequency
+                    );
+                }
 
                 //Create a TaskItemDAL to save to the database
-
-                if(Input.CustomNotificationFrequency != TimeSpan.Zero) {
-                    //Create a TaskItemDAL with a custom notification frequency
-                    CustomNotificationFrequencyDAL notificationFrequency = 
-                        new CustomNotificationFrequencyDAL(
-                            newTask.ID,
-                            Input.CustomNotificationFrequency
-                        );
-
-                    taskItemDAL = new TaskItemDAL(
-                        newTask.ID,
-                        newTask.Title,
-                        newTask.Description,
-                        newTask.StartTime,
-                        newTask.LastNotificationTime,
-                        newTask.Colour.R,
-                        newTask.Colour.G,
-                        newTask.Colour.B,
-                        notificationFrequency
-                    );
-                }
-                else {
-                    //Create TaskItemDAL with predefined NotificationFrequency
-                    taskItemDAL = new TaskItemDAL(
-                        newTask.ID,
-                        newTask.Title,
-                        newTask.Description,
-                        newTask.StartTime,
-                        newTask.LastNotificationTime,
-                        newTask.Colour.R,
-                        newTask.Colour.G,
-                        newTask.Colour.B,
-                        frequency.Description
-                    );
-                }
+                TaskItemDAL taskItemDAL = new TaskItemDAL(
+                    newTask.ID,
+                    newTask.Title,
+                    newTask.Description,
+                    newTask.StartTime,
+                    newTask.LastNotificationTime,
+                    newTask.Colour.R,
+                    newTask.Colour.G,
+                    newTask.Colour.B,
+                    notificationFrequency,
+                    (int)Input.NotificationFrequencyType
+                );
 
                 ITaskItemRepository taskItemRepo = taskItemRepositoryFactory.New();
 

@@ -11,15 +11,11 @@ namespace task_scheduler_application.UseCases.ViewTasks {
     /// </summary>
     public class ViewTasksUseCaseFactory : IUseCaseFactory<ViewTasksUseCase> {
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
+        private readonly ITaskManager taskManager;
 
-        /// <summary>
-        /// Constructs a new ViewTasksUseCaseFactory
-        /// </summary>
-        /// <param name="taskItemRepositoryFactory">
-        /// Dependency required for creating <see cref="ViewTasksUseCase"/>s. Produces <see cref="TaskItemRepository"/>s.
-        /// </param>
-        public ViewTasksUseCaseFactory(ITaskItemRepositoryFactory taskItemRepositoryFactory) {
+        public ViewTasksUseCaseFactory(ITaskManager taskManager, ITaskItemRepositoryFactory taskItemRepositoryFactory) {
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
+            this.taskManager = taskManager;
         }
 
         /// <summary>
@@ -27,7 +23,7 @@ namespace task_scheduler_application.UseCases.ViewTasks {
         /// </summary>
         /// <returns></returns>
         public ViewTasksUseCase New() {
-            return new ViewTasksUseCase(taskItemRepositoryFactory);
+            return new ViewTasksUseCase(taskManager, taskItemRepositoryFactory);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace task_scheduler_data_access_standard {
                                 "\"Description\"   TEXT NOT NULL, " +
                                 "\"StartTime\" TEXT NOT NULL, " +
                                 "\"LastNotificationTime\"  TEXT NOT NULL, " +
-                                "\"FrequencyType\" TEXT NOT NULL, " +
+                                "\"FrequencyType\" INTEGER NOT NULL, " +
                                 "\"R\" INTEGER NOT NULL, " +
                                 "\"G\" INTEGER NOT NULL, " +
                                 "\"B\" INTEGER NOT NULL, " +

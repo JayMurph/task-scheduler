@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using task_scheduler_entities;
 
 namespace task_scheduler_application.NotificationFrequencies {
     /// <summary>
     /// Implements a NotificationFrequency that activates every 24 hours
     /// </summary>
-    public class DailyNotificationFrequency : IDescriptiveNotificationFrequency {
+    public class DailyNotificationFrequency : INotificationFrequency {
         /// <summary>
         /// Length of time between Notifications
         /// </summary>
         private readonly TimeSpan period = new TimeSpan(1, 0, 0, 0);
-
-        //TODO : abstract away magic string
-        public string Description { get => "Daily"; }
 
         /// <summary>
         /// Produces the next point in time at which a Notification should be produced by a TaskItem, according to

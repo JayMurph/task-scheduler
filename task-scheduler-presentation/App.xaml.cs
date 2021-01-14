@@ -61,10 +61,9 @@ namespace task_scheduler_presentation
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override async void OnLaunched(LaunchActivatedEventArgs e)
-        {
-            Frame rootFrame = Window.Current.Content as Frame;
+        protected override async void OnLaunched(LaunchActivatedEventArgs e) {
 
+            Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -162,17 +161,13 @@ namespace task_scheduler_presentation
             //data and add items to taskManager
             foreach(TaskItemDAL task in taskItemRepository.GetAll()) {
 
-                INotificationFrequency notificationFrequency = null;
-
-                //TODO abstract out magic string
-                if(task.NotificationFrequencyType == "Custom") {
-                    notificationFrequency = 
-                        NotificationFrequencyFactory.New(task.NotificationFrequencyType, task.CustomNotificationFrequency.Time);
-                }
-                else {
-                    notificationFrequency = NotificationFrequencyFactory.New(task.NotificationFrequencyType);
-                }
-
+                INotificationFrequency notificationFrequency = 
+                    NotificationFrequencyFactory.New(
+                        //TODO: do something safer than just a cast
+                        (NotificationFrequencyType)task.NotificationFrequencyType, 
+                        //TODO: do something more sensible than below
+                        (task.CustomNotificationFrequency?.Time ?? TimeSpan.Zero)
+                    );
 
                 taskManager.Add(
                     new TaskItem(
@@ -182,7 +177,9 @@ namespace task_scheduler_presentation
                         task.StartTime,
                         notificationManager,
                         notificationFrequency,
-                        clock
+                        clock,
+                        task.LastNotificationTime,
+                        task.Id
                     )
                 );
             }
@@ -200,7 +197,7 @@ namespace task_scheduler_presentation
                 );
 
             var viewTasksUseCaseFactory =
-                new ViewTasksUseCaseFactory(taskItemRepositoryFactory);
+                new ViewTasksUseCaseFactory(taskManager, taskItemRepositoryFactory);
 
             //Instantiate user controller, passing in required factories
             return new Controllers.UserController(

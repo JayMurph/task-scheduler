@@ -6,20 +6,32 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignHeight="550"
+    d:DesignWidth="455">
+
+    <UserControl.Resources>
+        <Style TargetType="StackPanel" x:Key="PanelStyle" >
+            <Setter Property="Orientation" Value="Horizontal"></Setter>
+            <Setter Property="Margin" Value="30,0,0,0"> </Setter>
+            <Setter Property="Spacing" Value="30"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+        </Style>
+        <Style TargetType="TextBox" x:Key="TopInputFieldWidths">
+            <Setter Property="Width" Value="200"></Setter> 
+        </Style>
+    </UserControl.Resources>
 
     <StackPanel Spacing="10">
-        <StackPanel Orientation="Horizontal">
-            <TextBlock>Title</TextBlock>
-            <TextBox x:Name="titleInput"></TextBox>
+        <StackPanel Style="{StaticResource PanelStyle}">
+            <TextBlock FontSize="20">Title</TextBlock>
+            <TextBox x:Name="titleInput" Style="{StaticResource TopInputFieldWidths}"></TextBox>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock>Description</TextBlock>
-            <TextBox x:Name="descriptionInput"></TextBox>
+        <StackPanel Style="{StaticResource PanelStyle}">
+            <TextBlock VerticalAlignment="Center" FontSize="20">Description</TextBlock>
+            <TextBox x:Name="descriptionInput" Style="{StaticResource TopInputFieldWidths}"></TextBox>
         </StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock>Frequency</TextBlock>
+        <StackPanel Style="{StaticResource PanelStyle}">
+            <TextBlock VerticalAlignment="Center" FontSize="20">Frequency</TextBlock>
             <ComboBox 
                 x:Name="frequencyComboBox" 
                 HorizontalAlignment="Center" 
@@ -29,15 +41,15 @@
                 >
             </ComboBox>
         </StackPanel>
-        <StackPanel x:Name="customFrequencyPanel" Orientation="Horizontal" Visibility="Collapsed">
+        <StackPanel x:Name="customFrequencyPanel" Orientation="Horizontal" Style="{StaticResource PanelStyle}">
             <TextBox x:Name="customDaysInput" PlaceholderText="Days" ></TextBox>
             <TextBox x:Name="customHoursInput" PlaceholderText="Hours"></TextBox>
             <TextBox x:Name="customMinutesInput" PlaceholderText="Minutes"></TextBox>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" Spacing="20">
+        <StackPanel Style="{StaticResource PanelStyle}">
             <CalendarDatePicker x:Name="dateInput"></CalendarDatePicker>
             <TimePicker x:Name="timeInput" ></TimePicker>
-        </StackPanel>
+        </StackPanel >
             <ColorPicker
                 HorizontalAlignment="Center"
                 x:Name="colorInput"

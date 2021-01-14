@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using task_scheduler_entities;
 
 namespace task_scheduler_application.NotificationFrequencies {
 
@@ -27,13 +28,13 @@ namespace task_scheduler_application.NotificationFrequencies {
         /// "Custom". null is returned if the 'type' parameter value does not describe a pre-defined
         /// type
         /// </returns>
-        public static IDescriptiveNotificationFrequency New(string type, TimeSpan customPeriod = new TimeSpan()) {
+        public static INotificationFrequency New(NotificationFrequencyType type, TimeSpan customPeriod = new TimeSpan()) {
+            //TODO: protect against invalid customPeriod
             switch (type) {
-                //TODO : abstract away magic strings
-                case "Daily": return new DailyNotificationFrequency();
-                case "Every Other Day": return new BiDailyNotificationFrequency();
-                case "Review": return new ReviewNotificationFrequency();
-                case "Custom": return new CustomNotificationFrequency(customPeriod);
+                case NotificationFrequencyType.Daily : return new DailyNotificationFrequency();
+                case NotificationFrequencyType.AlternateDay : return new AlternateDayNotificationFrequency();
+                case NotificationFrequencyType.Review : return new ReviewNotificationFrequency();
+                case NotificationFrequencyType.Custom : return new CustomNotificationFrequency(customPeriod);
                 default: return null;
             }
         }

@@ -22,7 +22,7 @@ namespace task_scheduler_application.DTO {
         /// <summary>
         /// Describes the type of NotificationFrequency being used by a TaskItem
         /// </summary>
-        public string NotificationFrequencyType{get;set;}
+        public NotificationFrequencyType NotificationFrequencyType{get;set;}
         
         /// <summary>
         /// Holds a non-pre-defined NotificationFrequency 

@@ -63,6 +63,7 @@ namespace task_scheduler_presentation.Views {
         /// </summary>
         public TimeSpan CustomFrequency {
             get {
+                //HERE ! ! ! ! ! ! ! ! ! 
                 //TODO: need to ensure all custom time values are valid numbers
                 return new TimeSpan(
                     int.Parse(customDaysInput.Text),
@@ -73,10 +74,18 @@ namespace task_scheduler_presentation.Views {
                 );
             }
             set {
-                //TODO: need to ensure all custom time values are valid numbers
-                customDaysInput.Text = value.TotalDays.ToString();
-                customHoursInput.Text = value.TotalHours.ToString();
-                customMinutesInput.Text = value.TotalMinutes.ToString();
+                //clear all input fields if value is zero
+                if(value == TimeSpan.Zero) {
+                    customDaysInput.Text = "";
+                    customHoursInput.Text = "";
+                    customMinutesInput.Text = "";
+                }
+                else {
+                    //set input fields to appropriate values from value TimeSpan
+                    customDaysInput.Text = value.TotalDays.ToString();
+                    customHoursInput.Text = value.TotalHours.ToString();
+                    customMinutesInput.Text = value.TotalMinutes.ToString();
+                }
             }
         }
 
@@ -101,6 +110,8 @@ namespace task_scheduler_presentation.Views {
             this.InitializeComponent();
 
             DataContext = this;
+
+            customFrequencyPanel.Visibility = Visibility.Collapsed; 
             
             dateInput.MinDate = DateTime.Today;
             dateInput.Date = DateTime.Today;
@@ -140,7 +151,6 @@ namespace task_scheduler_presentation.Views {
         private void FrequencyComboBox_FrequencyChanged(object sender, SelectionChangedEventArgs e) {
 
             if(customFrequencyPanel != null && frequencyComboBox != null) {
-                //TODO: abstract out the magic string
                 /*
                  * Open the customFrequencyPanel if the "Custom" item is selected in the
                  * frequencyComboBox, otherwise close the customFrequencyPanel
@@ -150,6 +160,7 @@ namespace task_scheduler_presentation.Views {
                 }
                 else {
                     customFrequencyPanel.Visibility = Visibility.Collapsed;
+                    CustomFrequency = TimeSpan.Zero;
                 }
             }
 

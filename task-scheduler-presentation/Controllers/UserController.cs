@@ -10,6 +10,7 @@ using task_scheduler_application.DTO;
 
 using task_scheduler_presentation.Views;
 using task_scheduler_presentation.Models;
+using task_scheduler_application.NotificationFrequencies;
 
 namespace task_scheduler_presentation.Controllers {
     /// <summary>
@@ -25,15 +26,24 @@ namespace task_scheduler_presentation.Controllers {
         /// <summary>
         /// For creating new ViewTaskUseCases
         /// </summary>
-        private ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
+        private readonly ViewTasksUseCaseFactory ViewTasksUseCaseFactory;
 
         //TODO : abstract these strings out of the presentation layer
         /// <summary>
         /// The types of Notification Frequencies available in the application
         /// </summary>
-        public IEnumerable<string> FrequencyTypeStrings { 
-            get => new List<string>(){ "Daily", "Every Other Day", "Review", "Custom"};
+        private readonly Dictionary<NotificationFrequencyType, string> frequenctTypeStrMap =
+            new Dictionary<NotificationFrequencyType, string>() {
+                { NotificationFrequencyType.Daily, "Daily" },
+                { NotificationFrequencyType.AlternateDay, "Every Other Day" },
+                { NotificationFrequencyType.Review, "Review" },
+                { NotificationFrequencyType.Custom, "Custom" }
+            };
+
+        public List<string> FrequencyTypeStrings {
+            get { return frequenctTypeStrMap.Values.ToList(); }
         }
+
 
         /// <summary>
         /// Event for when a new TaskItem is created in the application
@@ -78,7 +88,7 @@ namespace task_scheduler_presentation.Controllers {
                 TaskItemModel taskItemModel = new TaskItemModel() {
                     Title = taskItemDTO.Title,
                     Description = taskItemDTO.Description,
-                    FrequencyType = taskItemDTO.NotificationFrequencyType,
+                    FrequencyType = frequenctTypeStrMap[taskItemDTO.NotificationFrequencyType],
                     NotificationFrequency = taskItemDTO.CustomNotificationFrequency,
                     StartTime = taskItemDTO.StartTime,
                     Color = new Windows.UI.Xaml.Media.SolidColorBrush(
@@ -114,14 +124,11 @@ namespace task_scheduler_presentation.Controllers {
                 R = view.Color.R,
                 G = view.Color.G,
                 B = view.Color.B,
-                NotificationFrequencyType = view.FrequencyType
+                NotificationFrequencyType = frequenctTypeStrMap.Where(
+                    (x)=> { return x.Value == view.FrequencyType; }
+                ).First().Key,
+                CustomNotificationFrequency = view.CustomFrequency
             };
-
-            //check for "Custom" frequency and handle that
-            //TODO : abstract away 'magic' string
-            if(input.NotificationFrequencyType == "Custom") {
-                input.CustomNotificationFrequency = view.CustomFrequency;
-            }
 
             //create UseCase instance and assign input structure to its input port
             var uc = App.UserController.CreateTaskUseCaseFactory.New();
@@ -139,7 +146,8 @@ namespace task_scheduler_presentation.Controllers {
                     Title = output.TaskItemDTO.Title,
                     Description = output.TaskItemDTO.Description,
                     StartTime = output.TaskItemDTO.StartTime,
-                    FrequencyType = output.TaskItemDTO.NotificationFrequencyType,
+                    FrequencyType = 
+                        frequenctTypeStrMap[output.TaskItemDTO.NotificationFrequencyType],
                     NotificationFrequency = output.TaskItemDTO.CustomNotificationFrequency,
                     Color = new Windows.UI.Xaml.Media.SolidColorBrush(
                         Windows.UI.Color.FromArgb(255, output.TaskItemDTO.R, output.TaskItemDTO.G, output.TaskItemDTO.B))

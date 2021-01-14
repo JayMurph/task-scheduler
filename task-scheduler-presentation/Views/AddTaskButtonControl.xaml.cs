@@ -43,9 +43,9 @@ namespace task_scheduler_presentation.Views {
             Title = string.Empty;
             Description = string.Empty;
             StartTime = DateTime.Now;
-            Color = Windows.UI.Color.FromArgb(255, 0, 0, 0);
+            Color = Windows.UI.Color.FromArgb(255, 255, 255, 255);
+            CustomFrequency = TimeSpan.Zero;
             //set frequency type
-            //set custom frequency
         }
 
         public void CloseSelf() {

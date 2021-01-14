@@ -5,15 +5,13 @@ namespace task_scheduler_application.NotificationFrequencies {
     /// <summary>
     /// Implements a User-defined NotificationFrequency
     /// </summary>
-    public class CustomNotificationFrequency : IDescriptiveNotificationFrequency{
+    public class CustomNotificationFrequency : INotificationFrequency{
 
         /// <summary>
         /// Amount of time to elapse between Notifications
         /// </summary>
         private readonly TimeSpan period; 
 
-        //TODO : abstract away magic string
-        public string Description { get => "Custom"; }
 
         /// <summary>
         /// Creates a new CustomNotificationFrequency and assigns it a interval of time for which to
