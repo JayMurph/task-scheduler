@@ -7,22 +7,57 @@ namespace task_scheduler_data_access_standard.DataObjects {
     /// </summary>
     public class TaskItemDAL {
 
+        /// <summary>
+        /// Unique identifier for the TaskItem
+        /// </summary>
         public Guid Id { get; }
 
+        /// <summary>
+        /// Title of the TaskItem
+        /// </summary>
         public string Title { get; }
 
+        /// <summary>
+        /// Description of the TaskItem
+        /// </summary>
         public string Description { get; }
 
+        /// <summary>
+        /// The time at which the TaskItem should begin generating notifications whenever its
+        /// notification frequency elapses
+        /// </summary>
         public DateTime StartTime { get; }
+
+        /// <summary>
+        /// The last point in time at which the TaskItem generated a Notification
+        /// </summary>
         public DateTime LastNotificationTime { get; }
 
+        /// <summary>
+        /// R component of the TaskItem's RGB colour
+        /// </summary>
         public byte R { get; }
+
+        /// <summary>
+        /// G component of the TaskItem's RGB colour
+        /// </summary>
         public byte G { get; }
+
+        /// <summary>
+        /// B component of the TaskItem's RGB colour
+        /// </summary>
         public byte B { get; }
 
+        /// <summary>
+        /// Describes the type of Notification Frequency that the TaskItem uses
+        /// </summary>
         public string NotificationFrequencyType { get; }
 
-        public NotificationFrequencyDAL CustomNotificationFrequency { get; } = null;
+        /// <summary>
+        /// A custom Notification Frequency that the TaskItem may use, instead of one the
+        /// application defined Notification Frequencies
+        /// </summary>
+        public CustomNotificationFrequencyDAL CustomNotificationFrequency { get; } = null;
 
         /// <summary>
         /// Constructs a TaskItemDAL which uses a pre-defined Notification Frequency
@@ -35,7 +70,9 @@ namespace task_scheduler_data_access_standard.DataObjects {
         /// <param name="r"></param>
         /// <param name="g"></param>
         /// <param name="b"></param>
-        /// <param name="notificationFrequencyType"></param>
+        /// <param name="notificationFrequencyType">
+        /// Describes a application defined Notification Frequency for the TaskItem to use
+        /// </param>
         public TaskItemDAL(
             Guid id,
             string title,
@@ -81,7 +118,9 @@ namespace task_scheduler_data_access_standard.DataObjects {
         /// <param name="r"></param>
         /// <param name="g"></param>
         /// <param name="b"></param>
-        /// <param name="customNotificationFrequency"></param>
+        /// <param name="customNotificationFrequency">
+        /// A non-application-defined Notification Frequency for the TaskItem to use
+        /// </param>
         public TaskItemDAL(
             Guid id,
             string title,
@@ -91,9 +130,9 @@ namespace task_scheduler_data_access_standard.DataObjects {
             byte r,
             byte g,
             byte b,
-            NotificationFrequencyDAL customNotificationFrequency) {
+            CustomNotificationFrequencyDAL customNotificationFrequency) {
 
-            if (string.IsNullOrEmpty(title)) {
+            if (string.IsNullOrWhiteSpace(title)) {
                 throw new ArgumentException($"'{nameof(title)}' cannot be null or empty", nameof(title));
             }
 

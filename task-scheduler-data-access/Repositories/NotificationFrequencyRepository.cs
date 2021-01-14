@@ -23,7 +23,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             adapter.Fill(table);
         }
 
-        public bool Add(NotificationFrequencyDAL notificationFrequency) {
+        public bool Add(CustomNotificationFrequencyDAL notificationFrequency) {
 
             //get a new DataRow with the NotificationFrequency table schema
             DataRow newRow = table.NewRow();
@@ -45,7 +45,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             return true;
         }
 
-        public bool Delete(NotificationFrequencyDAL notificationFrequency) {
+        public bool Delete(CustomNotificationFrequencyDAL notificationFrequency) {
             return Delete(notificationFrequency.TaskId);
         }
 
@@ -64,8 +64,8 @@ namespace task_scheduler_data_access_standard.Repositories {
             }
         }
 
-        public IEnumerable<NotificationFrequencyDAL> GetAll() {
-            List<NotificationFrequencyDAL> notificationFrequencies = new List<NotificationFrequencyDAL>();
+        public IEnumerable<CustomNotificationFrequencyDAL> GetAll() {
+            List<CustomNotificationFrequencyDAL> notificationFrequencies = new List<CustomNotificationFrequencyDAL>();
 
             foreach(DataRow row in table.AsEnumerable()) {
                 notificationFrequencies.Add(DataRowToNotificationFrequencyDAL(row));
@@ -74,7 +74,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             return notificationFrequencies;
         }
 
-        public NotificationFrequencyDAL GetById(Guid id) {
+        public CustomNotificationFrequencyDAL GetById(Guid id) {
             var findByIdQuery = GetQueryForId(id);
 
             if(findByIdQuery.Count() != 1) {
@@ -95,7 +95,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             return true;
         }
 
-        public bool Update(NotificationFrequencyDAL notificationFrequency) {
+        public bool Update(CustomNotificationFrequencyDAL notificationFrequency) {
 
             if (notificationFrequency is null) {
                 throw new ArgumentNullException(nameof(notificationFrequency));
@@ -161,8 +161,8 @@ namespace task_scheduler_data_access_standard.Repositories {
             return findIdQuery;
         }
 
-        private NotificationFrequencyDAL DataRowToNotificationFrequencyDAL(DataRow row) {
-            return new NotificationFrequencyDAL(
+        private CustomNotificationFrequencyDAL DataRowToNotificationFrequencyDAL(DataRow row) {
+            return new CustomNotificationFrequencyDAL(
                 Guid.Parse(row.Field<string>("TaskId")),
                 TimeSpan.Parse(row.Field<string>("Time"))
             );

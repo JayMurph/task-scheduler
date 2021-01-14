@@ -77,6 +77,7 @@ namespace task_scheduler_entities {
                     asyncTask.Wait();
                 }
                 catch (Exception ex){
+                    //TODO: handle the exception intelligently
                 }
             }
         }

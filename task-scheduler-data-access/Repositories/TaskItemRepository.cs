@@ -17,7 +17,6 @@ namespace task_scheduler_data_access_standard.Repositories {
         private bool disposedValue;
 
         public TaskItemRepository(string connStr, INotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory) {
-
             adapter = NewTaskItemAdapter(connStr);
 
             table = new DataTable("Tasks");
@@ -30,7 +29,8 @@ namespace task_scheduler_data_access_standard.Repositories {
         private static SQLiteDataAdapter NewTaskItemAdapter(string connectionStr) {
             SQLiteConnection conn = new SQLiteConnection(connectionStr);
 
-            SQLiteDataAdapter taskAdapter = new SQLiteDataAdapter("SELECT * FROM Tasks", conn);
+            SQLiteDataAdapter taskAdapter = 
+                new SQLiteDataAdapter("SELECT * FROM Tasks", conn);
 
             taskAdapter.InsertCommand =
                 new SQLiteCommand(
@@ -57,7 +57,8 @@ namespace task_scheduler_data_access_standard.Repositories {
             taskAdapter.InsertCommand.Parameters.Add("@g", DbType.Int64, 1, "G");
             taskAdapter.InsertCommand.Parameters.Add("@b", DbType.Int64, 1, "B");
 
-            taskAdapter.DeleteCommand = new SQLiteCommand("DELETE FROM Tasks WHERE Id=@id", conn);
+            taskAdapter.DeleteCommand = 
+                new SQLiteCommand("DELETE FROM Tasks WHERE Id=@id", conn);
             taskAdapter.DeleteCommand.Parameters.Add("@id", DbType.String, 1, "Id");
 
             taskAdapter.UpdateCommand =
@@ -173,7 +174,7 @@ namespace task_scheduler_data_access_standard.Repositories {
                 //get custom notification frequency that may be associated with
                 //task item
                 Guid taskId = Guid.Parse(taskRow.Field<string>("Id"));
-                NotificationFrequencyDAL notificationFrequency = notificationFrequencyRepository.GetById(taskId);
+                CustomNotificationFrequencyDAL notificationFrequency = notificationFrequencyRepository.GetById(taskId);
 
                 if(notificationFrequency == null) {
                     taskItems.Add(DataToTaskItemDAL(taskRow)); 
@@ -196,7 +197,7 @@ namespace task_scheduler_data_access_standard.Repositories {
 
                 //get the custom notification frequency that may be associated with
                 //the TaskItem
-                NotificationFrequencyDAL notificationFrequency =
+                CustomNotificationFrequencyDAL notificationFrequency =
                     notificationFrequencyRepository.GetById(id);
 
                 if(notificationFrequency == null) {
@@ -231,7 +232,7 @@ namespace task_scheduler_data_access_standard.Repositories {
 
                     //get the custom notification frequency that may be associated with
                     //the TaskItem, from the database
-                    NotificationFrequencyDAL notificationFrequency =
+                    CustomNotificationFrequencyDAL notificationFrequency =
                         notificationFrequencyRepository.GetById(taskItemDAL.Id);
 
                     if(notificationFrequency != null) {
@@ -283,7 +284,7 @@ namespace task_scheduler_data_access_standard.Repositories {
             return true;
         }
 
-        private static TaskItemDAL DataToTaskItemDAL(DataRow taskRow, NotificationFrequencyDAL notificationFrequency = null) {
+        private static TaskItemDAL DataToTaskItemDAL(DataRow taskRow, CustomNotificationFrequencyDAL notificationFrequency = null) {
 
             TaskItemDAL taskItem = null; 
 

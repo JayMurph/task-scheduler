@@ -95,8 +95,8 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
                 if(Input.CustomNotificationFrequency != TimeSpan.Zero) {
                     //Create a TaskItemDAL with a custom notification frequency
-                    NotificationFrequencyDAL notificationFrequency = 
-                        new NotificationFrequencyDAL(
+                    CustomNotificationFrequencyDAL notificationFrequency = 
+                        new CustomNotificationFrequencyDAL(
                             newTask.ID,
                             Input.CustomNotificationFrequency
                         );
