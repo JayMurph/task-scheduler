@@ -61,7 +61,7 @@ namespace task_scheduler_presentation
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -77,11 +77,7 @@ namespace task_scheduler_presentation
                 string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, dataSource);
                 string dbConnectionStr = $"Data Source={dbPath};";
 
-                /*
-                 * not good practice to use wait, but i don't want to make
-                 * this startup code async
-                 */
-                CreateDatabaseFileIfNecessary().Wait();//TODO go somewhere else
+                await CreateDatabaseFileIfNecessary();
 
                 UserController = CreateUserController(dbConnectionStr);
 
