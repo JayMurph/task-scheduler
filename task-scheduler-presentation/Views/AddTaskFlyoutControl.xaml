@@ -41,11 +41,8 @@
                 >
             </ComboBox>
         </StackPanel>
-        <StackPanel x:Name="customFrequencyPanel" Orientation="Horizontal" Style="{StaticResource PanelStyle}">
-            <TextBox x:Name="customDaysInput" PlaceholderText="Days" ></TextBox>
-            <TextBox x:Name="customHoursInput" PlaceholderText="Hours"></TextBox>
-            <TextBox x:Name="customMinutesInput" PlaceholderText="Minutes"></TextBox>
-        </StackPanel>
+        <local:CustomNotificationFrequencyInputControl x:Name="customFrequencyInput">
+        </local:CustomNotificationFrequencyInputControl>
         <StackPanel Style="{StaticResource PanelStyle}">
             <CalendarDatePicker x:Name="dateInput"></CalendarDatePicker>
             <TimePicker x:Name="timeInput" ></TimePicker>

@@ -63,29 +63,10 @@ namespace task_scheduler_presentation.Views {
         /// </summary>
         public TimeSpan CustomFrequency {
             get {
-                //HERE ! ! ! ! ! ! ! ! ! 
-                //TODO: need to ensure all custom time values are valid numbers
-                return new TimeSpan(
-                    int.Parse(customDaysInput.Text),
-                    int.Parse(customHoursInput.Text),
-                    int.Parse(customMinutesInput.Text),
-                    0,
-                    0
-                );
+                return customFrequencyInput.NotificationFrequencyInput;
             }
             set {
-                //clear all input fields if value is zero
-                if(value == TimeSpan.Zero) {
-                    customDaysInput.Text = "";
-                    customHoursInput.Text = "";
-                    customMinutesInput.Text = "";
-                }
-                else {
-                    //set input fields to appropriate values from value TimeSpan
-                    customDaysInput.Text = value.TotalDays.ToString();
-                    customHoursInput.Text = value.TotalHours.ToString();
-                    customMinutesInput.Text = value.TotalMinutes.ToString();
-                }
+                customFrequencyInput.NotificationFrequencyInput = value;
             }
         }
 
@@ -111,7 +92,7 @@ namespace task_scheduler_presentation.Views {
 
             DataContext = this;
 
-            customFrequencyPanel.Visibility = Visibility.Collapsed; 
+            customFrequencyInput.Visibility = Visibility.Collapsed; 
             
             dateInput.MinDate = DateTime.Today;
             dateInput.Date = DateTime.Today;
@@ -150,20 +131,19 @@ namespace task_scheduler_presentation.Views {
         /// </param>
         private void FrequencyComboBox_FrequencyChanged(object sender, SelectionChangedEventArgs e) {
 
-            if(customFrequencyPanel != null && frequencyComboBox != null) {
+            if(customFrequencyInput != null && frequencyComboBox != null) {
                 /*
                  * Open the customFrequencyPanel if the "Custom" item is selected in the
                  * frequencyComboBox, otherwise close the customFrequencyPanel
                  */
                 if(((ComboBoxItem)frequencyComboBox.SelectedItem).Content.ToString() == "Custom") {
-                    customFrequencyPanel.Visibility = Visibility.Visible;
+                    customFrequencyInput.Visibility = Visibility.Visible;
                 }
                 else {
-                    customFrequencyPanel.Visibility = Visibility.Collapsed;
+                    customFrequencyInput.Visibility = Visibility.Collapsed;
                     CustomFrequency = TimeSpan.Zero;
                 }
             }
-
         }
     }
 
