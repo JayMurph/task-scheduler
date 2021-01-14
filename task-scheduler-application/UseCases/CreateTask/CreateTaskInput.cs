@@ -80,6 +80,15 @@ namespace task_scheduler_application.UseCases.CreateTask {
             return true;
         }
 
+        /// <summary>
+        /// Returns a string describing errors present in the input parameter
+        /// </summary>
+        /// <param name="input">
+        /// To be examined for errors
+        /// </param>
+        /// <returns>
+        /// Describes any errors present in the input parameter
+        /// </returns>
         public static string MakeErrorMessage(CreateTaskInput input) {
             StringBuilder errorBuilder = new StringBuilder();
 

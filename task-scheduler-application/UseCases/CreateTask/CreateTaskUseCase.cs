@@ -59,18 +59,15 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
         #endregion
 
-        public void Execute() {
-
-            //validate the Input data
-            if (!CreateTaskInput.IsValid(Input)) {
-                Output = new CreateTaskOutput { Success = false , Error = CreateTaskInput.MakeErrorMessage(Input)};
-                return;
-            }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        private TaskItem GetInputAsTaskItem() {
 
             INotificationFrequency frequency = NotificationFrequencyFactory.New(Input.NotificationFrequencyType, Input.CustomNotificationFrequency);
 
-            //create new Domain TaskItem from the supplied Input data
-            TaskItem newTask = new TaskItem(
+            return new TaskItem(
                 Input.Title,
                 Input.Description,
                 new task_scheduler_entities.Colour(
@@ -81,64 +78,111 @@ namespace task_scheduler_application.UseCases.CreateTask {
                 frequency,
                 clock
             );
+        }
 
-            //add task to task manager, check for errors
-            if (taskManager.Add(newTask)) {
+        private TaskItemDTO GetInputAsTaskItemDTO() {
 
-                CustomNotificationFrequencyDAL notificationFrequency = null;
+            return new TaskItemDTO {
+                Title = Input.Title,
+                Description = Input.Description,
+                StartTime = Input.StartTime,
+                CustomNotificationFrequency = Input.CustomNotificationFrequency,
+                NotificationFrequencyType = Input.NotificationFrequencyType,
+                R = Input.R,
+                G = Input.G,
+                B = Input.B
+            };
+        }
 
-                //if the new task should have a custom notification frequency
-                if (Input.NotificationFrequencyType == NotificationFrequencyType.Custom) {
-                    //create a custom notification frequency to save to the database
-                    notificationFrequency = new CustomNotificationFrequencyDAL(
-                        newTask.ID,
-                        Input.CustomNotificationFrequency
-                    );
+        private TaskItemDAL ConvertTaskItemToDAL(TaskItem taskItem) {
+
+            CustomNotificationFrequencyDAL notificationFrequency = null;
+
+            //if the new task should have a custom notification frequency
+            if (Input.NotificationFrequencyType == NotificationFrequencyType.Custom) {
+
+                //create a custom notification frequency DAL
+                notificationFrequency = new CustomNotificationFrequencyDAL(
+                    taskItem.ID,
+                    Input.CustomNotificationFrequency
+                );
+            }
+
+            return new TaskItemDAL(
+                taskItem.ID,
+                taskItem.Title,
+                taskItem.Description,
+                taskItem.StartTime,
+                taskItem.LastNotificationTime,
+                taskItem.Colour.R,
+                taskItem.Colour.G,
+                taskItem.Colour.B,
+                notificationFrequency,
+                (int)Input.NotificationFrequencyType
+            );
+
+        }
+
+        public void Execute() {
+
+            if(Input == null) {
+                //TODO: should error message be returned?
+                return;
+            }
+
+            //validate the Input data
+            if (!CreateTaskInput.IsValid(Input)) {
+                Output = new CreateTaskOutput { Success = false , Error = CreateTaskInput.MakeErrorMessage(Input)};
+                return;
+            }
+
+            //create new Domain TaskItem from the supplied Input data
+            TaskItem newTask = GetInputAsTaskItem();
+
+            //add task to domain TaskManager
+            if (!taskManager.Add(newTask)) {
+                //unable to add new TaskItem to domain TaskManager
+                //fill output data and return
+                Output = new CreateTaskOutput { Success = false, Error = "Unable to process the new Task." };
+                return;
+            }
+
+            //Create a TaskItemDAL to save to the database
+            TaskItemDAL taskItemDAL = ConvertTaskItemToDAL(newTask);
+
+            ITaskItemRepository taskItemRepo = taskItemRepositoryFactory.New();
+
+            //add the new TaskItemDAL to the database
+            if(!taskItemRepo.Add(taskItemDAL)) {
+                //remove taskItem from domain TaskManager
+                if (!taskManager.Remove(newTask)) {
+                    //TaskItem could not be removed. we're now screwed . . .
+                    //TODO: decide what to do here
                 }
 
-                //Create a TaskItemDAL to save to the database
-                TaskItemDAL taskItemDAL = new TaskItemDAL(
-                    newTask.ID,
-                    newTask.Title,
-                    newTask.Description,
-                    newTask.StartTime,
-                    newTask.LastNotificationTime,
-                    newTask.Colour.R,
-                    newTask.Colour.G,
-                    newTask.Colour.B,
-                    notificationFrequency,
-                    (int)Input.NotificationFrequencyType
-                );
-
-                ITaskItemRepository taskItemRepo = taskItemRepositoryFactory.New();
-
-                //add and save the new TaskItemDAL to database
-                //TODO: check for errors when adding and saving
-                taskItemRepo.Add(taskItemDAL);
-                taskItemRepo.Save();
-
-                //create DTO to return as Output data
-                TaskItemDTO taskItemDTO = new TaskItemDTO() {
-                    Title = Input.Title,
-                    Description = Input.Description,
-                    StartTime = Input.StartTime,
-                    CustomNotificationFrequency = Input.CustomNotificationFrequency,
-                    NotificationFrequencyType = Input.NotificationFrequencyType,
-                    R = Input.R,
-                    G = Input.G,
-                    B = Input.B
-                };
-
-                //fill output data and return
-                Output = new CreateTaskOutput() { 
-                    Success = true ,
-                    TaskItemDTO = taskItemDTO
-                };
+                //create error Output
+                Output = new CreateTaskOutput { Success = false, Error = "Unable to save the new Task." };
+                return;
             }
-            else {
-                //fill output data and return
-                Output = new CreateTaskOutput() { Success = false, Error = "ERROR" };
+
+            //save the changed make to the TaskItemRepository
+            if (!taskItemRepo.Save()) {
+                //remove taskItem from domain TaskManager
+                if (!taskManager.Remove(newTask)) {
+                    //TaskItem could not be removed. we're now screwed . . .
+                    //TODO: decide what to do here
+                }
+
+                //create error Output
+                Output = new CreateTaskOutput { Success = false, Error = "Unable to save the new Task." };
+                return;
             }
+
+            //create DTO to return as Output data
+            TaskItemDTO taskItemDTO = GetInputAsTaskItemDTO();
+
+            //fill output data and return
+            Output = new CreateTaskOutput { Success = true , TaskItemDTO = taskItemDTO };
         }
     }
 }
