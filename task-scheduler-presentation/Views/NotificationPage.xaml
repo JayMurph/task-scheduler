@@ -9,7 +9,7 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <TextBlock Margin="100,100" FontSize="30">Notification</TextBlock>
+            <TextBlock Text="NOTIFICATIONS" FontSize="100" HorizontalAlignment="Center"/>
         <GridView>
             <GridView.ItemTemplate>
                 <DataTemplate>
