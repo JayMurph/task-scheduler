@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace task_scheduler_data_access_standard.Repositories {
+    /// <summary>
+    /// Produces <see cref="TaskItemRepository"/>s
+    /// </summary>
     public class TaskItemRepositoryFactory : ITaskItemRepositoryFactory {
+
         private readonly string connectionStr;
         private readonly INotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory;
 
