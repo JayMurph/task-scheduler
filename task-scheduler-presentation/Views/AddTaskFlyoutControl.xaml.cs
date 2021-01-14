@@ -18,7 +18,7 @@ namespace task_scheduler_presentation.Views {
     /// <summary>
     /// Control allowing User to input the necessary information for creating a new TaskItem
     /// </summary>
-    public sealed partial class AddTaskFlyoutControl: UserControl{
+    public sealed partial class AddTaskFlyoutControl : UserControl{
 
         /// <summary>
         /// Reference to the page that opened the AddTaskFlyoutControl
@@ -54,7 +54,7 @@ namespace task_scheduler_presentation.Views {
         /// <summary>
         /// Notification frequency description input field for a new TaskItem
         /// </summary>
-        public string FrequencyType { 
+        public string SelectedFrequencyType { 
             get => ((ComboBoxItem)frequencyComboBox.SelectedItem).Content.ToString();
             set { /*TODO: need to intelligently set the item*/}
         }
@@ -63,12 +63,9 @@ namespace task_scheduler_presentation.Views {
         /// Custom notification frequency input field for a new TaskItem
         /// </summary>
         public TimeSpan CustomFrequency {
-            get {
-                return customFrequencyInput.NotificationFrequencyInput;
-            }
-            set {
-                customFrequencyInput.NotificationFrequencyInput = value;
-            }
+            get => customFrequencyInput.NotificationFrequencyInput;
+            set => customFrequencyInput.NotificationFrequencyInput = value;
+            
         }
 
         /// <summary>
@@ -76,7 +73,7 @@ namespace task_scheduler_presentation.Views {
         /// </summary>
         public string ApplicationErrorMessage { get; set; } = string.Empty;
 
-        public bool ApplicationError { get; set; } = false;
+        public bool Error { get; set; } = false;
 
 
         /// <summary>
@@ -93,6 +90,7 @@ namespace task_scheduler_presentation.Views {
             dateInput.Date = DateTime.Today;
             timeInput.Time = DateTime.Now - DateTime.Today;
 
+            //TODO: have the UserController apply the frequency type strings to the combo box
             //add frequency type combo box items
             foreach(string type in App.UserController.FrequencyTypeStrings) {
                 frequencyComboBox.Items.Add(new ComboBoxItem() { Content = type });
@@ -118,8 +116,8 @@ namespace task_scheduler_presentation.Views {
             else {
                 App.UserController.CreateTask(Owner);
 
-                if (ApplicationError) {
-                    ApplicationError = false;
+                if (Error) {
+                    Error = false;
                     var dialog = new Windows.UI.Popups.MessageDialog(ApplicationErrorMessage);
                     await dialog.ShowAsync();
                     ApplicationErrorMessage = string.Empty;
@@ -189,7 +187,6 @@ namespace task_scheduler_presentation.Views {
             StartTime = DateTime.Now;
             Color = Windows.UI.Color.FromArgb(255, 255, 255, 255);
             CustomFrequency = TimeSpan.Zero;
-
         }
     }
 

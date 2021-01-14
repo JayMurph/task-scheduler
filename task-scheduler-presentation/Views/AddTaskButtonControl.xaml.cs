@@ -28,6 +28,7 @@ namespace task_scheduler_presentation.Views {
             InitializeComponent();
 
             addTaskControl.Owner = this;
+
             ClearFields();
         }
 
@@ -35,18 +36,18 @@ namespace task_scheduler_presentation.Views {
         public string Description { get => addTaskControl.Description; set => addTaskControl.Description = value; }
         public DateTime StartTime { get => addTaskControl.StartTime; set => addTaskControl.StartTime = value; }
         public Color Color { get => addTaskControl.Color; set => addTaskControl.Color = value; }
-        public string FrequencyType { get => addTaskControl.FrequencyType; set => addTaskControl.FrequencyType = value; }
+        public string FrequencyType { get => addTaskControl.SelectedFrequencyType; set => addTaskControl.SelectedFrequencyType = value; }
         public TimeSpan CustomFrequency { get => addTaskControl.CustomFrequency; set => addTaskControl.CustomFrequency = value; }
         public string ApplicationErrorMessage { get => addTaskControl.ApplicationErrorMessage; set => addTaskControl.ApplicationErrorMessage = value; }
-        public bool ApplicationError { get => addTaskControl.ApplicationError; set => addTaskControl.ApplicationError = value; }
+        public bool ApplicationError { get => addTaskControl.Error; set => addTaskControl.Error = value; }
 
         public void ClearFields() {
             //set fields of add task control back to defaults
-            addTaskControl.ClearFields();
+            addTaskControl?.ClearFields();
         }
 
         public void CloseSelf() {
-            addTaskFlyout.Hide();
+            addTaskFlyout?.Hide();
         }
     }
 }

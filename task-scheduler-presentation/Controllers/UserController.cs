@@ -28,6 +28,8 @@ namespace task_scheduler_presentation.Controllers {
         /// </summary>
         private readonly ViewTasksUseCaseFactory viewTasksUseCaseFactory;
 
+        public const string CUSTOM_NOTIFICATION_TYPE_STRING = "Custom";
+
         //TODO : abstract these strings out of the presentation layer
         /// <summary>
         /// The types of Notification Frequencies available in the application
@@ -37,7 +39,7 @@ namespace task_scheduler_presentation.Controllers {
                 { NotificationFrequencyType.Daily, "Daily" },
                 { NotificationFrequencyType.AlternateDay, "Every Other Day" },
                 { NotificationFrequencyType.Review, "Review" },
-                { NotificationFrequencyType.Custom, "Custom" }
+                { NotificationFrequencyType.Custom, CUSTOM_NOTIFICATION_TYPE_STRING }
             };
 
         public List<string> FrequencyTypeStrings {
@@ -105,6 +107,7 @@ namespace task_scheduler_presentation.Controllers {
             //view from the TaskCreated event
             view.Closing += (s, e) => { TaskCreated -= view.TaskCreatedCallback; };
         }
+
 
         /// <summary>
         /// Extracts TaskItem input data from a IAddTaskView and creates a new TaskItem for the
