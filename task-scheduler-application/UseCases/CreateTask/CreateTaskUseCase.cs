@@ -59,39 +59,11 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
         #endregion
 
-        private bool IsInputValid() {
-            if (string.IsNullOrWhiteSpace(Input.Title)) {
-                return false;
-            }
-            else if(Input.NotificationFrequencyType == NotificationFrequencyType.Custom &&
-                Input.CustomNotificationFrequency == TimeSpan.Zero) {
-                return false;
-            }
-
-            return true;
-        }
-
-        private string MakeInputErrorMessage() {
-
-            StringBuilder errorBuilder = new StringBuilder();
-
-            if (string.IsNullOrWhiteSpace(Input.Title)) {
-                errorBuilder.AppendLine("Task title cannot be empty.");
-            }
-            
-            if(Input.NotificationFrequencyType == NotificationFrequencyType.Custom &&
-                Input.CustomNotificationFrequency == TimeSpan.Zero) {
-                errorBuilder.AppendLine("A Task with a Custom Notification Frequency must have a non-zero TimeSpan.");
-            }
-
-            return errorBuilder.ToString();
-        }
-
         public void Execute() {
 
             //validate the Input data
-            if (!IsInputValid()) {
-                Output = new CreateTaskOutput { Success = false , Error = MakeInputErrorMessage()};
+            if (!CreateTaskInput.IsValid(Input)) {
+                Output = new CreateTaskOutput { Success = false , Error = CreateTaskInput.MakeErrorMessage(Input)};
                 return;
             }
 

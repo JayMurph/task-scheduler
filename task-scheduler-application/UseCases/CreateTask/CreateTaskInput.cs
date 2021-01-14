@@ -48,5 +48,51 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// notifications
         /// </summary>
         public TimeSpan CustomNotificationFrequency;
+
+        /// <summary>
+        /// Indiciates if the Elements in CreateTaskInput are valid
+        /// </summary>
+        /// <param name="input">
+        /// Will have its fields validated
+        /// </param>
+        /// <returns>
+        /// True if all the fields of the input parameter are valid, otherwise false
+        /// </returns>
+        public static bool IsValid(CreateTaskInput input) {
+            //Ensure Title is not null or empty
+            if (string.IsNullOrWhiteSpace(input.Title)) {
+                return false;
+            }
+
+            /*
+             * Ensure that if the Input has a Frequency type of Custom, that its
+             * CustomNotificationFrequency is valid
+             */
+            if(input.NotificationFrequencyType == NotificationFrequencyType.Custom) { 
+                if(input.CustomNotificationFrequency == null) {
+                    return false;
+                }
+                else if(input.CustomNotificationFrequency == TimeSpan.Zero) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static string MakeErrorMessage(CreateTaskInput input) {
+            StringBuilder errorBuilder = new StringBuilder();
+
+            if (string.IsNullOrWhiteSpace(input.Title)) {
+                errorBuilder.AppendLine("Task title cannot be empty.");
+            }
+            
+            if(input.NotificationFrequencyType == NotificationFrequencyType.Custom &&
+                input.CustomNotificationFrequency == TimeSpan.Zero) {
+                errorBuilder.AppendLine("A Task with a Custom Notification Frequency must have a non-zero TimeSpan.");
+            }
+
+            return errorBuilder.ToString();
+        }
     }
 }
