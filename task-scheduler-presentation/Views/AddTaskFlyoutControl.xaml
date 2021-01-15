@@ -57,7 +57,10 @@
             HorizontalAlignment="Center"
             IsColorChannelTextInputVisible="False"
             IsColorSliderVisible="False"
+            IsAlphaSliderVisible="False"
+            IsAlphaEnabled="False"
             IsHexInputVisible="False"
+            ColorSpectrumShape="Ring"
             Width="256"
             Height="256"
             >
