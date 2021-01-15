@@ -32,14 +32,14 @@ namespace task_scheduler_presentation.Views {
             ClearFields();
         }
 
-        public string Title { get => addTaskControl.Title; set => addTaskControl.Title = value; }
-        public string Description { get => addTaskControl.Description; set => addTaskControl.Description = value; }
-        public DateTime StartTime { get => addTaskControl.StartTime; set => addTaskControl.StartTime = value; }
-        public Color Color { get => addTaskControl.Color; set => addTaskControl.Color = value; }
-        public string FrequencyType { get => addTaskControl.SelectedFrequencyType; set => addTaskControl.SelectedFrequencyType = value; }
-        public TimeSpan CustomFrequency { get => addTaskControl.CustomFrequency; set => addTaskControl.CustomFrequency = value; }
-        public string ApplicationErrorMessage { get => addTaskControl.ApplicationErrorMessage; set => addTaskControl.ApplicationErrorMessage = value; }
-        public bool ApplicationError { get => addTaskControl.Error; set => addTaskControl.Error = value; }
+        public string Title { get => addTaskControl.Title; }
+        public string Description { get => addTaskControl.Description; }
+        public DateTime StartTime { get => addTaskControl.StartTime; }
+        public Color Color { get => addTaskControl.Color; }
+        public string FrequencyType { get => addTaskControl.SelectedFrequencyType; }
+        public TimeSpan CustomFrequency { get => addTaskControl.CustomFrequency; }
+        public string ApplicationErrorMessage { set => addTaskControl.ApplicationErrorMessage = value; }
+        public bool ApplicationError { set => addTaskControl.ApplicationError = value; }
 
         public void ClearFields() {
             //set fields of add task control back to defaults

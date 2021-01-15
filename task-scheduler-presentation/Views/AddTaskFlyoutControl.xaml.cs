@@ -28,19 +28,25 @@ namespace task_scheduler_presentation.Views {
         /// <summary>
         /// Title input field for a new TaskItem
         /// </summary>
-        public string Title { get => titleInput.Text; set => titleInput.Text = value; }
+        public string Title { 
+            get => titleInput.Text; 
+            private set => titleInput.Text = value; 
+        }
 
         /// <summary>
         /// Description input field for a new TaskItem
         /// </summary>
-        public string Description { get => descriptionInput.Text; set => descriptionInput.Text = value; }
+        public string Description {
+            get => descriptionInput.Text; 
+            private set => descriptionInput.Text = value; 
+        }
 
         /// <summary>
         /// Start time input field for a new TaskItem
         /// </summary>
         public DateTime StartTime { 
             get => dateInput.Date.Value.LocalDateTime + timeInput.Time;
-            set {
+            private set {
                 dateInput.Date = value.Date;
                 timeInput.Time = value.TimeOfDay;
             }
@@ -49,14 +55,16 @@ namespace task_scheduler_presentation.Views {
         /// <summary>
         /// Color input field for a new TaskItem
         /// </summary>
-        public Windows.UI.Color Color { get => colorInput.Color; set => colorInput.Color = value; }
+        public Windows.UI.Color Color { 
+            get => colorInput.Color; 
+            private set => colorInput.Color = value; 
+        }
 
         /// <summary>
         /// Notification frequency description input field for a new TaskItem
         /// </summary>
         public string SelectedFrequencyType { 
             get => ((ComboBoxItem)frequencyComboBox.SelectedItem).Content.ToString();
-            set { /*TODO: need to intelligently set the item*/}
         }
 
         /// <summary>
@@ -64,7 +72,7 @@ namespace task_scheduler_presentation.Views {
         /// </summary>
         public TimeSpan CustomFrequency {
             get => customFrequencyInput.NotificationFrequencyInput;
-            set => customFrequencyInput.NotificationFrequencyInput = value;
+            private set => customFrequencyInput.NotificationFrequencyInput = value;
             
         }
 
@@ -73,7 +81,7 @@ namespace task_scheduler_presentation.Views {
         /// </summary>
         public string ApplicationErrorMessage { get; set; } = string.Empty;
 
-        public bool Error { get; set; } = false;
+        public bool ApplicationError { get; set; } = false;
 
 
         /// <summary>
@@ -116,8 +124,8 @@ namespace task_scheduler_presentation.Views {
             else {
                 App.UserController.CreateTask(Owner);
 
-                if (Error) {
-                    Error = false;
+                if (ApplicationError) {
+                    ApplicationError = false;
                     var dialog = new Windows.UI.Popups.MessageDialog(ApplicationErrorMessage);
                     await dialog.ShowAsync();
                     ApplicationErrorMessage = string.Empty;
@@ -187,6 +195,7 @@ namespace task_scheduler_presentation.Views {
             StartTime = DateTime.Now;
             Color = Windows.UI.Color.FromArgb(255, 255, 255, 255);
             CustomFrequency = TimeSpan.Zero;
+            frequencyComboBox.SelectedIndex = 0;
         }
     }
 
