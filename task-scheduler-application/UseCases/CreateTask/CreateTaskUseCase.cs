@@ -59,69 +59,6 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
         #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        private TaskItem GetInputAsTaskItem() {
-
-            INotificationFrequency frequency = NotificationFrequencyFactory.New(Input.NotificationFrequencyType, Input.CustomNotificationFrequency);
-
-            return new TaskItem(
-                Input.Title,
-                Input.Description,
-                new task_scheduler_entities.Colour(
-                    Input.R, Input.G, Input.B
-                ),
-                Input.StartTime,
-                notificationManager,
-                frequency,
-                clock
-            );
-        }
-
-        private TaskItemDTO GetInputAsTaskItemDTO() {
-
-            return new TaskItemDTO {
-                Title = Input.Title,
-                Description = Input.Description,
-                StartTime = Input.StartTime,
-                CustomNotificationFrequency = Input.CustomNotificationFrequency,
-                NotificationFrequencyType = Input.NotificationFrequencyType,
-                R = Input.R,
-                G = Input.G,
-                B = Input.B
-            };
-        }
-
-        private TaskItemDAL ConvertTaskItemToDAL(TaskItem taskItem) {
-
-            CustomNotificationFrequencyDAL notificationFrequency = null;
-
-            //if the new task should have a custom notification frequency
-            if (Input.NotificationFrequencyType == NotificationFrequencyType.Custom) {
-
-                //create a custom notification frequency DAL
-                notificationFrequency = new CustomNotificationFrequencyDAL(
-                    taskItem.ID,
-                    Input.CustomNotificationFrequency
-                );
-            }
-
-            return new TaskItemDAL(
-                taskItem.ID,
-                taskItem.Title,
-                taskItem.Description,
-                taskItem.StartTime,
-                taskItem.LastNotificationTime,
-                taskItem.Colour.R,
-                taskItem.Colour.G,
-                taskItem.Colour.B,
-                notificationFrequency,
-                (int)Input.NotificationFrequencyType
-            );
-
-        }
 
         public void Execute() {
 
@@ -183,6 +120,93 @@ namespace task_scheduler_application.UseCases.CreateTask {
 
             //fill output data and return
             Output = new CreateTaskOutput { Success = true , TaskItemDTO = taskItemDTO };
+        }
+
+        /// <summary>
+        /// Converts the fields of the CreateTaskUseCase's Input property to a TaskItem and returns
+        /// it
+        /// </summary>
+        /// <returns>
+        /// TaskItem created with the data contained in the CreateTaskUseCase's Input property
+        /// </returns>
+        private TaskItem GetInputAsTaskItem() {
+
+            INotificationFrequency frequency = NotificationFrequencyFactory.New(Input.NotificationFrequencyType, Input.CustomNotificationFrequency);
+
+            return new TaskItem(
+                Input.Title,
+                Input.Description,
+                new task_scheduler_entities.Colour(
+                    Input.R, Input.G, Input.B
+                ),
+                Input.StartTime,
+                notificationManager,
+                frequency,
+                clock
+            );
+        }
+
+        /// <summary>
+        /// Converts the fields ofo the CreateTaskUseCase's Input property to a TaskItemDTO then
+        /// returns it
+        /// </summary>
+        /// <returns>
+        /// TaskItemDTO created from the data contained in the CreateTaskUseCase's Input property
+        /// </returns>
+        private TaskItemDTO GetInputAsTaskItemDTO() {
+
+            return new TaskItemDTO {
+                Title = Input.Title,
+                Description = Input.Description,
+                StartTime = Input.StartTime,
+                CustomNotificationFrequency = Input.CustomNotificationFrequency,
+                NotificationFrequencyType = Input.NotificationFrequencyType,
+                R = Input.R,
+                G = Input.G,
+                B = Input.B
+            };
+        }
+
+        /// <summary>
+        /// Creates a TaskItemDAL from a TaskItem 
+        /// </summary>
+        /// <param name="taskItem">
+        /// Will have its data used to create a TaskItemDAL
+        /// </param>
+        /// <returns>
+        /// TaskItemDAL created from the data of the taskItem parameter
+        /// </returns>
+        /*
+         * TODO: this should probably end up in a conversion class, of some sort, in the application
+         * layer
+         */
+        private TaskItemDAL ConvertTaskItemToDAL(TaskItem taskItem) {
+
+            CustomNotificationFrequencyDAL notificationFrequency = null;
+
+            //if the new task should have a custom notification frequency
+            if (Input.NotificationFrequencyType == NotificationFrequencyType.Custom) {
+
+                //create a custom notification frequency DAL
+                notificationFrequency = new CustomNotificationFrequencyDAL(
+                    taskItem.ID,
+                    Input.CustomNotificationFrequency
+                );
+            }
+
+            return new TaskItemDAL(
+                taskItem.ID,
+                taskItem.Title,
+                taskItem.Description,
+                taskItem.StartTime,
+                taskItem.LastNotificationTime,
+                taskItem.Colour.R,
+                taskItem.Colour.G,
+                taskItem.Colour.B,
+                notificationFrequency,
+                (int)Input.NotificationFrequencyType
+            );
+
         }
     }
 }
