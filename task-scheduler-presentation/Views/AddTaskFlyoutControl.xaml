@@ -12,8 +12,7 @@
     <UserControl.Resources>
         <Style TargetType="StackPanel" x:Key="PanelStyle" >
             <Setter Property="Orientation" Value="Horizontal"></Setter>
-            <Setter Property="Margin" Value="30,0,0,0"> </Setter>
-            <Setter Property="Spacing" Value="30"></Setter>
+            <Setter Property="Spacing" Value="10"></Setter>
             <Setter Property="HorizontalAlignment" Value="Center"></Setter>
         </Style>
     </UserControl.Resources>
@@ -49,6 +48,7 @@
             >
         </local:CustomNotificationFrequencyInputControl>
         <StackPanel Style="{StaticResource PanelStyle}">
+            <TextBlock FontSize="20">Starts</TextBlock>
             <CalendarDatePicker x:Name="dateInput"></CalendarDatePicker>
             <TimePicker x:Name="timeInput" ></TimePicker>
         </StackPanel >

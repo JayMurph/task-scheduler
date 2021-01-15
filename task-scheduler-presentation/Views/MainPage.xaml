@@ -40,7 +40,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem
                     Tag="Task_Page"
-                    Icon="Account"
+                    Icon="Edit"
                     >
                     <TextBlock Tag="Nav_Task">Tasks</TextBlock>
                 </NavigationViewItem>

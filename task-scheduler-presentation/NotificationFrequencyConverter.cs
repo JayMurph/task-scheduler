@@ -21,6 +21,7 @@ namespace task_scheduler_presentation {
                      * will be returned
                      */
                     StringBuilder builder = new StringBuilder();
+                    builder.Append("Every ");
 
                     //add the days if the incoming time value has days in it
                     if (time.Days > 0) {
