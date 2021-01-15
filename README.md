@@ -17,6 +17,12 @@ The user will be able to
 ## Why
 So one does not have to remember for themselves to do things on a certain periodic basis. For example, if one wants to remember to study a subject every day, one can schedule a task called "Study X" with a daily notification frequency then the app will generate a notification every day reminding them of the task.
 
+## Status
+So far, the application has the following functionality:
+- Users can create Tasks
+- Users can view all their Tasks on the Tasks page
+- Tasks are saved between application sessions
+
 ![Notifications Page](notifications-empty-210114.png)
 ![Creating a Task](create-task-210114.png)
 ![Tasks page](tasks-210114.png)
