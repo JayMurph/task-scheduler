@@ -1,0 +1,20 @@
+﻿<UserControl
+    x:Class="task_scheduler_presentation.Views.NotificationControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:task_scheduler_presentation.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="100"
+    d:DesignWidth="400">
+
+    <Grid BorderBrush="{x:Bind Notification.Color}" BorderThickness="2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Column="0" Text="{x:Bind Notification.Title}" FontSize="20" />
+        <TextBlock Grid.Column="1" Text="{x:Bind Notification.Time}" />
+    </Grid>
+</UserControl>
