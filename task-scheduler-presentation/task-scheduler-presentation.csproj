@@ -116,6 +116,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="NotificationFrequencyConverter.cs" />
     <Compile Include="Models\TaskItemModel.cs" />
     <Compile Include="Views\AddTaskButtonControl.xaml.cs">
