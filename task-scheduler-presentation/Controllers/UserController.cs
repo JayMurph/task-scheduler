@@ -71,6 +71,11 @@ namespace task_scheduler_presentation.Controllers {
             this.viewTasksUseCaseFactory = viewTasksUseCaseFactory;
         }
 
+        
+        public void ViewNotifications(INotificationsView view) {
+            
+        }
+
         /// <summary>
         /// Retrieves the TaskItems in the application and gives them to a ITasksView to display.
         /// </summary>
@@ -79,12 +84,11 @@ namespace task_scheduler_presentation.Controllers {
         /// </param>
         public void ViewTasks(ITasksView view) {
 
-            //create view tasks use case, pass input, execute, then get output
             var uc = viewTasksUseCaseFactory.New();
 
             uc.Execute();
 
-            //add taskItemDTOs from UseCase to observable collection for view
+            //add taskItemDTOs from UseCase output to observable collection for view
             foreach(TaskItemDTO taskItemDTO in uc.Output.TaskItems) {
 
                 TaskItemModel taskItemModel = new TaskItemModel() {
