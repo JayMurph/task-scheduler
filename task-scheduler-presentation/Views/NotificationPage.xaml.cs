@@ -33,6 +33,8 @@ namespace task_scheduler_presentation.Views {
         public NotificationPage() {
             this.InitializeComponent();
 
+            App.UserController.ViewNotifications(this);
+
             this.notificationListView.ItemsSource = Notifications;
         }
 
