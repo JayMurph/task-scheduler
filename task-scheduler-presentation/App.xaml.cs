@@ -88,14 +88,28 @@ namespace task_scheduler_presentation
                 TaskItemRepositoryFactory taskItemRepositoryFactory =
                     new TaskItemRepositoryFactory(dbConnectionStr, notificationFrequencyRepositoryFactory);
 
+                NotificationRepositoryFactory notificationRepositoryFactory =
+                    new NotificationRepositoryFactory(dbConnectionStr);
+
                 //create domain dependencies
                 BasicNotificationManager notificationManager = new BasicNotificationManager();
                 BasicTaskManager taskManager = new BasicTaskManager();
                 RealTimeClock clock = new RealTimeClock();
 
-                InitializeDomainFromDatabase(taskItemRepositoryFactory, notificationManager, taskManager, clock);
+                InitializeDomainFromDatabase(
+                    taskItemRepositoryFactory,
+                    notificationRepositoryFactory,
+                    notificationManager,
+                    taskManager,
+                    clock
+                );
 
-                InitializeUserController(taskItemRepositoryFactory, notificationManager, taskManager, clock);
+                InitializeUserController(
+                    taskItemRepositoryFactory,
+                    notificationManager,
+                    taskManager,
+                    clock
+                );
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
@@ -158,6 +172,7 @@ namespace task_scheduler_presentation
 
         private void InitializeDomainFromDatabase(
             TaskItemRepositoryFactory taskItemRepositoryFactory,
+            NotificationRepositoryFactory notificationRepositoryFactory,
             BasicNotificationManager notificationManager,
             BasicTaskManager taskManager,
             RealTimeClock clock) {
@@ -193,8 +208,23 @@ namespace task_scheduler_presentation
                 );
             }
 
-            //TODO: read in notifications from database, create domain Notifications from data and
-            //store them in the NotificationManager
+            INotificationRepository notificationRepo = notificationRepositoryFactory.New();
+
+            /*
+             * read in notifications from database, create domain Notifications from data and store
+             * them in the NotificationManager
+             */
+            foreach(NotificationDAL notification in notificationRepo.GetAll()) {
+                ITaskItem producer = taskManager.Find(notification.TaskId);
+
+                if(producer == null) {
+                    continue;
+                }
+
+                notificationManager.Add(
+                    new Notification(producer, notification.Time)
+                );
+            }
         }
 
         #region BoilerPlate
