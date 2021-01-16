@@ -10,7 +10,7 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <StackPanel>
         <TextBlock Text="NOTIFICATIONS" FontSize="100" HorizontalAlignment="Center"/>
         <GridView  
             x:Name="notificationListView" 
@@ -23,5 +23,5 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-    </Grid>
+    </StackPanel>
 </Page>
