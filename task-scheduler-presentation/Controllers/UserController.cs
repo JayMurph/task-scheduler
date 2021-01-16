@@ -106,16 +106,31 @@ namespace task_scheduler_presentation.Controllers {
         public void ViewNotifications(INotificationsView view) {
 
             //call use-case factory to create use-case object
+            var uc = viewNotificationsUseCaseFactory.New();
 
             //execute the use-case
+            uc.Execute();
 
-            //add Notifications from the use-cases output to the view's collection
+            if (uc.Output.Success) {
 
-            //subscribe view to NotificationCreated event
-            NotificationCreated += view.NotificationCreatedCallback;
+                //add Notifications from the use-cases output to the view's collection
+                foreach(NotificationDTO notification in uc.Output.Notifications) {
+                    view.Notifications.Add(
+                        new NotificationModel() {
+                            Title=notification.Title,
+                            Time = notification.Time,
+                            Color = new Windows.UI.Xaml.Media.SolidColorBrush(
+                                Windows.UI.Color.FromArgb(255, notification.R, notification.G, notification.B))
+                        }
+                    );
+                }
 
-            //use the view's Closing event to unsubscribe it from NotificationCreated
-            view.Closing += (s, e) => { NotificationCreated -= view.NotificationCreatedCallback; }; 
+                //subscribe view to NotificationCreated event
+                NotificationCreated += view.NotificationCreatedCallback;
+
+                //use the view's Closing event to unsubscribe it from NotificationCreated
+                view.Closing += (s, e) => { NotificationCreated -= view.NotificationCreatedCallback; }; 
+            }
         }
 
         /// <summary>
@@ -130,28 +145,30 @@ namespace task_scheduler_presentation.Controllers {
 
             uc.Execute();
 
-            //add taskItemDTOs from UseCase output to observable collection for view
-            foreach(TaskItemDTO taskItemDTO in uc.Output.TaskItems) {
+            if (uc.Output.Success) {
+                //add taskItemDTOs from UseCase output to observable collection for view
+                foreach(TaskItemDTO taskItemDTO in uc.Output.TaskItems) {
 
-                TaskItemModel taskItemModel = new TaskItemModel() {
-                    Title = taskItemDTO.Title,
-                    Description = taskItemDTO.Description,
-                    FrequencyType = frequenctTypeStrMap[taskItemDTO.NotificationFrequencyType],
-                    NotificationFrequency = taskItemDTO.CustomNotificationFrequency,
-                    StartTime = taskItemDTO.StartTime,
-                    Color = new Windows.UI.Xaml.Media.SolidColorBrush(
-                        Windows.UI.Color.FromArgb(255, taskItemDTO.R, taskItemDTO.G, taskItemDTO.B))
-                };
+                    TaskItemModel taskItemModel = new TaskItemModel() {
+                        Title = taskItemDTO.Title,
+                        Description = taskItemDTO.Description,
+                        FrequencyType = frequenctTypeStrMap[taskItemDTO.NotificationFrequencyType],
+                        NotificationFrequency = taskItemDTO.CustomNotificationFrequency,
+                        StartTime = taskItemDTO.StartTime,
+                        Color = new Windows.UI.Xaml.Media.SolidColorBrush(
+                            Windows.UI.Color.FromArgb(255, taskItemDTO.R, taskItemDTO.G, taskItemDTO.B))
+                    };
 
-                view.TaskItems.Add(taskItemModel);
+                    view.TaskItems.Add(taskItemModel);
+                }
+
+                //subscribe the view to our TaskCreated event
+                TaskCreated += view.TaskCreatedCallback;
+
+                //Subscribe to the views Closing event, so we can unsubscribe the 
+                //view from the TaskCreated event
+                view.Closing += (s, e) => { TaskCreated -= view.TaskCreatedCallback; };
             }
-
-            //subscribe the view to our TaskCreated event
-            TaskCreated += view.TaskCreatedCallback;
-
-            //Subscribe to the views Closing event, so we can unsubscribe the 
-            //view from the TaskCreated event
-            view.Closing += (s, e) => { TaskCreated -= view.TaskCreatedCallback; };
         }
 
 
