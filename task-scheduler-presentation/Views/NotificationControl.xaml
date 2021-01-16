@@ -9,7 +9,7 @@
     d:DesignHeight="100"
     d:DesignWidth="400">
 
-    <Grid BorderBrush="{x:Bind Notification.Color}" BorderThickness="2">
+    <Grid BorderBrush="{x:Bind Notification.Color}" BorderThickness="2" Width="800">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
