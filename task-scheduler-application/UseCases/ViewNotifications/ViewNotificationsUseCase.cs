@@ -36,15 +36,19 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
              */
             foreach(Notification notification in notificationManager.GetAll()) {
 
-                TaskItemDAL task = taskRepo.GetById(notification.Producer.ID);
+                TaskItemDAL dataLayerTask = taskRepo.GetById(notification.Producer.ID);
+
+                if(dataLayerTask == null) {
+                    continue;
+                }
 
                 NotificationDTO dto = new NotificationDTO() {
-                    TaskId = task.Id,
-                    Title = task.Title,
+                    TaskId = dataLayerTask.Id,
+                    Title = dataLayerTask.Title,
                     Time = notification.Time,
-                    R = task.R,
-                    G = task.G, 
-                    B = task.B
+                    R = dataLayerTask.R,
+                    G = dataLayerTask.G, 
+                    B = dataLayerTask.B
                 };
 
                 notifications.Add(dto);
