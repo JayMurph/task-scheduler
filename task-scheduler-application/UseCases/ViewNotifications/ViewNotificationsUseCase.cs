@@ -12,6 +12,14 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
         INotificationManager notificationManager;
         ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
+        public ViewNotificationsUseCase(
+            INotificationManager notificationManager,
+            ITaskItemRepositoryFactory taskItemRepositoryFactory) {
+
+            this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));
+            this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
+        }
+
         public ViewNotificationsInput Input { set; private get; } = null;
 
         public ViewNotificationsOutput Output { get; private set; } = null;
@@ -33,7 +41,10 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
                 NotificationDTO dto = new NotificationDTO() {
                     TaskId = task.Id,
                     Title = task.Title,
-                    Time = notification.Time
+                    Time = notification.Time,
+                    R = task.R,
+                    G = task.G, 
+                    B = task.B
                 };
 
                 notifications.Add(dto);
