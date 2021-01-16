@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace task_scheduler_data_access.Repositories {
+    public class NotificationRepositoryFactory : INotificationRepositoryFactory {
+        private readonly string connectionString;
+
+        public NotificationRepositoryFactory(string connectionString) {
+            this.connectionString = connectionString;
+        }
+
+        public INotificationRepository New() {
+            return new NotificationRepository(connectionString);
+        }
+    }
+}
