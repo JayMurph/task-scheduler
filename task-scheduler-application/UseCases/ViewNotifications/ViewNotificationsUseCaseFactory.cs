@@ -9,6 +9,11 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
         INotificationManager notificationManager;
         ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
+        public ViewNotificationsUseCaseFactory(INotificationManager notificationManager, ITaskItemRepositoryFactory taskItemRepositoryFactory) {
+            this.notificationManager = notificationManager;
+            this.taskItemRepositoryFactory = taskItemRepositoryFactory;
+        }
+
         public ViewNotificationsUseCase New() {
             return new ViewNotificationsUseCase(notificationManager, taskItemRepositoryFactory);
         }
