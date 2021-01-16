@@ -25,6 +25,7 @@ using task_scheduler_application.DTO;
 using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
+using task_scheduler_application.UseCases.ViewNotifications;
 
 using task_scheduler_data_access;
 using task_scheduler_data_access.Repositories;
@@ -141,10 +142,17 @@ namespace task_scheduler_presentation
             var viewTasksUseCaseFactory =
                 new ViewTasksUseCaseFactory(taskManager, taskItemRepositoryFactory);
 
+            var viewNotificationsUseCaseFactory =
+                new ViewNotificationsUseCaseFactory(
+                    notificationManager,
+                    taskItemRepositoryFactory
+                );
+
             //Instantiate user controller, passing in required factories
             UserController = new Controllers.UserController(
                 createTaskUseCaseFactory,
-                viewTasksUseCaseFactory
+                viewTasksUseCaseFactory,
+                viewNotificationsUseCaseFactory
             );
         }
 
@@ -217,74 +225,6 @@ namespace task_scheduler_presentation
 
         #endregion
 
-        //TODO: this method is doing too much. its doing more than just creating a UserController. It should be split up
-        static private Controllers.UserController CreateUserController(string dbConnectionStr) {
-            DataAccess.InitializeDatabase(dbConnectionStr);
-
-            //CREATE REPOSITORY FACTORIES
-            NotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory =
-                new NotificationFrequencyRepositoryFactory(dbConnectionStr);
-
-            TaskItemRepositoryFactory taskItemRepositoryFactory = 
-                new TaskItemRepositoryFactory(dbConnectionStr, notificationFrequencyRepositoryFactory);
-
-            //create domain dependencies
-            BasicNotificationManager notificationManager = new BasicNotificationManager();
-            BasicTaskManager taskManager = new BasicTaskManager();
-            RealTimeClock clock = new RealTimeClock();
-
-            //...pulling in data and creating domain entities should be done elsewhere
-            //load database data into domain managers
-            ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
-
-            //read in task items from database. Create domain taskItems from 
-            //data and add items to taskManager
-            foreach(TaskItemDAL task in taskItemRepository.GetAll()) {
-
-                INotificationFrequency notificationFrequency = 
-                    NotificationFrequencyFactory.New(
-                        //TODO: do something safer than just a cast
-                        (NotificationFrequencyType)task.NotificationFrequencyType, 
-                        //TODO: do something more sensible than below
-                        (task.CustomNotificationFrequency?.Time ?? TimeSpan.Zero)
-                    );
-
-                taskManager.Add(
-                    new TaskItem(
-                        task.Title,
-                        task.Description,
-                        new Colour(task.R, task.G, task.B),
-                        task.StartTime,
-                        notificationManager,
-                        notificationFrequency,
-                        clock,
-                        task.LastNotificationTime,
-                        task.Id
-                    )
-                );
-            }
-
-            //TODO: read in notifications from database, create domain Notifications from data and
-            //store them in the NotificationManager
-
-            //CREATE USE-CASE FACTORIES
-            var createTaskUseCaseFactory =
-                new CreateTaskUseCaseFactory(
-                    taskManager,
-                    notificationManager,
-                    clock,
-                    taskItemRepositoryFactory
-                );
-
-            var viewTasksUseCaseFactory =
-                new ViewTasksUseCaseFactory(taskManager, taskItemRepositoryFactory);
-
-            //Instantiate user controller, passing in required factories
-            return new Controllers.UserController(
-                createTaskUseCaseFactory,
-                viewTasksUseCaseFactory
-            );
-        }
 
         private static async Task CreateDatabaseFileIfNecessary(string filename) {
             //check if database file already exists
