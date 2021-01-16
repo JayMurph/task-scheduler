@@ -33,11 +33,8 @@ namespace task_scheduler_presentation.Views {
         /// </summary>
         public event EventHandler Closing;
 
-        /// <summary>
-        /// Invokes the Closing event delegates
-        /// </summary>
-        private void OnClosing() {
-            Closing?.Invoke(this, null);
+        private void OnClosing(object source, EventArgs args) {
+            Closing?.Invoke(source, args);
         }
 
         /// <summary>
@@ -61,7 +58,7 @@ namespace task_scheduler_presentation.Views {
         /// Arguments for the Navigating event. unused.
         /// </param>
         protected override void OnNavigatingFrom(NavigatingCancelEventArgs e) {
-            OnClosing();
+            OnClosing(this, null);
             base.OnNavigatingFrom(e);
         }
     }
