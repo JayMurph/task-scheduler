@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
+using task_scheduler_application.UseCases.ViewNotifications;
 using task_scheduler_application.DTO;
 
 using task_scheduler_presentation.Views;
@@ -27,6 +28,11 @@ namespace task_scheduler_presentation.Controllers {
         /// For creating new ViewTaskUseCases
         /// </summary>
         private readonly ViewTasksUseCaseFactory viewTasksUseCaseFactory;
+
+        /// <summary>
+        /// for creating new ViewNotificationsUseCases
+        /// </summary>
+        private readonly ViewNotificationsUseCaseFactory viewNotificationsUseCaseFactory;
 
         public const string CUSTOM_NOTIFICATION_TYPE_STRING = "Custom";
 
@@ -80,13 +86,15 @@ namespace task_scheduler_presentation.Controllers {
 
         public UserController(
             CreateTaskUseCaseFactory createTaskUseCaseFactory,
-            ViewTasksUseCaseFactory viewTasksUseCaseFactory
-            ) {
-            this.createTaskUseCaseFactory = createTaskUseCaseFactory;
-            this.viewTasksUseCaseFactory = viewTasksUseCaseFactory;
+            ViewTasksUseCaseFactory viewTasksUseCaseFactory,
+            ViewNotificationsUseCaseFactory viewNotificationsUseCaseFactory) {
+
+            this.createTaskUseCaseFactory = createTaskUseCaseFactory ?? throw new ArgumentNullException(nameof(createTaskUseCaseFactory));
+            this.viewTasksUseCaseFactory = viewTasksUseCaseFactory ?? throw new ArgumentNullException(nameof(viewTasksUseCaseFactory));
+            this.viewNotificationsUseCaseFactory = viewNotificationsUseCaseFactory ?? throw new ArgumentNullException(nameof(viewNotificationsUseCaseFactory));
         }
 
-        
+
         /// <summary>
         /// Retrieves Notifications in the application then adds them to an INotificationView's
         /// collection of Notifications to displays, also subscribes the view to the
