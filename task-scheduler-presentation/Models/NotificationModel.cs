@@ -18,5 +18,10 @@ namespace task_scheduler_presentation.Models {
         /// The time at which the Notification was generated
         /// </summary>
         public DateTime Time { get; set; }
+
+        /// <summary>
+        /// Color of the Task that generated the Notification
+        /// </summary>
+        public Windows.UI.Color Color { get; set; }
     }
 }
