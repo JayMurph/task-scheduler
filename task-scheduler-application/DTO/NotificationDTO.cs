@@ -21,5 +21,9 @@ namespace task_scheduler_application.DTO {
         /// The point in time at which the Notification was produced
         /// </summary>
         public DateTime Time { get; set; }
+
+        public byte R { get; set; }
+        public byte G { get; set; }
+        public byte B { get; set; }
     }
 }
