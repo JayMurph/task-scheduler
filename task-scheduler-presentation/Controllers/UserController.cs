@@ -68,6 +68,12 @@ namespace task_scheduler_presentation.Controllers {
             TaskCreated?.Invoke(this, taskItem);
         }
 
+        /// <summary>
+        /// Invokes the NotificationCreated event subscribers.
+        /// </summary>
+        /// <param name="notification">
+        /// a newly created Notification
+        /// </param>
         protected void OnNotificationCreated(NotificationModel notification) {
             NotificationCreated?.Invoke(this, notification);
         }
