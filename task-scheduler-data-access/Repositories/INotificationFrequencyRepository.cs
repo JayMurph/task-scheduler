@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using task_scheduler_data_access_standard.DataObjects;
+using task_scheduler_data_access.DataObjects;
 
-namespace task_scheduler_data_access_standard.Repositories {
+namespace task_scheduler_data_access.Repositories {
     /// <summary>
     /// Defines the functionality required for an IRepository that manages
     /// CustomNotificationFrequencyDALs

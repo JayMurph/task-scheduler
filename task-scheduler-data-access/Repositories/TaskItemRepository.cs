@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.Data.SQLite;
-using task_scheduler_data_access_standard.DataObjects;
+using task_scheduler_data_access.DataObjects;
 
-namespace task_scheduler_data_access_standard.Repositories {
+namespace task_scheduler_data_access.Repositories {
 
     /// <summary>
     /// Repository that manages <see cref="TaskItemDAL"/>s

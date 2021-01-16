@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using task_scheduler_data_access_standard.DataObjects;
+using task_scheduler_data_access.DataObjects;
 
-namespace task_scheduler_data_access_standard.Repositories {
+namespace task_scheduler_data_access.Repositories {
     /// <summary>
     /// Defines the functionality required for an IRepository that manages TaskItemDAL's
     /// </summary>

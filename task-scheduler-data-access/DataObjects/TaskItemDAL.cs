@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace task_scheduler_data_access_standard.DataObjects {
+namespace task_scheduler_data_access.DataObjects {
 
     /// <summary>
     /// behaviourless Data-layer representation of a TaskItem

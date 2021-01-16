@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace task_scheduler_data_access_standard {
+namespace task_scheduler_data_access {
     public static class DataAccess {
         public static void InitializeDatabase(string connectionStr) {
             try {

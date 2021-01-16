@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace task_scheduler_data_access_standard.Repositories {
+namespace task_scheduler_data_access.Repositories {
     /// <summary>
     /// Produces <see cref="TaskItemRepository"/>s
     /// </summary>

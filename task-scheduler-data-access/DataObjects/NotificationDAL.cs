@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace task_scheduler_data_access_standard.DataObjects {
+namespace task_scheduler_data_access.DataObjects {
     /// <summary>
     /// Represents the data of a Notification produced by a TaskItem
     /// </summary>

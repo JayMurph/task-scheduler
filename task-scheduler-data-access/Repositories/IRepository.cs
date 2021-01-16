@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace task_scheduler_data_access_standard.Repositories {
+namespace task_scheduler_data_access.Repositories {
     /// <summary>
     /// Defines the components necessary for a generic repository. Allows CRUD operations on a
     /// collection of objects.

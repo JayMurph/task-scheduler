@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Data.SQLite;
 
-using task_scheduler_data_access_standard.DataObjects;
+using task_scheduler_data_access.DataObjects;
 
-namespace task_scheduler_data_access_standard.Repositories {
+namespace task_scheduler_data_access.Repositories {
     class NotificationFrequencyRepository : INotificationFrequencyRepository {
 
         private readonly DataTable table;

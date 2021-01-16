@@ -26,9 +26,9 @@ using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
 
-using task_scheduler_data_access_standard;
-using task_scheduler_data_access_standard.Repositories;
-using task_scheduler_data_access_standard.DataObjects;
+using task_scheduler_data_access;
+using task_scheduler_data_access.Repositories;
+using task_scheduler_data_access.DataObjects;
 
 namespace task_scheduler_presentation
 {

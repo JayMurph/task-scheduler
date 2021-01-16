@@ -4,8 +4,8 @@ using System.Text;
 using task_scheduler_entities;
 using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.DTO;
-using task_scheduler_data_access_standard.Repositories;
-using task_scheduler_data_access_standard.DataObjects;
+using task_scheduler_data_access.Repositories;
+using task_scheduler_data_access.DataObjects;
 
 namespace task_scheduler_application.UseCases.CreateTask {
     /// <summary>
