@@ -96,7 +96,12 @@ namespace task_scheduler_presentation.Controllers {
         /// Will be given Notitications displayed and subscribed to the NotificationCreated Event
         /// </param>
         public void ViewNotifications(INotificationsView view) {
-            
+
+            //subscribe view to NotificationCreated event
+            NotificationCreated += view.NotificationCreatedCallback;
+
+            //use the view's Closing event to unsubscribe it from NotificationCreated
+            view.Closing += (s, e) => { NotificationCreated -= view.NotificationCreatedCallback; }; 
         }
 
         /// <summary>
