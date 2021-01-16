@@ -68,6 +68,10 @@ namespace task_scheduler_presentation.Controllers {
             TaskCreated?.Invoke(this, taskItem);
         }
 
+        protected void OnNotificationCreated(NotificationModel notification) {
+            NotificationCreated?.Invoke(this, notification);
+        }
+
         public UserController(
             CreateTaskUseCaseFactory createTaskUseCaseFactory,
             ViewTasksUseCaseFactory viewTasksUseCaseFactory
