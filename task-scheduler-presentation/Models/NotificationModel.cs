@@ -22,6 +22,6 @@ namespace task_scheduler_presentation.Models {
         /// <summary>
         /// Color of the Task that generated the Notification
         /// </summary>
-        public Windows.UI.Color Color { get; set; }
+        public Windows.UI.Xaml.Media.Brush Color { get; set; }
     }
 }
