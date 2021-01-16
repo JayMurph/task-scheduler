@@ -97,6 +97,12 @@ namespace task_scheduler_presentation.Controllers {
         /// </param>
         public void ViewNotifications(INotificationsView view) {
 
+            //call use-case factory to create use-case object
+
+            //execute the use-case
+
+            //add Notifications from the use-cases output to the view's collection
+
             //subscribe view to NotificationCreated event
             NotificationCreated += view.NotificationCreatedCallback;
 
