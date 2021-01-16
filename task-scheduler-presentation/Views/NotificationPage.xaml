@@ -12,7 +12,11 @@
 
     <Grid>
         <TextBlock Text="NOTIFICATIONS" FontSize="100" HorizontalAlignment="Center"/>
-        <GridView>
+        <GridView  
+            x:Name="notificationListView" 
+            HorizontalAlignment="Center"
+            Height="700"
+            >
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="models:NotificationModel">
                     <views:NotificationControl/>
