@@ -14,7 +14,17 @@
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Column="0" Text="{x:Bind Notification.Title}" FontSize="20" />
-        <TextBlock Grid.Column="1" Text="{x:Bind Notification.Time}" />
+        <TextBlock 
+            Grid.Column="0" 
+            Text="{x:Bind Notification.Title}" 
+            FontSize="20" 
+            Margin="20,0 0,0" 
+            VerticalAlignment="Center"
+            />
+        <TextBlock 
+            Grid.Column="1" 
+            Text="{x:Bind Notification.Time}" 
+            VerticalAlignment="Center"
+            />
     </Grid>
 </UserControl>
