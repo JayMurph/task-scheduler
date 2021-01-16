@@ -75,6 +75,8 @@ namespace task_scheduler_application.UseCases.ViewTasks {
 
                 Output.TaskItems.Add(taskDTO);
             }
+
+            Output.Success = true;
         }
     }
 }
