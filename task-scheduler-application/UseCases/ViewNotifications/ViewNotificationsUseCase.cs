@@ -1,18 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using task_scheduler_application;
+using task_scheduler_data_access.Repositories;
+using task_scheduler_data_access.DataObjects;
+using task_scheduler_application.DTO;
+using task_scheduler_entities;
 
 namespace task_scheduler_application.UseCases.ViewNotifications {
     public class ViewNotificationsUseCase : IUseCase<ViewNotificationsInput, ViewNotificationsOutput> {
-        public ViewNotificationsInput Input { set; private get; }
+        INotificationManager notificationManager;
+        ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
-        public ViewNotificationsOutput Output { get; private set; }
+        public ViewNotificationsInput Input { set; private get; } = null;
+
+        public ViewNotificationsOutput Output { get; private set; } = null;
 
         public void Execute() {
             //no input for use case 
+            ITaskItemRepository taskRepo = taskItemRepositoryFactory.New();
 
+            List<NotificationDTO> notifications = new List<NotificationDTO>();
 
+            /*
+             * Get all notifications that are present in the application, convert them to DTO's, then
+             * add them to a collection to return
+             */
+            foreach(Notification notification in notificationManager.GetAll()) {
 
+                TaskItemDAL task = taskRepo.GetById(notification.Producer.ID);
+
+                NotificationDTO dto = new NotificationDTO() {
+                    TaskId = task.Id,
+                    Title = task.Title,
+                    Time = notification.Time
+                };
+
+                notifications.Add(dto);
+            }
+
+            Output = new ViewNotificationsOutput() { Success = true, Notifications = notifications };
         }
     }
 }
