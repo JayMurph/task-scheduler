@@ -53,6 +53,11 @@ namespace task_scheduler_presentation.Controllers {
         public event EventHandler<TaskItemModel> TaskCreated;
 
         /// <summary>
+        /// Invoked when a new Notification is created within the application
+        /// </summary>
+        public event EventHandler<NotificationModel> NotificationCreated;
+
+        /// <summary>
         /// Executed whenever a new TaskItem is created. Invokes the delegates attached to the
         /// TaskCreated event.
         /// </summary>
@@ -72,6 +77,14 @@ namespace task_scheduler_presentation.Controllers {
         }
 
         
+        /// <summary>
+        /// Retrieves Notifications in the application then adds them to an INotificationView's
+        /// collection of Notifications to displays, also subscribes the view to the
+        /// NotificationCreated event
+        /// </summary>
+        /// <param name="view">
+        /// Will be given Notitications displayed and subscribed to the NotificationCreated Event
+        /// </param>
         public void ViewNotifications(INotificationsView view) {
             
         }
