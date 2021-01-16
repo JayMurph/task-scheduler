@@ -118,7 +118,7 @@ namespace task_scheduler_presentation.Controllers {
         /// </param>
         public void CreateTask(IAddTaskView view) {
 
-            //get and VALIDATE input values from view
+            //get input from view and create use-case input
             CreateTaskInput input = new CreateTaskInput {
                 Title = view.Title,
                 Description = view.Description,
