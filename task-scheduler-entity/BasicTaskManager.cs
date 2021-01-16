@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 
@@ -21,6 +22,16 @@ namespace task_scheduler_entities {
 
         public List<ITaskItem> GetAll() {
             return new List<ITaskItem>(tasks);
+        }
+
+        public ITaskItem Find(Guid id) {
+            var matches = tasks.Where(x => x.ID == id);
+
+            if(matches.Count() != 1) {
+                return null;
+            }
+
+            return matches.First();
         }
 
         public bool Remove(ITaskItem taskItem) {
