@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using Windows.UI.Xaml.Media;
 
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
@@ -49,6 +50,10 @@ namespace task_scheduler_presentation.Controllers {
                 { NotificationFrequencyType.Custom, CUSTOM_NOTIFICATION_TYPE_STRING }
             };
 
+        /// <summary>
+        /// List of strings describing the different notification frequencies available in the
+        /// application.
+        /// </summary>
         public List<string> FrequencyTypeStrings {
             get { return frequenctTypeStrMap.Values.ToList(); }
         }
@@ -152,12 +157,14 @@ namespace task_scheduler_presentation.Controllers {
                 //get and convert all Use-Cases Notifications output to NotificationModels
                 foreach(NotificationDTO notification in uc.Output.Notifications) {
 
+                    //convert the NotificationDTOs rgb color to a Windows brush
+                    SolidColorBrush colorBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, notification.R, notification.G, notification.B));
+
                     models.Add(
                         new NotificationModel() {
                             Title=notification.Title,
                             Time = notification.Time,
-                            Color = new Windows.UI.Xaml.Media.SolidColorBrush(
-                                Windows.UI.Color.FromArgb(255, notification.R, notification.G, notification.B))
+                            Color = colorBrush
                         }
                     );
 
@@ -176,6 +183,9 @@ namespace task_scheduler_presentation.Controllers {
                 //use the view's Closing event to unsubscribe it from NotificationCreated
                 view.Closing += (s, e) => { NotificationCreated -= view.NotificationCreatedCallback; }; 
             }
+            else {
+                //TODO: handle possible failure of the use-case
+            }
         }
 
         /// <summary>
@@ -190,18 +200,29 @@ namespace task_scheduler_presentation.Controllers {
 
             uc.Execute();
 
-            if (uc.Output.Success) {
-                //add taskItemDTOs from UseCase output to observable collection for view
-                foreach(TaskItemDTO taskItemDTO in uc.Output.TaskItems) {
+            ViewTasksOutput output = uc.Output;
 
+            if (output.Success) {
+                /*
+                 * iterate through TaskItems returned by the use case, convert them to models, then
+                 * add them to the view to display
+                 */
+                foreach(TaskItemDTO taskDTO in output.TaskItems) {
+
+                    //map the current taskDTOs NotificationFrequencyType enum to a string
+                    string frequencyTypeStr = frequenctTypeStrMap[taskDTO.NotificationFrequencyType];
+
+                    //convert the taskDTO's rgb color to a Windows brush
+                    SolidColorBrush colorBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, taskDTO.R, taskDTO.G, taskDTO.B));
+
+                    //create TaskItemModel from data of TaskItemDTO
                     TaskItemModel taskItemModel = new TaskItemModel() {
-                        Title = taskItemDTO.Title,
-                        Description = taskItemDTO.Description,
-                        FrequencyType = frequenctTypeStrMap[taskItemDTO.NotificationFrequencyType],
-                        NotificationFrequency = taskItemDTO.CustomNotificationFrequency,
-                        StartTime = taskItemDTO.StartTime,
-                        Color = new Windows.UI.Xaml.Media.SolidColorBrush(
-                            Windows.UI.Color.FromArgb(255, taskItemDTO.R, taskItemDTO.G, taskItemDTO.B))
+                        Title = taskDTO.Title,
+                        Description = taskDTO.Description,
+                        FrequencyType = frequencyTypeStr,
+                        NotificationFrequency = taskDTO.CustomNotificationFrequency,
+                        StartTime = taskDTO.StartTime,
+                        Color = colorBrush
                     };
 
                     view.TaskItems.Add(taskItemModel);
@@ -213,6 +234,9 @@ namespace task_scheduler_presentation.Controllers {
                 //Subscribe to the views Closing event, so we can unsubscribe the 
                 //view from the TaskCreated event
                 view.Closing += (s, e) => { TaskCreated -= view.TaskCreatedCallback; };
+            }
+            else {
+                //TODO: handle possible failure of use-case
             }
         }
 
@@ -226,7 +250,11 @@ namespace task_scheduler_presentation.Controllers {
         /// </param>
         public void CreateTask(IAddTaskView view) {
 
-            //get input from view and create use-case input
+            //map the view's notification frequency type string to an enum value
+            NotificationFrequencyType notificationFrequencyType =
+                frequenctTypeStrMap.Where(x => x.Value == view.FrequencyType).First().Key;
+
+            //create input for use-case from data of the view
             CreateTaskInput input = new CreateTaskInput {
                 Title = view.Title,
                 Description = view.Description,
@@ -234,9 +262,7 @@ namespace task_scheduler_presentation.Controllers {
                 R = view.Color.R,
                 G = view.Color.G,
                 B = view.Color.B,
-                NotificationFrequencyType = frequenctTypeStrMap.Where(
-                    (x)=> { return x.Value == view.FrequencyType; }
-                ).First().Key,
+                NotificationFrequencyType = notificationFrequencyType,
                 CustomNotificationFrequency = view.CustomFrequency
             };
 
@@ -247,29 +273,37 @@ namespace task_scheduler_presentation.Controllers {
             //run the use case
             uc.Execute();
 
-            //get Use Case output and handle errors
             CreateTaskOutput output = uc.Output;
 
             if (output.Success) {
-                //create task item model from taskItemDTO in successful use-case output
+                //get the taskItemDTO returned creatd by the executed usecase
+                TaskItemDTO taskDTO = output.TaskItemDTO;
+
+                //get a string representation of the taskDTO's notification frequency type
+                string frequencyTypeStr = frequenctTypeStrMap[taskDTO.NotificationFrequencyType];
+
+                //convert the taskDTO's rgb color to a Windows brush
+                SolidColorBrush colorBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, taskDTO.R, taskDTO.G, taskDTO.B));
+
+                //create task item model from taskDTO
                 TaskItemModel newTaskItemModel = new TaskItemModel() {
-                    Title = output.TaskItemDTO.Title,
-                    Description = output.TaskItemDTO.Description,
-                    StartTime = output.TaskItemDTO.StartTime,
-                    FrequencyType = 
-                        frequenctTypeStrMap[output.TaskItemDTO.NotificationFrequencyType],
-                    NotificationFrequency = output.TaskItemDTO.CustomNotificationFrequency,
-                    Color = new Windows.UI.Xaml.Media.SolidColorBrush(
-                        Windows.UI.Color.FromArgb(255, output.TaskItemDTO.R, output.TaskItemDTO.G, output.TaskItemDTO.B))
+                    Title = taskDTO.Title,
+                    Description = taskDTO.Description,
+                    StartTime = taskDTO.StartTime,
+                    FrequencyType = frequencyTypeStr,
+                    NotificationFrequency = taskDTO.CustomNotificationFrequency,
+                    Color = colorBrush
                 };
 
                 //fire the TaskCreated event
                 OnTaskCreated(newTaskItemModel);
 
+                //clear the views input fields and close it
                 view.ClearFields();
                 view.CloseSelf();
             }
             else {
+                //transfer the use-cases error to the view
                 view.ApplicationErrorMessage = output.Error;
                 view.ApplicationError = true;
             }
