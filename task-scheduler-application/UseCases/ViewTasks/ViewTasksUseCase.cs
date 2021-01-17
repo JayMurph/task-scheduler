@@ -68,6 +68,7 @@ namespace task_scheduler_application.UseCases.ViewTasks {
                         G = domainTask.Colour.G,
                         B = domainTask.Colour.B,
                         StartTime = domainTask.StartTime,
+                        //TODO: prefer to do a better conversion that just a cast to an enum
                         NotificationFrequencyType = 
                             (NotificationFrequencyType)dataLayerTask.NotificationFrequencyType,
                         CustomNotificationFrequency = customFrequencyTime
