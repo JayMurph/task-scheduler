@@ -142,6 +142,13 @@ namespace task_scheduler_presentation
             }
         }
 
+        /// <summary>
+        /// Creates the static UserController used by the class
+        /// </summary>
+        /// <param name="taskItemRepositoryFactory"></param>
+        /// <param name="notificationManager"></param>
+        /// <param name="taskManager"></param>
+        /// <param name="clock"></param>
         private void InitializeUserController(
             TaskItemRepositoryFactory taskItemRepositoryFactory,
             BasicNotificationManager notificationManager,
@@ -197,6 +204,14 @@ namespace task_scheduler_presentation
                 };
         }
 
+        /// <summary>
+        /// Creates and adds neccessary domain objects to the domain manager classes
+        /// </summary>
+        /// <param name="taskItemRepositoryFactory"></param>
+        /// <param name="notificationRepositoryFactory"></param>
+        /// <param name="notificationManager"></param>
+        /// <param name="taskManager"></param>
+        /// <param name="clock"></param>
         private void InitializeDomainFromDatabase(
             TaskItemRepositoryFactory taskItemRepositoryFactory,
             NotificationRepositoryFactory notificationRepositoryFactory,
