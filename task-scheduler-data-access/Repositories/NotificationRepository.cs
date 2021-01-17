@@ -12,8 +12,10 @@ namespace task_scheduler_data_access.Repositories {
     /// the nature of Notifications.
     /// </summary>
     public class NotificationRepository : INotificationRepository{
-        SQLiteDataAdapter adapter;
-        DataTable table;
+
+        private SQLiteDataAdapter adapter;
+
+        private DataTable table;
 
         private bool disposedValue;
 
@@ -27,7 +29,21 @@ namespace task_scheduler_data_access.Repositories {
             adapter.Fill(table);
         }
 
+        /// <summary>
+        /// Returns an SQLiteDataAdapter configured to Insert, Select and Delete entries
+        /// from a Notifications table
+        /// </summary>
+        /// <param name="connectionString">
+        /// To be used by the new SQLiteDataAdapter's Connection property
+        /// </param>
+        /// <returns>
+        /// SQLiteDataAdapter configured to interact with a Notifications table
+        /// </returns>
         private static SQLiteDataAdapter CreateNotificationTableAdapter(string connectionString) {
+
+            if (string.IsNullOrWhiteSpace(connectionString)) {
+                throw new ArgumentException($"'{nameof(connectionString)}' cannot be null or whitespace", nameof(connectionString));
+            }
 
             SQLiteConnection conn = new SQLiteConnection(connectionString);
 
