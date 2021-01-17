@@ -6,8 +6,10 @@ using task_scheduler_data_access.Repositories;
 
 namespace task_scheduler_application.UseCases.ViewNotifications {
     public class ViewNotificationsUseCaseFactory : IUseCaseFactory<ViewNotificationsUseCase> {
-        INotificationManager notificationManager;
-        ITaskItemRepositoryFactory taskItemRepositoryFactory;
+
+        //dependencies required for ViewNotificaitonsUseCase
+        private INotificationManager notificationManager;
+        private ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
         public ViewNotificationsUseCaseFactory(
             INotificationManager notificationManager,
