@@ -9,8 +9,12 @@ using task_scheduler_entities;
 
 namespace task_scheduler_application.UseCases.ViewNotifications {
     public class ViewNotificationsUseCase : IUseCase<ViewNotificationsInput, ViewNotificationsOutput> {
-        INotificationManager notificationManager;
-        ITaskItemRepositoryFactory taskItemRepositoryFactory;
+
+        //used for retrieving notifications present in the domain
+        private INotificationManager notificationManager;
+
+        //used for retrieving data of task associated to a notification
+        private ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
         public ViewNotificationsUseCase(
             INotificationManager notificationManager,
@@ -20,10 +24,21 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
         }
 
+        /// <summary>
+        /// unused because ViewNotifications requires no input. included to confirm to IUseCase
+        /// </summary>
         public ViewNotificationsInput Input { set; private get; } = null;
 
+        /// <summary>
+        /// Holds the Output of the UseCase. Contains a field indicating errors, and a collection of
+        /// NotificationDALs
+        /// </summary>
         public ViewNotificationsOutput Output { get; private set; } = null;
 
+        /// <summary>
+        /// Executes the ViewNotificationsUseCase. Sets the Output property of the UseCase object
+        /// once complete
+        /// </summary>
         public void Execute() {
             //no input for use case 
             ITaskItemRepository taskRepo = taskItemRepositoryFactory.New();
