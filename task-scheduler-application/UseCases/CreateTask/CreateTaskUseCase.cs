@@ -63,7 +63,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
         public void Execute() {
 
             if(Input == null) {
-                //TODO: should error message be returned?
+                Output = new CreateTaskOutput { Success = false, Error = "No input data found for creating a new Task" };
                 return;
             }
 
