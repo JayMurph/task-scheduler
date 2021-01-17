@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace task_scheduler_data_access.Repositories {
+    /// <summary>
+    /// Produces NotificationFrequencyRepositories 
+    /// </summary>
     public class NotificationFrequencyRepositoryFactory : INotificationFrequencyRepositoryFactory {
         private readonly string connectionStr;
 
