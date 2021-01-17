@@ -287,7 +287,7 @@ namespace task_scheduler_entities {
         /// </param>
         private void PostNotification(DateTime timeOfNotification) {
             //create new notification and add it to the NotificationManager
-            Notification notification = new Notification(Guid.NewGuid(), this, timeOfNotification);
+            Notification notification = new Notification(this, timeOfNotification);
             LastNotificationTime = timeOfNotification;
             manager.Add(notification);
         }
