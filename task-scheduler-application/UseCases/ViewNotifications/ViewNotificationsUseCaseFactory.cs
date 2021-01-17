@@ -8,8 +8,8 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
     public class ViewNotificationsUseCaseFactory : IUseCaseFactory<ViewNotificationsUseCase> {
 
         //dependencies required for ViewNotificaitonsUseCase
-        private INotificationManager notificationManager;
-        private ITaskItemRepositoryFactory taskItemRepositoryFactory;
+        private readonly INotificationManager notificationManager;
+        private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
         public ViewNotificationsUseCaseFactory(
             INotificationManager notificationManager,
