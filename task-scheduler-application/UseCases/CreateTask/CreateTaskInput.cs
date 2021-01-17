@@ -13,41 +13,41 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// <summary>
         /// Title to give to a new TaskItem
         /// </summary>
-        public string Title;
+        public string Title {get;set;}
 
         /// <summary>
         /// Description to give to a new TaskItem
         /// </summary>
-        public string Description;
+        public string Description { get; set; }
 
         /// <summary>
         /// The time at which the new TaskItem will become active, and thenceforth will begin
         /// producing Notifications each time its NotificationFrequency elapses.
         /// </summary>
-        public DateTime StartTime;
+        public DateTime StartTime { get; set; }
 
         /// <summary>
         /// R value of the RGB colour assigned to the TaskItem
         /// </summary>
-        public byte R;
+        public byte R { get; set; }
 
         /// <summary>
         /// G value of the RGB colour assigned to the TaskItem
         /// </summary>
-        public byte G;
+        public byte G{ get; set; }
 
         /// <summary>
         /// B value of the RGB colour assigned to the TaskItem
         /// </summary>
-        public byte B;
+        public byte B{ get; set; }
 
-        public NotificationFrequencyType NotificationFrequencyType;
+        public NotificationFrequencyType NotificationFrequencyType { get; set; }
 
         /// <summary>
         /// A unique NotificationFrequency to dictate when the new TaskItem should produce
         /// notifications
         /// </summary>
-        public TimeSpan CustomNotificationFrequency;
+        public TimeSpan CustomNotificationFrequency { get; set; }
 
         /// <summary>
         /// Indiciates if the Elements in CreateTaskInput are valid
@@ -58,9 +58,9 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// <returns>
         /// True if all the fields of the input parameter are valid, otherwise false
         /// </returns>
-        public static bool IsValid(CreateTaskInput input) {
+        public bool IsValid() {
             //Ensure Title is not null or empty
-            if (string.IsNullOrWhiteSpace(input.Title)) {
+            if (string.IsNullOrWhiteSpace(Title)) {
                 return false;
             }
 
@@ -68,11 +68,11 @@ namespace task_scheduler_application.UseCases.CreateTask {
              * Ensure that if the Input has a Frequency type of Custom, that its
              * CustomNotificationFrequency is valid
              */
-            if(input.NotificationFrequencyType == NotificationFrequencyType.Custom) { 
-                if(input.CustomNotificationFrequency == null) {
+            if(NotificationFrequencyType == NotificationFrequencyType.Custom) { 
+                if(CustomNotificationFrequency == null) {
                     return false;
                 }
-                else if(input.CustomNotificationFrequency == TimeSpan.Zero) {
+                else if(CustomNotificationFrequency == TimeSpan.Zero) {
                     return false;
                 }
             }
@@ -89,15 +89,15 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// <returns>
         /// Describes any errors present in the input parameter
         /// </returns>
-        public static string MakeErrorMessage(CreateTaskInput input) {
+        public string GetErrorMessage() {
             StringBuilder errorBuilder = new StringBuilder();
 
-            if (string.IsNullOrWhiteSpace(input.Title)) {
+            if (string.IsNullOrWhiteSpace(Title)) {
                 errorBuilder.AppendLine("Task title cannot be empty.");
             }
             
-            if(input.NotificationFrequencyType == NotificationFrequencyType.Custom &&
-                input.CustomNotificationFrequency == TimeSpan.Zero) {
+            if(NotificationFrequencyType == NotificationFrequencyType.Custom &&
+                CustomNotificationFrequency == TimeSpan.Zero) {
                 errorBuilder.AppendLine("A Task with a Custom Notification Frequency must have a non-zero TimeSpan.");
             }
 
