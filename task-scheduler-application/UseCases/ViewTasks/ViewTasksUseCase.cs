@@ -18,9 +18,9 @@ namespace task_scheduler_application.UseCases.ViewTasks {
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
         private readonly ITaskManager taskManager;
 
-        public ViewTasksInput Input { set; private get; }
+        public ViewTasksInput Input { set; private get; } = null;
 
-        public ViewTasksOutput Output { get; private set; } = new ViewTasksOutput();
+        public ViewTasksOutput Output { get; private set; } = null;
 
         /// <summary>
         /// Constructs a new ViewTasksUseCase
@@ -36,13 +36,14 @@ namespace task_scheduler_application.UseCases.ViewTasks {
         /// stores it in the <see cref="ViewTasksUseCase"/>'s Output property.
         /// </summary>
         public void Execute() {
+            Output = new ViewTasksOutput();
+
             ITaskItemRepository taskRepo = taskItemRepositoryFactory.New();
 
             /*
              * go through all taskItems in database then add them to the Output property as
              * TaskItemDTO's.
              */
-            
             foreach(TaskItem domainTask in taskManager.GetAll()) {
 
                 //retrieve dataLayer task which carries notification frequency description
