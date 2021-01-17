@@ -50,6 +50,7 @@ namespace task_scheduler_presentation.Views {
         public async void NotificationCreatedCallback(object source, NotificationModel newNotification) {
             
             if(Window.Current.Dispatcher.HasThreadAccess == false) {
+                //if we do not have thread access, keep calling this method until we do
                 await Window.Current.Dispatcher.RunAsync(
                     Windows.UI.Core.CoreDispatcherPriority.Normal, 
                     ()=> { NotificationCreatedCallback(source, newNotification); }
