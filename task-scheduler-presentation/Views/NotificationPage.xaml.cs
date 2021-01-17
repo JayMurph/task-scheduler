@@ -47,8 +47,17 @@ namespace task_scheduler_presentation.Views {
         /// <param name="newNotification">
         /// The newly generated Notification
         /// </param>
-        public void NotificationCreatedCallback(object source, NotificationModel newNotification) {
-            Notifications.Add(newNotification);
+        public async void NotificationCreatedCallback(object source, NotificationModel newNotification) {
+            
+            if(Window.Current.Dispatcher.HasThreadAccess == false) {
+                await Window.Current.Dispatcher.RunAsync(
+                    Windows.UI.Core.CoreDispatcherPriority.Normal, 
+                    ()=> { NotificationCreatedCallback(source, newNotification); }
+                );
+            }
+            else {
+                Notifications.Add(newNotification);
+            }
         }
 
 
