@@ -81,6 +81,9 @@ namespace task_scheduler_presentation.Views {
         /// </summary>
         public string ApplicationErrorMessage { get; set; } = string.Empty;
 
+        /// <summary>
+        /// Indicates if the application encountered an error while creating a new task
+        /// </summary>
         public bool ApplicationError { get; set; } = false;
 
 
