@@ -108,7 +108,7 @@ namespace task_scheduler_presentation
                     clock
                 );
 
-                InitializeUserController(
+                UserController = CreateUserController(
                     taskItemRepositoryFactory,
                     notificationManager,
                     taskManager,
@@ -143,13 +143,13 @@ namespace task_scheduler_presentation
         }
 
         /// <summary>
-        /// Creates the static UserController used by the class
+        /// Creates and returns a new UserController
         /// </summary>
         /// <param name="taskItemRepositoryFactory"></param>
         /// <param name="notificationManager"></param>
         /// <param name="taskManager"></param>
         /// <param name="clock"></param>
-        private void InitializeUserController(
+        private Controllers.UserController CreateUserController(
             TaskItemRepositoryFactory taskItemRepositoryFactory,
             BasicNotificationManager notificationManager,
             BasicTaskManager taskManager,
@@ -174,7 +174,7 @@ namespace task_scheduler_presentation
                 );
 
             //Instantiate user controller, passing in required factories
-            UserController = new Controllers.UserController(
+            Controllers.UserController controller = new Controllers.UserController(
                 createTaskUseCaseFactory,
                 viewTasksUseCaseFactory,
                 viewNotificationsUseCaseFactory
@@ -199,9 +199,11 @@ namespace task_scheduler_presentation
                             B = task.Colour.B
                         };
 
-                        await UserController.ReceiveNotification(dto);
+                        await controller.ReceiveNotification(dto);
                     }
                 };
+
+            return controller;
         }
 
         /// <summary>
