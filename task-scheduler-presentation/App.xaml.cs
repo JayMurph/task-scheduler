@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
@@ -30,6 +32,8 @@ using task_scheduler_application.UseCases.ViewNotifications;
 using task_scheduler_data_access;
 using task_scheduler_data_access.Repositories;
 using task_scheduler_data_access.DataObjects;
+
+using task_scheduler_presentation.Models;
 
 namespace task_scheduler_presentation
 {
@@ -168,6 +172,29 @@ namespace task_scheduler_presentation
                 viewTasksUseCaseFactory,
                 viewNotificationsUseCaseFactory
             );
+
+            //TODO: find a better solution than this filthy hack
+            /*
+             * hook up UserController to the notificationManager, so that it is made aware of when
+             * the domain creates new notifications
+             */
+            notificationManager.NotificationAdded +=
+                async (s, notification) => {
+
+                    //convert ITaskItem Producer to TaskItem which carries a color
+                    if (notification.Producer is TaskItem task) {
+                        NotificationDTO dto = new NotificationDTO() {
+                            TaskId = task.ID,
+                            Time = notification.Time,
+                            Title = notification.Producer.Title,
+                            R = task.Colour.R,
+                            G = task.Colour.G,
+                            B = task.Colour.B
+                        };
+
+                        await UserController.ReceiveNotification(dto);
+                    }
+                };
         }
 
         private void InitializeDomainFromDatabase(
