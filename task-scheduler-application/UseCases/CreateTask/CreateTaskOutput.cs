@@ -11,6 +11,6 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// <summary>
         /// Data-Transfer object representing the new TaskItem created by a <see cref="CreateTaskUseCase"/>
         /// </summary>
-        public TaskItemDTO TaskItemDTO; 
+        public TaskItemDTO TaskItemDTO { get; set; } 
     }
 }
