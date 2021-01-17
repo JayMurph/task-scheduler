@@ -68,8 +68,8 @@ namespace task_scheduler_application.UseCases.CreateTask {
             }
 
             //validate the Input data
-            if (!CreateTaskInput.IsValid(Input)) {
-                Output = new CreateTaskOutput { Success = false , Error = CreateTaskInput.MakeErrorMessage(Input)};
+            if (!Input.IsValid()) {
+                Output = new CreateTaskOutput { Success = false , Error = Input.GetErrorMessage()};
                 return;
             }
 
