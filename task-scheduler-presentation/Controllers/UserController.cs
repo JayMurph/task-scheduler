@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewTasks;
@@ -84,6 +85,39 @@ namespace task_scheduler_presentation.Controllers {
             NotificationCreated?.Invoke(this, notification);
         }
 
+        /// <summary>
+        /// kludge method. To be used for receiving Notifications when they are created in separate
+        /// layers (which they always are)
+        /// </summary>
+        /// <param name="notification">
+        /// a newly created Notification
+        /// </param>
+        //TODO: I don't like this method. But, since Notifications are generated in the entity layer
+        //then passed to a notificationManager, we need to expose a method so that we can 'hook'
+        //into that event and receive the info.
+        public async Task ReceiveNotification(NotificationDTO notification) {
+
+            /*
+             * because creating a NotificationModel involves creating a UIElement, and this method
+             * will NOT be called by the UI thread ( but instead by a TaskItem's thread) we have to
+             * move the creation of the model to a UI thread
+             */
+            await Windows.ApplicationModel.Core.CoreApplication.MainView.Dispatcher.RunAsync(
+                Windows.UI.Core.CoreDispatcherPriority.Normal,
+                () => {
+
+                    NotificationModel model = new NotificationModel() {
+                        Title = notification.Title,
+                        Time = notification.Time,
+                        Color = new Windows.UI.Xaml.Media.SolidColorBrush(
+                            Windows.UI.Color.FromArgb(255, notification.R, notification.G, notification.B))
+                    };
+
+                    OnNotificationCreated(model);
+                }
+            );
+        }
+
         public UserController(
             CreateTaskUseCaseFactory createTaskUseCaseFactory,
             ViewTasksUseCaseFactory viewTasksUseCaseFactory,
@@ -113,9 +147,12 @@ namespace task_scheduler_presentation.Controllers {
 
             if (uc.Output.Success) {
 
-                //add Notifications from the use-cases output to the view's collection
+                List<NotificationModel> models = new List<NotificationModel>();
+
+                //get and convert all Use-Cases Notifications output to NotificationModels
                 foreach(NotificationDTO notification in uc.Output.Notifications) {
-                    view.Notifications.Add(
+
+                    models.Add(
                         new NotificationModel() {
                             Title=notification.Title,
                             Time = notification.Time,
@@ -123,7 +160,15 @@ namespace task_scheduler_presentation.Controllers {
                                 Windows.UI.Color.FromArgb(255, notification.R, notification.G, notification.B))
                         }
                     );
+
                 }
+
+                /*
+                 * sort the notifications by their Time values, convert it to a list, then assign
+                 * them to the view's collection to display
+                 */
+                view.Notifications = 
+                    new ObservableCollection<NotificationModel>(models.OrderBy(x => x.Time).ToList());
 
                 //subscribe view to NotificationCreated event
                 NotificationCreated += view.NotificationCreatedCallback;
