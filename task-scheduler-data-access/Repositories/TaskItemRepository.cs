@@ -399,15 +399,11 @@ namespace task_scheduler_data_access.Repositories {
         /// possibly a CustomNotificationFrequencyDAL if one was provided.
         /// </returns>
         private static TaskItemDAL DataToTaskItemDAL(DataRow taskRow, CustomNotificationFrequencyDAL customNotificationFrequency = null) {
-
             /*
              * TODO: perform a sanity check on the fields of the incoming DataRow; ensure that the
              * fields we want to access are present
              */
-
-            TaskItemDAL taskItem = null; 
-
-            taskItem = new TaskItemDAL(
+            TaskItemDAL taskItem = new TaskItemDAL(
                 id : Guid.Parse(taskRow.Field<string>("Id")),
                 startTime : DateTime.Parse(taskRow.Field<string>("StartTime")),
                 title : taskRow.Field<string>("Title"),
@@ -423,6 +419,14 @@ namespace task_scheduler_data_access.Repositories {
             return taskItem;
         }
 
+        /// <summary>
+        /// Returns an IEnumerable formed from a query for a specific ID in the Tasks table.
+        /// </summary>
+        /// <param name="id">
+        /// Id of a Task to find
+        /// </param>
+        /// <returns>
+        /// </returns>
         private IEnumerable<DataRow> GetQueryForId(Guid id) {
             var findIdQuery = (from row in table.AsEnumerable()
                     where row.Field<string>("Id") == id.ToString()
