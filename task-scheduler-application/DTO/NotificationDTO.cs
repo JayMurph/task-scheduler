@@ -22,6 +22,7 @@ namespace task_scheduler_application.DTO {
         /// </summary>
         public DateTime Time { get; set; }
 
+        //RGB colour components
         public byte R { get; set; }
         public byte G { get; set; }
         public byte B { get; set; }
