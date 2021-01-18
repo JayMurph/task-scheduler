@@ -57,7 +57,7 @@ namespace task_scheduler_application.UseCases.ViewTasks {
 
                 //if the current taskItem has a custom frequency type, then retrieve its Time value
                 if(dataLayerTask.customNotificationFrequency != null) {
-                    customFrequencyTime = dataLayerTask.customNotificationFrequency.Time;
+                    customFrequencyTime = dataLayerTask.customNotificationFrequency.time;
                 }
 
                 DTO.TaskItemDTO taskDTO =

@@ -259,14 +259,14 @@ namespace task_scheduler_presentation
              * them in the NotificationManager
              */
             foreach(NotificationDAL notification in notificationRepo.GetAll()) {
-                ITaskItem producer = taskManager.Find(notification.TaskId);
+                ITaskItem producer = taskManager.Find(notification.taskId);
 
                 if(producer == null) {
                     continue;
                 }
 
                 notificationManager.Add(
-                    new Notification(producer, notification.Time)
+                    new Notification(producer, notification.time)
                 );
             }
         }

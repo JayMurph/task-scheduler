@@ -81,8 +81,8 @@ namespace task_scheduler_data_access.Repositories {
 
             try {
                 //set the fields of the new row
-                newRow.SetField("TaskId", notification.TaskId.ToString());
-                newRow.SetField("Time", notification.Time.ToString());
+                newRow.SetField("TaskId", notification.taskId.ToString());
+                newRow.SetField("Time", notification.time.ToString());
             }
             catch {
                 newRow.Delete();
@@ -110,8 +110,8 @@ namespace task_scheduler_data_access.Repositories {
              * and Time fields
              */
             var findQuery = from row in table.AsEnumerable()
-                            where row.Field<string>("TaskId") == notification.TaskId.ToString() &&
-                            row.Field<string>("Time") == notification.Time.ToString()
+                            where row.Field<string>("TaskId") == notification.taskId.ToString() &&
+                            row.Field<string>("Time") == notification.time.ToString()
                             select row;
 
             if(findQuery.Count() != 1) {

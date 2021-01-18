@@ -30,8 +30,8 @@ namespace task_scheduler_data_access.Repositories {
 
             try {
                 //set the revelant fields of the new NotificationFrequency row
-                newRow.SetField("TaskId", notificationFrequency.TaskId.ToString());
-                newRow.SetField("Time", notificationFrequency.Time.ToString());
+                newRow.SetField("TaskId", notificationFrequency.taskId.ToString());
+                newRow.SetField("Time", notificationFrequency.time.ToString());
             }
             catch {
                 //delete the new row
@@ -46,7 +46,7 @@ namespace task_scheduler_data_access.Repositories {
         }
 
         public bool Delete(CustomNotificationFrequencyDAL notificationFrequency) {
-            return Delete(notificationFrequency.TaskId);
+            return Delete(notificationFrequency.taskId);
         }
 
         public bool Delete(Guid id) {
@@ -101,7 +101,7 @@ namespace task_scheduler_data_access.Repositories {
                 throw new ArgumentNullException(nameof(notificationFrequency));
             }
 
-            var findByIdQuery = GetQueryForId(notificationFrequency.TaskId);
+            var findByIdQuery = GetQueryForId(notificationFrequency.taskId);
 
             if(findByIdQuery.Count() != 1) {
                 return false;
@@ -111,7 +111,7 @@ namespace task_scheduler_data_access.Repositories {
 
             try {
                 rowToUpdate.BeginEdit();
-                rowToUpdate.SetField("Time", notificationFrequency.Time.ToString());
+                rowToUpdate.SetField("Time", notificationFrequency.time.ToString());
                 rowToUpdate.EndEdit();
             }
             catch {
