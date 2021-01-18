@@ -56,8 +56,8 @@ namespace task_scheduler_application.UseCases.ViewTasks {
                 TimeSpan customFrequencyTime = new TimeSpan();
 
                 //if the current taskItem has a custom frequency type, then retrieve its Time value
-                if(dataLayerTask.CustomNotificationFrequency != null) {
-                    customFrequencyTime = dataLayerTask.CustomNotificationFrequency.Time;
+                if(dataLayerTask.customNotificationFrequency != null) {
+                    customFrequencyTime = dataLayerTask.customNotificationFrequency.Time;
                 }
 
                 DTO.TaskItemDTO taskDTO =
@@ -71,7 +71,7 @@ namespace task_scheduler_application.UseCases.ViewTasks {
                         StartTime = domainTask.StartTime,
                         //TODO: prefer to do a better conversion that just a cast to an enum
                         NotificationFrequencyType = 
-                            (NotificationFrequencyType)dataLayerTask.NotificationFrequencyType,
+                            (NotificationFrequencyType)dataLayerTask.notificationFrequencyType,
                         CustomNotificationFrequency = customFrequencyTime
                     };
 

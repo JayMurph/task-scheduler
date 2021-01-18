@@ -232,22 +232,22 @@ namespace task_scheduler_presentation
                 INotificationFrequency notificationFrequency =
                     NotificationFrequencyFactory.New(
                         //TODO: do something safer than just a cast
-                        (NotificationFrequencyType)task.NotificationFrequencyType,
+                        (NotificationFrequencyType)task.notificationFrequencyType,
                         //TODO: do something more sensible than below
-                        (task.CustomNotificationFrequency?.Time ?? TimeSpan.Zero)
+                        (task.customNotificationFrequency?.Time ?? TimeSpan.Zero)
                     );
 
                 taskManager.Add(
                     new TaskItem(
-                        task.Title,
-                        task.Description,
-                        new Colour(task.R, task.G, task.B),
-                        task.StartTime,
+                        task.title,
+                        task.description,
+                        new Colour(task.r, task.g, task.b),
+                        task.startTime,
                         notificationManager,
                         notificationFrequency,
                         clock,
-                        task.LastNotificationTime,
-                        task.Id
+                        task.lastNotificationTime,
+                        task.id
                     )
                 );
             }

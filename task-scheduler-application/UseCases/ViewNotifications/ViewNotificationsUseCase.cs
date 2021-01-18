@@ -58,12 +58,12 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
                 }
 
                 NotificationDTO dto = new NotificationDTO() {
-                    TaskId = dataLayerTask.Id,
-                    Title = dataLayerTask.Title,
+                    TaskId = dataLayerTask.id,
+                    Title = dataLayerTask.title,
                     Time = notification.Time,
-                    R = dataLayerTask.R,
-                    G = dataLayerTask.G, 
-                    B = dataLayerTask.B
+                    R = dataLayerTask.r,
+                    G = dataLayerTask.g, 
+                    B = dataLayerTask.b
                 };
 
                 notifications.Add(dto);
