@@ -13,9 +13,9 @@ namespace task_scheduler_data_access.Repositories {
     /// </summary>
     public class NotificationRepository : INotificationRepository{
 
-        private SQLiteDataAdapter adapter;
+        private readonly SQLiteDataAdapter adapter;
 
-        private DataTable table;
+        private readonly DataTable table;
 
         private bool disposedValue;
 
