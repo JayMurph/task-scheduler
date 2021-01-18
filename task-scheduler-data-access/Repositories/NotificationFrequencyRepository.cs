@@ -78,7 +78,7 @@ namespace task_scheduler_data_access.Repositories {
             var findByIdQuery = GetQueryForId(id);
 
             if(findByIdQuery.Count() != 1) {
-                return null;
+                return new CustomNotificationFrequencyDAL();
             }
             else {
                 return DataRowToNotificationFrequencyDAL(findByIdQuery.First());
@@ -96,10 +96,6 @@ namespace task_scheduler_data_access.Repositories {
         }
 
         public bool Update(CustomNotificationFrequencyDAL notificationFrequency) {
-
-            if (notificationFrequency is null) {
-                throw new ArgumentNullException(nameof(notificationFrequency));
-            }
 
             var findByIdQuery = GetQueryForId(notificationFrequency.taskId);
 
