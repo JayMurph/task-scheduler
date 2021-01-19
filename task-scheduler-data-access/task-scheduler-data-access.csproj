@@ -11,4 +11,8 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.113.7" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\task-scheduler-utility\task-scheduler-utility.csproj" />
+  </ItemGroup>
+
 </Project>
