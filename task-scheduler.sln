@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-application"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-data-access", "task-scheduler-data-access\task-scheduler-data-access.csproj", "{BD4FDED9-0992-41CF-9E31-9E22E5157F61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-utility", "task-scheduler-utility\task-scheduler-utility.csproj", "{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +135,26 @@ Global
 		{BD4FDED9-0992-41CF-9E31-9E22E5157F61}.Release|x64.Build.0 = Release|Any CPU
 		{BD4FDED9-0992-41CF-9E31-9E22E5157F61}.Release|x86.ActiveCfg = Release|Any CPU
 		{BD4FDED9-0992-41CF-9E31-9E22E5157F61}.Release|x86.Build.0 = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|ARM.Build.0 = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|x64.Build.0 = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Debug|x86.Build.0 = Debug|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|ARM.ActiveCfg = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|ARM.Build.0 = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|ARM64.Build.0 = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|x64.ActiveCfg = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|x64.Build.0 = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|x86.ActiveCfg = Release|Any CPU
+		{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
