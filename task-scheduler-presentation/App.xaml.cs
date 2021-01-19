@@ -221,7 +221,6 @@ namespace task_scheduler_presentation
             BasicTaskManager taskManager,
             RealTimeClock clock) {
 
-            //...pulling in data and creating domain entities should be done elsewhere
             //load database data into domain managers
             ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
 
@@ -229,13 +228,23 @@ namespace task_scheduler_presentation
             //data and add items to taskManager
             foreach (TaskItemDAL task in taskItemRepository.GetAll()) {
 
-                INotificationFrequency notificationFrequency =
+                INotificationFrequency notificationFrequency = null;
+
+                if (task.customNotificationFrequency.HasValue) {
+                    CustomNotificationFrequencyDAL frequencyDAL = task.customNotificationFrequency.Value;
+
                     NotificationFrequencyFactory.New(
                         //TODO: do something safer than just a cast
                         (NotificationFrequencyType)task.notificationFrequencyType,
-                        //TODO: do something more sensible than below
-                        (task.customNotificationFrequency?.Time ?? TimeSpan.Zero)
+                        frequencyDAL.time
                     );
+                }
+                else {
+                    NotificationFrequencyFactory.New(
+                        //TODO: do something safer than just a cast
+                        (NotificationFrequencyType)task.notificationFrequencyType
+                    );
+                }
 
                 taskManager.Add(
                     new TaskItem(

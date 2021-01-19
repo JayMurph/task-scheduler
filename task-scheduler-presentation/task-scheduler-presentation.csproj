@@ -223,6 +223,10 @@
       <Project>{2eef9db4-2aed-49b0-b0f9-71bfcab1c302}</Project>
       <Name>task-scheduler-application</Name>
     </ProjectReference>
+    <ProjectReference Include="..\task-scheduler-utility\task-scheduler-utility.csproj">
+      <Project>{c0493ab6-1500-4599-9a46-0e9e9f8cda2d}</Project>
+      <Name>task-scheduler-utility</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
