@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using task_scheduler_data_access.DataObjects;
+using task_scheduler_utility;
 
 namespace task_scheduler_data_access.Repositories {
     /// <summary>
@@ -20,7 +21,7 @@ namespace task_scheduler_data_access.Repositories {
         /// CustomNotificationFrequencyDAL with an Id corresponding to the id parameter. null if no
         /// match is found for the id.
         /// </returns>
-        CustomNotificationFrequencyDAL GetById(Guid id);
+        Maybe<CustomNotificationFrequencyDAL> GetById(Guid id);
 
         /// <summary>
         /// Deletes a CustomNotificationFrequencyDAL managed by the repository which has an Id
