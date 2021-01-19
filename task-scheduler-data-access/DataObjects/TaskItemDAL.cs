@@ -1,4 +1,5 @@
 ﻿using System;
+using task_scheduler_utility;
 
 namespace task_scheduler_data_access.DataObjects {
 
@@ -54,7 +55,7 @@ namespace task_scheduler_data_access.DataObjects {
         /// A custom Notification Frequency that the TaskItem may use, instead of one the
         /// application defined Notification Frequencies
         /// </summary>
-        public CustomNotificationFrequencyDAL customNotificationFrequency; 
+        public Maybe<CustomNotificationFrequencyDAL> customNotificationFrequency; 
 
         public TaskItemDAL(
             Guid id,
@@ -65,7 +66,7 @@ namespace task_scheduler_data_access.DataObjects {
             byte r,
             byte g,
             byte b,
-            CustomNotificationFrequencyDAL customNotificationFrequency,
+            Maybe<CustomNotificationFrequencyDAL> customNotificationFrequency,
             int notificationFrequencyType) {
 
             if (string.IsNullOrWhiteSpace(title)) {
