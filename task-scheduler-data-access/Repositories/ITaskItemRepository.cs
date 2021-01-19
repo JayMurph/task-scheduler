@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using task_scheduler_data_access.DataObjects;
+using task_scheduler_utility;
 
 namespace task_scheduler_data_access.Repositories {
     /// <summary>
@@ -21,7 +22,7 @@ namespace task_scheduler_data_access.Repositories {
         /// TaskItemDAL with an Id corresponding to the id parameter. null if no match is found for
         /// the id.
         /// </returns>
-        TaskItemDAL GetById(Guid id);
+        Maybe<TaskItemDAL> GetById(Guid id);
 
         /// <summary>
         /// Deletes a TaskItemDAL managed by the repository which has an Id corresponding to the id
