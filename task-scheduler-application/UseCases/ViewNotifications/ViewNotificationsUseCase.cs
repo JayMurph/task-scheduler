@@ -6,6 +6,7 @@ using task_scheduler_data_access.Repositories;
 using task_scheduler_data_access.DataObjects;
 using task_scheduler_application.DTO;
 using task_scheduler_entities;
+using task_scheduler_utility;
 
 namespace task_scheduler_application.UseCases.ViewNotifications {
     public class ViewNotificationsUseCase : IUseCase<ViewNotificationsInput, ViewNotificationsOutput> {
@@ -51,22 +52,22 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
              */
             foreach(Notification notification in notificationManager.GetAll()) {
 
-                TaskItemDAL dataLayerTask = taskRepo.GetById(notification.Producer.ID);
+                Maybe<TaskItemDAL> maybeTask = taskRepo.GetById(notification.Producer.ID);
 
-                if(dataLayerTask == null) {
-                    continue;
+                if(maybeTask.HasValue) {
+                    TaskItemDAL taskDAL = maybeTask.Value;
+                    NotificationDTO dto = new NotificationDTO() {
+                        TaskId = taskDAL.id,
+                        Title = taskDAL.title,
+                        Time = notification.Time,
+                        R = taskDAL.r,
+                        G = taskDAL.g, 
+                        B = taskDAL.b
+                    };
+
+                    notifications.Add(dto);
                 }
 
-                NotificationDTO dto = new NotificationDTO() {
-                    TaskId = dataLayerTask.id,
-                    Title = dataLayerTask.title,
-                    Time = notification.Time,
-                    R = dataLayerTask.r,
-                    G = dataLayerTask.g, 
-                    B = dataLayerTask.b
-                };
-
-                notifications.Add(dto);
             }
 
             Output = new ViewNotificationsOutput() { Success = true, Notifications = notifications };
