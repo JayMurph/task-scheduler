@@ -233,14 +233,14 @@ namespace task_scheduler_presentation
                 if (task.customNotificationFrequency.HasValue) {
                     CustomNotificationFrequencyDAL frequencyDAL = task.customNotificationFrequency.Value;
 
-                    NotificationFrequencyFactory.New(
+                    notificationFrequency = NotificationFrequencyFactory.New(
                         //TODO: do something safer than just a cast
                         (NotificationFrequencyType)task.notificationFrequencyType,
                         frequencyDAL.time
                     );
                 }
                 else {
-                    NotificationFrequencyFactory.New(
+                    notificationFrequency = NotificationFrequencyFactory.New(
                         //TODO: do something safer than just a cast
                         (NotificationFrequencyType)task.notificationFrequencyType
                     );
