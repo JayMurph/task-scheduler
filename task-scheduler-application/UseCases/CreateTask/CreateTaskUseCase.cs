@@ -6,6 +6,7 @@ using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.DTO;
 using task_scheduler_data_access.Repositories;
 using task_scheduler_data_access.DataObjects;
+using task_scheduler_utility;
 
 namespace task_scheduler_application.UseCases.CreateTask {
     /// <summary>
@@ -182,15 +183,16 @@ namespace task_scheduler_application.UseCases.CreateTask {
          */
         private TaskItemDAL ConvertTaskItemToDAL(TaskItem taskItem) {
 
-            CustomNotificationFrequencyDAL notificationFrequency = null;
+            Maybe<CustomNotificationFrequencyDAL> notificationFrequency = Maybe<CustomNotificationFrequencyDAL>.CreateEmpty();
 
             //if the new task should have a custom notification frequency
             if (Input.NotificationFrequencyType == NotificationFrequencyType.Custom) {
-
                 //create a custom notification frequency DAL
-                notificationFrequency = new CustomNotificationFrequencyDAL(
-                    taskItem.ID,
-                    Input.CustomNotificationFrequency
+                notificationFrequency = Maybe<CustomNotificationFrequencyDAL>.Create(
+                    new CustomNotificationFrequencyDAL(
+                        taskItem.ID,
+                        Input.CustomNotificationFrequency
+                    )
                 );
             }
 
