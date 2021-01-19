@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using task_scheduler_entities;
+using task_scheduler_utility;
 using task_scheduler_data_access.Repositories;
 using task_scheduler_data_access.DataObjects;
 using task_scheduler_application.NotificationFrequencies;
@@ -47,35 +48,36 @@ namespace task_scheduler_application.UseCases.ViewTasks {
             foreach(TaskItem domainTask in taskManager.GetAll()) {
 
                 //retrieve dataLayer task which carries notification frequency description
-                TaskItemDAL dataLayerTask = taskRepo.GetById(domainTask.ID);
+                Maybe<TaskItemDAL> maybeTask = taskRepo.GetById(domainTask.ID);
 
-                if(dataLayerTask == null) {
-                    continue;
+                if(maybeTask.HasValue) {
+                    TaskItemDAL taskDAL = maybeTask.Value;
+                    TimeSpan customFrequencyTime = new TimeSpan();
+
+                    //if the current taskItem has a custom frequency type, then retrieve its Time value
+                    if(taskDAL.customNotificationFrequency.HasValue) {
+                        CustomNotificationFrequencyDAL frequencyDAL = taskDAL.customNotificationFrequency.Value;
+                        customFrequencyTime = frequencyDAL.time;
+                    }
+
+                    DTO.TaskItemDTO taskDTO =
+                        new DTO.TaskItemDTO() {
+                            Id = domainTask.ID,
+                            Title = domainTask.Title,
+                            Description = domainTask.Description,
+                            R = domainTask.Colour.R,
+                            G = domainTask.Colour.G,
+                            B = domainTask.Colour.B,
+                            StartTime = domainTask.StartTime,
+                            //TODO: prefer to do a better conversion that just a cast to an enum
+                            NotificationFrequencyType = 
+                                (NotificationFrequencyType)taskDAL.notificationFrequencyType,
+                            CustomNotificationFrequency = customFrequencyTime
+                        };
+
+                    Output.TaskItems.Add(taskDTO);
                 }
 
-                TimeSpan customFrequencyTime = new TimeSpan();
-
-                //if the current taskItem has a custom frequency type, then retrieve its Time value
-                if(dataLayerTask.customNotificationFrequency != null) {
-                    customFrequencyTime = dataLayerTask.customNotificationFrequency.time;
-                }
-
-                DTO.TaskItemDTO taskDTO =
-                    new DTO.TaskItemDTO() {
-                        Id = domainTask.ID,
-                        Title = domainTask.Title,
-                        Description = domainTask.Description,
-                        R = domainTask.Colour.R,
-                        G = domainTask.Colour.G,
-                        B = domainTask.Colour.B,
-                        StartTime = domainTask.StartTime,
-                        //TODO: prefer to do a better conversion that just a cast to an enum
-                        NotificationFrequencyType = 
-                            (NotificationFrequencyType)dataLayerTask.notificationFrequencyType,
-                        CustomNotificationFrequency = customFrequencyTime
-                    };
-
-                Output.TaskItems.Add(taskDTO);
             }
 
             Output.Success = true;
