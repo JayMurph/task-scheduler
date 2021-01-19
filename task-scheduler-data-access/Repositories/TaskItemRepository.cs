@@ -262,14 +262,12 @@ namespace task_scheduler_data_access.Repositories {
         /// Unique Id of the TaskItem to retrieve
         /// </param>
         /// <returns>
-        /// The TaskItemDAL with an Id corresponding to the id parameter. null if a TaskItem with a
-        /// matching Id could not be found.
         /// </returns>
-        public TaskItemDAL GetById(Guid id) {
+        public Maybe<TaskItemDAL> GetById(Guid id) {
             var findTaskQuery = GetQueryForId(id);
 
             if(findTaskQuery.Count() != 1) {
-                return null;
+                return Maybe<TaskItemDAL>.CreateEmpty();
             }
             else {
 
@@ -278,7 +276,9 @@ namespace task_scheduler_data_access.Repositories {
                 Maybe<CustomNotificationFrequencyDAL> maybeNotificationFrequency =
                     notificationFrequencyRepository.GetById(id);
 
-                return DataToTaskItemDAL(findTaskQuery.First(), maybeNotificationFrequency); 
+                return Maybe<TaskItemDAL>.Create(
+                    DataToTaskItemDAL(findTaskQuery.First(), maybeNotificationFrequency)
+                );
             }
         }
 
