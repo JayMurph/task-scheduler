@@ -385,12 +385,12 @@ namespace task_scheduler_data_access.Repositories {
         /// Contains fields of TaskItem data
         /// </param>
         /// <param name="customNotificationFrequency">
-        /// Optional argument. To be assigned to the CustomNotificationFrequency field of the
+        /// To be assigned to the CustomNotificationFrequency field of the
         /// TaskItemDAL being created.
         /// </param>
         /// <returns>
-        /// TaskItemDAL containing the TaskItem data extracted from the taskRow parameter, and
-        /// possibly a CustomNotificationFrequencyDAL if one was provided.
+        /// TaskItemDAL containing the TaskItem data extracted from the taskRow parameter and the
+        /// customNotificationFrequency
         /// </returns>
         private static TaskItemDAL DataToTaskItemDAL(DataRow taskRow, Maybe<CustomNotificationFrequencyDAL> customNotificationFrequency) {
             /*
