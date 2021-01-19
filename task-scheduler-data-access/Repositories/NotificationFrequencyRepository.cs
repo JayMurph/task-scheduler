@@ -6,6 +6,7 @@ using System.Text;
 using System.Data.SQLite;
 
 using task_scheduler_data_access.DataObjects;
+using task_scheduler_utility;
 
 namespace task_scheduler_data_access.Repositories {
     class NotificationFrequencyRepository : INotificationFrequencyRepository {
@@ -74,14 +75,17 @@ namespace task_scheduler_data_access.Repositories {
             return notificationFrequencies;
         }
 
-        public CustomNotificationFrequencyDAL GetById(Guid id) {
+        public Maybe<CustomNotificationFrequencyDAL> GetById(Guid id) {
             var findByIdQuery = GetQueryForId(id);
 
             if(findByIdQuery.Count() != 1) {
-                return new CustomNotificationFrequencyDAL();
+                return Maybe<CustomNotificationFrequencyDAL>.CreateEmpty();
             }
             else {
-                return DataRowToNotificationFrequencyDAL(findByIdQuery.First());
+                return 
+                    Maybe<CustomNotificationFrequencyDAL>.Create(
+                        DataRowToNotificationFrequencyDAL(findByIdQuery.First())
+                    );
             }
         }
 
