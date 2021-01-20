@@ -6,8 +6,6 @@
     /// <typeparam name="T">A type that the Use-Case uses as input data</typeparam>
     /// <typeparam name="U">A type that the Use-Case uses as output data</typeparam>
     public interface IUseCase<in T, out U> { 
-        T Input { set; }
-        U Output { get; }
-        void Execute();
+        U Execute(T input);
     }
 }
