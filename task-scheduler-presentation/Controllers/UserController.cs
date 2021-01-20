@@ -145,14 +145,14 @@ namespace task_scheduler_presentation.Controllers {
             var uc = viewNotificationsUseCaseFactory.New();
 
             //execute the use-case
-            uc.Execute();
+            ViewNotificationsOutput output = uc.Execute(new ViewNotificationsInput());
 
-            if (uc.Output.Success) {
+            if (output.Success) {
 
                 List<NotificationModel> models = new List<NotificationModel>();
 
                 //get and convert all Use-Cases Notifications output to NotificationModels
-                foreach(NotificationDTO notification in uc.Output.Notifications) {
+                foreach(NotificationDTO notification in output.Notifications) {
 
                     //convert the NotificationDTOs rgb color to a Windows brush
                     SolidColorBrush colorBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, notification.R, notification.G, notification.B));
@@ -195,9 +195,7 @@ namespace task_scheduler_presentation.Controllers {
 
             var uc = viewTasksUseCaseFactory.New();
 
-            uc.Execute();
-
-            ViewTasksOutput output = uc.Output;
+            ViewTasksOutput output = uc.Execute(new ViewTasksInput());
 
             if (output.Success) {
                 /*
@@ -265,12 +263,10 @@ namespace task_scheduler_presentation.Controllers {
 
             //create UseCase instance and assign input structure to its input port
             var uc = createTaskUseCaseFactory.New();
-            uc.Input = input;
-
             //run the use case
-            uc.Execute();
+            
 
-            CreateTaskOutput output = uc.Output;
+            CreateTaskOutput output = uc.Execute(input);
 
             if (output.Success) {
                 //get the taskItemDTO returned creatd by the executed usecase
