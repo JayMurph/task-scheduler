@@ -22,6 +22,7 @@ So far, the application has the following functionality:
 - Users can create Tasks
 - Users can view all their Tasks on the Tasks page
 - Tasks are saved between application sessions
+- Users can view all generated Notifications in the Notifications page
 
 <img src="/images/create-task-210114.png" alt="Create Task" title="Create Task" width="600"/>
 <img src="/images/tasks-210114.png" alt="Tasks Page" title="Tasks Page" width="600"/>
