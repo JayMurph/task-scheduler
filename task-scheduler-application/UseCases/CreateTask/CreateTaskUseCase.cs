@@ -61,51 +61,60 @@ namespace task_scheduler_application.UseCases.CreateTask {
                 throw new ArgumentNullException(nameof(input));
             }
 
-            //validate the input data
-            if (!input.IsValid()) {
+            if (input.IsValid()) {
+                //create new Domain TaskItem from the supplied input data
+                TaskItem newTask = InputToTaskItem(input);
+
+                if (taskManager.Add(newTask)) {
+
+                    ITaskItemRepository taskItemRepo = taskItemRepositoryFactory.New();
+
+                    //Create a TaskItemDAL to save to the database
+                    TaskItemDAL taskItemDAL = TaskItemAndInputToDAL(newTask, input);
+
+                    //add the new TaskItemDAL to the database
+                    if(taskItemRepo.Add(taskItemDAL)) {
+
+                        //save the changed make to the TaskItemRepository
+                        if (taskItemRepo.Save()) {
+                            //create DTO to return as Output data
+                            TaskItemDTO taskItemDTO = InputToTaskItemDTO(input);
+
+                            //fill output data and return
+                            return new CreateTaskOutput { Success = true , TaskItemDTO = taskItemDTO };
+                        }
+                        else {
+                            //failed to save state of repository
+                            //remove taskItem from domain TaskManager
+                            if (!taskManager.Remove(newTask)) {
+                                //TaskItem could not be removed. we're now screwed . . .
+                                //TODO: decide what to do here
+                            }
+
+                            return new CreateTaskOutput { Success = false, Error = "Unable to save the new Task."  };
+                        }
+                    }
+                    else {
+                        //failed to save task to repository
+                        //remove taskItem from domain TaskManager
+                        if (!taskManager.Remove(newTask)) {
+                            //TaskItem could not be removed. we're now screwed . . .
+                            //TODO: decide what to do here
+                        }
+
+                        return new CreateTaskOutput {  Success = false, Error = "Unable to save the new Task." };
+                    }
+                }
+                else {
+                    //unable to add new TaskItem to domain TaskManager
+                    return new CreateTaskOutput { Success = false, Error = "Unable to process the new Task." };
+                }
+            }
+            else {
+                //Input is not valid
                 return new CreateTaskOutput { Success = false, Error = input.GetErrorMessage() };
             }
 
-            //create new Domain TaskItem from the supplied input data
-            TaskItem newTask = InputToTaskItem(input);
-
-            //add task to domain TaskManager
-            if (!taskManager.Add(newTask)) {
-                //unable to add new TaskItem to domain TaskManager
-                return new CreateTaskOutput { Success = false, Error = "Unable to process the new Task." };
-            }
-
-            //Create a TaskItemDAL to save to the database
-            TaskItemDAL taskItemDAL = TaskItemAndInputToDAL(newTask, input);
-
-            ITaskItemRepository taskItemRepo = taskItemRepositoryFactory.New();
-
-            //add the new TaskItemDAL to the database
-            if(!taskItemRepo.Add(taskItemDAL)) {
-
-                //remove taskItem from domain TaskManager
-                if (!taskManager.Remove(newTask)) {
-                    //TaskItem could not be removed. we're now screwed . . .
-                    //TODO: decide what to do here
-                }
-                return new CreateTaskOutput {  Success = false, Error = "Unable to save the new Task." };
-            }
-
-            //save the changed make to the TaskItemRepository
-            if (!taskItemRepo.Save()) {
-                //remove taskItem from domain TaskManager
-                if (!taskManager.Remove(newTask)) {
-                    //TaskItem could not be removed. we're now screwed . . .
-                    //TODO: decide what to do here
-                }
-                return new CreateTaskOutput { Success = false, Error = "Unable to save the new Task."  };
-            }
-
-            //create DTO to return as Output data
-            TaskItemDTO taskItemDTO = InputToTaskItemDTO(input);
-
-            //fill output data and return
-            return new CreateTaskOutput { Success = true , TaskItemDTO = taskItemDTO };
         }
 
         /// <summary>
