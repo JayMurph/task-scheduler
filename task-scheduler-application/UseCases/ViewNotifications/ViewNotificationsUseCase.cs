@@ -10,10 +10,10 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
     public class ViewNotificationsUseCase : IUseCase<ViewNotificationsInput, ViewNotificationsOutput> {
 
         //used for retrieving notifications present in the domain
-        private INotificationManager notificationManager;
+        private readonly INotificationManager notificationManager;
 
         //used for retrieving data of task associated to a notification
-        private ITaskItemRepositoryFactory taskItemRepositoryFactory;
+        private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
         public ViewNotificationsUseCase(
             INotificationManager notificationManager,
@@ -24,25 +24,16 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
         }
 
         /// <summary>
-        /// unused because ViewNotifications requires no input. included to confirm to IUseCase
-        /// </summary>
-        public ViewNotificationsInput Input { set; private get; } = null;
-
-        /// <summary>
-        /// Holds the Output of the UseCase. Contains a field indicating errors, and a collection of
-        /// NotificationDALs
-        /// </summary>
-        public ViewNotificationsOutput Output { get; private set; } = null;
-
-        /// <summary>
         /// Executes the ViewNotificationsUseCase. Sets the Output property of the UseCase object
         /// once complete
         /// </summary>
-        public void Execute() {
+        public ViewNotificationsOutput Execute(ViewNotificationsInput input) {
             //no input for use case 
             ITaskItemRepository taskRepo = taskItemRepositoryFactory.New();
 
-            List<NotificationDTO> notifications = new List<NotificationDTO>();
+            ViewNotificationsOutput output = new ViewNotificationsOutput {
+                Success = true
+            };
 
             /*
              * Get all notifications that are present in the application, convert them to DTO's, then
@@ -63,12 +54,12 @@ namespace task_scheduler_application.UseCases.ViewNotifications {
                         B = taskDAL.b
                     };
 
-                    notifications.Add(dto);
+                    output.Notifications.Add(dto);
                 }
 
             }
 
-            Output = new ViewNotificationsOutput() { Success = true, Notifications = notifications };
+            return output;
         }
     }
 }
