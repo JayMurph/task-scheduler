@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using Windows.UI.Xaml.Media;
-
-using task_scheduler_application.UseCases.CreateTask;
-using task_scheduler_application.UseCases.ViewTasks;
-using task_scheduler_application.UseCases.ViewNotifications;
+using System.Linq;
+using System.Threading.Tasks;
 using task_scheduler_application.DTO;
-
-using task_scheduler_presentation.Views;
-using task_scheduler_presentation.Models;
 using task_scheduler_application.NotificationFrequencies;
+using task_scheduler_application.UseCases.CreateTask;
+using task_scheduler_application.UseCases.ViewNotifications;
+using task_scheduler_application.UseCases.ViewTasks;
+using task_scheduler_presentation.Models;
+using task_scheduler_presentation.Views;
+using Windows.UI.Xaml.Media;
 
 namespace task_scheduler_presentation.Controllers {
     /// <summary>

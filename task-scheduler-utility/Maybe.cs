@@ -1,6 +1,5 @@
-﻿using System;
+﻿namespace task_scheduler_utility {
 
-namespace task_scheduler_utility {
     /// <summary>
     /// Holds a reference or value type that may or may not be initialized.
     /// </summary>
@@ -10,7 +9,7 @@ namespace task_scheduler_utility {
         /// <summary>
         /// Indicates if the Maybe has been initialized with a value
         /// </summary>
-        public bool HasValue { get; private set; } 
+        public bool HasValue { get; private set; }
 
         /// <summary>
         /// Returns the object that the Maybe holds
@@ -43,7 +42,7 @@ namespace task_scheduler_utility {
         /// </summary>
         /// <returns></returns>
         public static Maybe<T> CreateEmpty() {
-            return new Maybe<T>();            
+            return new Maybe<T>();
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using task_scheduler_application.DTO;
 
-namespace task_scheduler_presentation.Models{
+namespace task_scheduler_presentation.Models {
     /// <summary>
     /// Represents a TaskItem so it can be displayed in the presentation layer
     /// </summary>

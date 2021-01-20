@@ -1,5 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
-using task_scheduler_presentation.Models;
+﻿using task_scheduler_presentation.Models;
+using Windows.UI.Xaml.Controls;
 
 namespace task_scheduler_presentation.Views {
     public sealed partial class NotificationControl : UserControl {

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using task_scheduler_presentation.Models;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
-using System.Diagnostics;
-using task_scheduler_presentation.Models;
 
 namespace task_scheduler_presentation.Views {
     /// <summary>

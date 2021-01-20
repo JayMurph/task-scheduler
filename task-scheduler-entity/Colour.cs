@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace task_scheduler_entities {
+﻿namespace task_scheduler_entities {
     public struct Colour {
         public byte R;
         public byte G;

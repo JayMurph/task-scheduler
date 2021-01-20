@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace task_scheduler_data_access {
+﻿namespace task_scheduler_data_access {
     public static class DataAccess {
         public static void InitializeDatabase(string connectionStr) {
             try {

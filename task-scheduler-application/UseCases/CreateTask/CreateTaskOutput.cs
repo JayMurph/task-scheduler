@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using task_scheduler_application.DTO;
+﻿using task_scheduler_application.DTO;
 
 namespace task_scheduler_application.UseCases.CreateTask {
     /// <summary>

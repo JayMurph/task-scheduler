@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace task_scheduler_application.UseCases {
+﻿namespace task_scheduler_application.UseCases {
     /// <summary>
     /// Encapsulates the fundamental properties required for the output produced by a Use-Case. 
     /// </summary>

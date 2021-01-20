@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using task_scheduler_application;
-using task_scheduler_data_access.Repositories;
-using task_scheduler_data_access.DataObjects;
 using task_scheduler_application.DTO;
+using task_scheduler_data_access.DataObjects;
+using task_scheduler_data_access.Repositories;
 using task_scheduler_entities;
 using task_scheduler_utility;
 

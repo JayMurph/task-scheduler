@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using task_scheduler_application.DTO;
 
 namespace task_scheduler_application.UseCases.ViewNotifications {

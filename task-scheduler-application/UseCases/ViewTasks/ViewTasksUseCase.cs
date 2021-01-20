@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using task_scheduler_application.NotificationFrequencies;
+using task_scheduler_data_access.DataObjects;
+using task_scheduler_data_access.Repositories;
 using task_scheduler_entities;
 using task_scheduler_utility;
-using task_scheduler_data_access.Repositories;
-using task_scheduler_data_access.DataObjects;
-using task_scheduler_application.NotificationFrequencies;
 
 namespace task_scheduler_application.UseCases.ViewTasks {
     /// <summary>

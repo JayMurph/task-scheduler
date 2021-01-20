@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace task_scheduler_application.UseCases.ViewTasks {
+﻿namespace task_scheduler_application.UseCases.ViewTasks {
     /// <summary>
     /// Encapsulates the input required for the <see cref="ViewTasksUseCase"/>
     /// </summary>

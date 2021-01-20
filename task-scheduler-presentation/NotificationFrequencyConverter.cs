@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Data;
 
 namespace task_scheduler_presentation {
+
     /// <summary>
-    /// Converts a TimeSpan to a formatted string, for the purposes of being displayed in 
+    /// Converts a TimeSpan to a formatted string, for the purposes of being displayed in
     /// <see cref="task_scheduler_presentation.Views.TaskItemControl"/>
     /// </summary>
     public class NotificationFrequencyConverter : IValueConverter {
-        public object Convert(object value, Type targetType, object parameter, string language) {
 
+        public object Convert(object value, Type targetType, object parameter, string language) {
             if (value is TimeSpan time) {
                 if (time != TimeSpan.Zero) {
-
                     /*
                      * builds the string representation of the Custom Notification Frequency that
                      * will be returned
@@ -71,7 +68,6 @@ namespace task_scheduler_presentation {
                     return timeStr;
                 }
             }
-
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language) {

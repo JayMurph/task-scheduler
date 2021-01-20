@@ -1,5 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
-using task_scheduler_presentation.Models;
+﻿using task_scheduler_presentation.Models;
+using Windows.UI.Xaml.Controls;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 

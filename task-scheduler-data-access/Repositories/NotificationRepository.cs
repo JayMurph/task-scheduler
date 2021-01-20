@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using task_scheduler_data_access.DataObjects;
 
 namespace task_scheduler_data_access.Repositories {

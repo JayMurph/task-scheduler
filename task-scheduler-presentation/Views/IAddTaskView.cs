@@ -1,7 +1,5 @@
 ﻿using System;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
-
 namespace task_scheduler_presentation.Views {
     /// <summary>
     /// Defines the necessary components for a page that allows creating a new TaskItem
