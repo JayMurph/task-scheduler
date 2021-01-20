@@ -36,10 +36,6 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// </summary>
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
-        public CreateTaskInput Input { set; private get; } = null;
-
-        public CreateTaskOutput Output { get; private set; } = null;
-
         #endregion 
 
         #region AddTaskUseCase Constructor
@@ -59,46 +55,40 @@ namespace task_scheduler_application.UseCases.CreateTask {
         #endregion
 
 
-        public void Execute() {
+        public CreateTaskOutput Execute(CreateTaskInput input) {
 
-            if(Input == null) {
-                Output = new CreateTaskOutput { Success = false, Error = "No input data found for creating a new Task" };
-                return;
+            if (input is null) {
+                throw new ArgumentNullException(nameof(input));
             }
 
-            //validate the Input data
-            if (!Input.IsValid()) {
-                Output = new CreateTaskOutput { Success = false , Error = Input.GetErrorMessage()};
-                return;
+            //validate the input data
+            if (!input.IsValid()) {
+                return new CreateTaskOutput { Success = false, Error = input.GetErrorMessage() };
             }
 
-            //create new Domain TaskItem from the supplied Input data
-            TaskItem newTask = GetInputAsTaskItem();
+            //create new Domain TaskItem from the supplied input data
+            TaskItem newTask = InputToTaskItem(input);
 
             //add task to domain TaskManager
             if (!taskManager.Add(newTask)) {
                 //unable to add new TaskItem to domain TaskManager
-                //fill output data and return
-                Output = new CreateTaskOutput { Success = false, Error = "Unable to process the new Task." };
-                return;
+                return new CreateTaskOutput { Success = false, Error = "Unable to process the new Task." };
             }
 
             //Create a TaskItemDAL to save to the database
-            TaskItemDAL taskItemDAL = ConvertTaskItemToDAL(newTask);
+            TaskItemDAL taskItemDAL = TaskItemAndInputToDAL(newTask, input);
 
             ITaskItemRepository taskItemRepo = taskItemRepositoryFactory.New();
 
             //add the new TaskItemDAL to the database
             if(!taskItemRepo.Add(taskItemDAL)) {
+
                 //remove taskItem from domain TaskManager
                 if (!taskManager.Remove(newTask)) {
                     //TaskItem could not be removed. we're now screwed . . .
                     //TODO: decide what to do here
                 }
-
-                //create error Output
-                Output = new CreateTaskOutput { Success = false, Error = "Unable to save the new Task." };
-                return;
+                return new CreateTaskOutput {  Success = false, Error = "Unable to save the new Task." };
             }
 
             //save the changed make to the TaskItemRepository
@@ -108,17 +98,14 @@ namespace task_scheduler_application.UseCases.CreateTask {
                     //TaskItem could not be removed. we're now screwed . . .
                     //TODO: decide what to do here
                 }
-
-                //create error Output
-                Output = new CreateTaskOutput { Success = false, Error = "Unable to save the new Task." };
-                return;
+                return new CreateTaskOutput { Success = false, Error = "Unable to save the new Task."  };
             }
 
             //create DTO to return as Output data
-            TaskItemDTO taskItemDTO = GetInputAsTaskItemDTO();
+            TaskItemDTO taskItemDTO = InputToTaskItemDTO(input);
 
             //fill output data and return
-            Output = new CreateTaskOutput { Success = true , TaskItemDTO = taskItemDTO };
+            return new CreateTaskOutput { Success = true , TaskItemDTO = taskItemDTO };
         }
 
         /// <summary>
@@ -128,17 +115,17 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// <returns>
         /// TaskItem created with the data contained in the CreateTaskUseCase's Input property
         /// </returns>
-        private TaskItem GetInputAsTaskItem() {
+        private TaskItem InputToTaskItem(CreateTaskInput input) {
 
-            INotificationFrequency frequency = NotificationFrequencyFactory.New(Input.NotificationFrequencyType, Input.CustomNotificationFrequency);
+            INotificationFrequency frequency = NotificationFrequencyFactory.New(input.NotificationFrequencyType, input.CustomNotificationFrequency);
 
             return new TaskItem(
-                Input.Title,
-                Input.Description,
+                input.Title,
+                input.Description,
                 new task_scheduler_entities.Colour(
-                    Input.R, Input.G, Input.B
+                    input.R, input.G, input.B
                 ),
-                Input.StartTime,
+                input.StartTime,
                 notificationManager,
                 frequency,
                 clock
@@ -146,31 +133,32 @@ namespace task_scheduler_application.UseCases.CreateTask {
         }
 
         /// <summary>
-        /// Converts the fields ofo the CreateTaskUseCase's Input property to a TaskItemDTO then
-        /// returns it
+        /// Converts a CreateTaskInput object into a TaskItemDTO
         /// </summary>
         /// <returns>
-        /// TaskItemDTO created from the data contained in the CreateTaskUseCase's Input property
+        /// TaskItemDTO created from a CreateTaskInput object
         /// </returns>
-        private TaskItemDTO GetInputAsTaskItemDTO() {
+        private TaskItemDTO InputToTaskItemDTO(CreateTaskInput input) {
 
             return new TaskItemDTO {
-                Title = Input.Title,
-                Description = Input.Description,
-                StartTime = Input.StartTime,
-                CustomNotificationFrequency = Input.CustomNotificationFrequency,
-                NotificationFrequencyType = Input.NotificationFrequencyType,
-                R = Input.R,
-                G = Input.G,
-                B = Input.B
+                Title = input.Title,
+                Description = input.Description,
+                StartTime = input.StartTime,
+                CustomNotificationFrequency = input.CustomNotificationFrequency,
+                NotificationFrequencyType = input.NotificationFrequencyType,
+                R = input.R,
+                G = input.G,
+                B = input.B
             };
         }
 
         /// <summary>
-        /// Creates a TaskItemDAL from a TaskItem 
+        /// Creates a TaskItemDAL from a TaskItem and CreateTaskInput
         /// </summary>
         /// <param name="taskItem">
         /// Will have its data used to create a TaskItemDAL
+        /// </param>
+        /// <param name="input">
         /// </param>
         /// <returns>
         /// TaskItemDAL created from the data of the taskItem parameter
@@ -179,17 +167,17 @@ namespace task_scheduler_application.UseCases.CreateTask {
          * TODO: this should probably end up in a conversion class, of some sort, in the application
          * layer
          */
-        private TaskItemDAL ConvertTaskItemToDAL(TaskItem taskItem) {
+        private TaskItemDAL TaskItemAndInputToDAL(TaskItem taskItem, CreateTaskInput input) {
 
             Maybe<CustomNotificationFrequencyDAL> notificationFrequency = Maybe<CustomNotificationFrequencyDAL>.CreateEmpty();
 
             //if the new task should have a custom notification frequency
-            if (Input.NotificationFrequencyType == NotificationFrequencyType.Custom) {
+            if (input.NotificationFrequencyType == NotificationFrequencyType.Custom) {
                 //create a custom notification frequency DAL
                 notificationFrequency = Maybe<CustomNotificationFrequencyDAL>.Create(
                     new CustomNotificationFrequencyDAL(
                         taskItem.ID,
-                        Input.CustomNotificationFrequency
+                        input.CustomNotificationFrequency
                     )
                 );
             }
@@ -204,7 +192,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
                 taskItem.Colour.G,
                 taskItem.Colour.B,
                 notificationFrequency,
-                (int)Input.NotificationFrequencyType
+                (int)input.NotificationFrequencyType
             );
 
         }
