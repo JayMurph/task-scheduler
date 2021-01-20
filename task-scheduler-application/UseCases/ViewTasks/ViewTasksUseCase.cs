@@ -17,10 +17,6 @@ namespace task_scheduler_application.UseCases.ViewTasks {
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
         private readonly ITaskManager taskManager;
 
-        public ViewTasksInput Input { set; private get; } = null;
-
-        public ViewTasksOutput Output { get; private set; } = null;
-
         /// <summary>
         /// Constructs a new ViewTasksUseCase
         /// </summary>
@@ -34,16 +30,18 @@ namespace task_scheduler_application.UseCases.ViewTasks {
         /// Executes the logic of the <see cref="ViewTasksUseCase"/>. Retrieves TaskItem data and
         /// stores it in the <see cref="ViewTasksUseCase"/>'s Output property.
         /// </summary>
-        public void Execute() {
-            Output = new ViewTasksOutput();
-
+        public ViewTasksOutput Execute(ViewTasksInput input) {
             ITaskItemRepository taskRepo = taskItemRepositoryFactory.New();
+
+            ViewTasksOutput output = new ViewTasksOutput {
+                Success = true
+            };
 
             /*
              * go through all taskItems in database then add them to the Output property as
              * TaskItemDTO's.
              */
-            foreach(TaskItem domainTask in taskManager.GetAll()) {
+            foreach (TaskItem domainTask in taskManager.GetAll()) {
 
                 //retrieve dataLayer task which carries notification frequency description
                 Maybe<TaskItemDAL> maybeTask = taskRepo.GetById(domainTask.ID);
@@ -73,12 +71,12 @@ namespace task_scheduler_application.UseCases.ViewTasks {
                             CustomNotificationFrequency = customFrequencyTime
                         };
 
-                    Output.TaskItems.Add(taskDTO);
+                    output.TaskItems.Add(taskDTO);
                 }
 
             }
 
-            Output.Success = true;
+            return output;
         }
     }
 }
