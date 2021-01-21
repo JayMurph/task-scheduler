@@ -25,7 +25,7 @@ So far, the application has the following functionality:
 - Users can view all generated Notifications in the Notifications page
 
 <img src="/images/create-task-210114.png" alt="Create Task" title="Create Task" width="600"/>
-<img src="/images/tasks-210114.png" alt="Tasks Page" title="Tasks Page" width="600"/>
-<img src="/images/notifications-empty-210114.png" alt="Notifications Page" title="Notifications Page" width="600"/>
+<img src="/images/tasks-210121.png" alt="Tasks Page" title="Tasks Page" width="600"/>
+<img src="/images/notifications-210121.png" alt="Notifications Page" title="Notifications Page" width="600"/>
 
 
