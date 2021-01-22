@@ -1,42 +1,23 @@
 ﻿using System;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
-using Windows.UI.Core;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
-
-using task_scheduler_entities;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 using task_scheduler_application;
 using task_scheduler_application.DTO;
-using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.UseCases.CreateTask;
-using task_scheduler_application.UseCases.ViewTasks;
 using task_scheduler_application.UseCases.ViewNotifications;
-
+using task_scheduler_application.UseCases.ViewTasks;
 using task_scheduler_data_access;
 using task_scheduler_data_access.Repositories;
-using task_scheduler_data_access.DataObjects;
+using task_scheduler_entities;
 
-using task_scheduler_presentation.Models;
-
-namespace task_scheduler_presentation
-{
+namespace task_scheduler_presentation {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
