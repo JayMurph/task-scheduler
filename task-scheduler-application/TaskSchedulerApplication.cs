@@ -7,7 +7,45 @@ using task_scheduler_data_access.Repositories;
 using task_scheduler_entities;
 
 namespace task_scheduler_application {
+        //maybe make public into non-static class
     public static class TaskSchedulerApplication {
+
+        //private readonly CreateTaskUseCaseFactory(){
+        //}
+
+        //ctor(DataAccess)
+
+        //public CreateTaskUseCase NewCreateTaskUseCase(){
+        //  return CreateTaskUseCaseFactory.New();
+        //}
+        //public ViewTasksUseCase NewViewTasksUseCase(){
+        //  return ViewTaskUseCaseFactory.New();
+        //}
+
+        //public ViewNotificationsUseCase ViewNotificationsUseCase(){
+        //  return ViewNotificationsUseCase.New();
+        //}
+
+        //invoked when new Notifications are generated
+        //public event EventHandler<NotificationDTO> NotificationAdded
+
+        //protected void OnNotificationAdded(object source, Notification notification){
+        //        if (notification.Producer is TaskItem task) {
+                    //create DTO to return to caller
+        //            NotificationDTO dto = new NotificationDTO() {
+        //                TaskId = task.ID,
+        //                Time = notification.Time,
+        //                Title = notification.Producer.Title,
+        //                R = task.Colour.R,
+        //                G = task.Colour.G,
+        //                B = task.Colour.B
+        //            };
+
+                    //invoked event delegates
+                    //NotificationAdded?.Invoke(source, dto);
+        //        }
+        //    };
+
 
         /// <summary>
         /// Creates and adds neccessary domain objects to the domain manager classes
@@ -23,6 +61,7 @@ namespace task_scheduler_application {
             BasicNotificationManager notificationManager,
             BasicTaskManager taskManager,
             RealTimeClock clock) {
+
 
             //load database data into domain managers
             ITaskItemRepository taskItemRepository = taskItemRepositoryFactory.New();
