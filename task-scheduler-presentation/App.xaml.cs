@@ -94,7 +94,7 @@ namespace task_scheduler_presentation {
                     notificationManager,
                     taskManager,
                     clock
-                );
+, new TaskSchedulerApplication());
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
@@ -130,11 +130,13 @@ namespace task_scheduler_presentation {
         /// <param name="notificationManager"></param>
         /// <param name="taskManager"></param>
         /// <param name="clock"></param>
+        /// <param name="taskSchedulerApplication"></param>
         private Controllers.UserController CreateUserController(
             TaskItemRepositoryFactory taskItemRepositoryFactory,
             BasicNotificationManager notificationManager,
             BasicTaskManager taskManager,
-            RealTimeClock clock) {
+            RealTimeClock clock, 
+            TaskSchedulerApplication taskSchedulerApplication) {
 
             //CREATE USE-CASE FACTORIES
             var createTaskUseCaseFactory =
