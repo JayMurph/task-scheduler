@@ -81,7 +81,9 @@ namespace task_scheduler_presentation {
                 BasicTaskManager taskManager = new BasicTaskManager();
                 RealTimeClock clock = new RealTimeClock();
 
-                TaskSchedulerApplication.InitializeDomainFromDatabase(
+                TaskSchedulerApplication application = new TaskSchedulerApplication();
+
+                application.InitializeDomainFromDatabase(
                     taskItemRepositoryFactory,
                     notificationRepositoryFactory,
                     notificationManager,
@@ -93,8 +95,9 @@ namespace task_scheduler_presentation {
                     taskItemRepositoryFactory,
                     notificationManager,
                     taskManager,
-                    clock
-, new TaskSchedulerApplication());
+                    clock, 
+                    application
+                );
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
