@@ -10,14 +10,36 @@ namespace task_scheduler_application {
         //maybe make public into non-static class
     public class TaskSchedulerApplication {
 
+        private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
+        private readonly INotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory;
+        private readonly INotificationRepositoryFactory notificationRepositoryFactory;
+        private readonly INotificationManager notificationManager;
+        private readonly ITaskManager taskManager;
+        private readonly IClock clock;
+
+
         public TaskSchedulerApplication() {
 
         }
 
+        public TaskSchedulerApplication(
+            ITaskItemRepositoryFactory taskItemRepositoryFactory,
+            INotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory,
+            INotificationRepositoryFactory notificationRepositoryFactory,
+            INotificationManager notificationManager,
+            ITaskManager taskManager,
+            IClock clock) {
+
+            this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
+            this.notificationFrequencyRepositoryFactory = notificationFrequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(notificationFrequencyRepositoryFactory));
+            this.notificationRepositoryFactory = notificationRepositoryFactory ?? throw new ArgumentNullException(nameof(notificationRepositoryFactory));
+            this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));
+            this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
+            this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
+        }
+
         //private readonly CreateTaskUseCaseFactory(){
         //}
-
-        //ctor(DataAccess)
 
         //public CreateTaskUseCase NewCreateTaskUseCase(){
         //  return CreateTaskUseCaseFactory.New();
@@ -35,7 +57,7 @@ namespace task_scheduler_application {
 
         //protected void OnNotificationAdded(object source, Notification notification){
         //        if (notification.Producer is TaskItem task) {
-                    //create DTO to return to caller
+        //create DTO to return to caller
         //            NotificationDTO dto = new NotificationDTO() {
         //                TaskId = task.ID,
         //                Time = notification.Time,
@@ -45,8 +67,8 @@ namespace task_scheduler_application {
         //                B = task.Colour.B
         //            };
 
-                    //invoked event delegates
-                    //NotificationAdded?.Invoke(source, dto);
+        //invoked event delegates
+        //NotificationAdded?.Invoke(source, dto);
         //        }
         //    };
 
