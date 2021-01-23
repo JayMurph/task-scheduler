@@ -3,6 +3,7 @@
         private readonly string connectionString;
 
         public NotificationRepositoryFactory(string connectionString) {
+            this.connectionString = connectionString;
             DataAccess.InitializeDatabase(connectionString);
         }
 

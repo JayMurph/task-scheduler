@@ -64,8 +64,6 @@ namespace task_scheduler_presentation {
                 string dbPath = Path.Combine(ApplicationData.Current.LocalFolder.Path, DATA_SOURCE_FILENAME);
                 string dbConnectionStr = $"Data Source={dbPath};";
 
-                DataAccess.InitializeDatabase(dbConnectionStr);
-
                 //CREATE REPOSITORY FACTORIES
                 NotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory =
                     new NotificationFrequencyRepositoryFactory(dbConnectionStr);
