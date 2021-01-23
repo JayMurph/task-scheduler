@@ -11,6 +11,9 @@ namespace task_scheduler_data_access.Repositories {
 
         public TaskItemRepositoryFactory(string connectionStr, INotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory) {
             this.connectionStr = connectionStr;
+
+            DataAccess.InitializeDatabase(connectionStr);
+
             this.notificationFrequencyRepositoryFactory = 
                 notificationFrequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(notificationFrequencyRepositoryFactory));
         }

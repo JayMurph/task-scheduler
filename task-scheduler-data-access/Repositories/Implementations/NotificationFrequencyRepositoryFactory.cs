@@ -7,6 +7,8 @@
 
         public NotificationFrequencyRepositoryFactory(string connectionStr) {
             this.connectionStr = connectionStr;
+
+            DataAccess.InitializeDatabase(connectionStr);
         }
 
         public INotificationFrequencyRepository New() {

@@ -19,7 +19,6 @@ namespace task_scheduler_data_access.Repositories {
         private bool disposedValue;
 
         public NotificationRepository(string connectionStr) {
-
             adapter = CreateNotificationTableAdapter(connectionStr);
 
             table = new DataTable("Notifications");
