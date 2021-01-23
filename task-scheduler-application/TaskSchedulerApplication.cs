@@ -40,6 +40,9 @@ namespace task_scheduler_application {
             this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
             this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
 
+            //break up this and initializedomainfromdatabase more intelligently
+            notificationManager.NotificationAdded += OnNotificationAdded;
+
             this.InitializeDomainFromDatabase(
                 taskItemRepositoryFactory,
                 notificationRepositoryFactory,
@@ -47,8 +50,6 @@ namespace task_scheduler_application {
                 taskManager,
                 clock
             );
-
-            notificationManager.NotificationAdded += OnNotificationAdded;
 
             //CREATE USE-CASE FACTORIES
             createTaskUseCaseFactory =
