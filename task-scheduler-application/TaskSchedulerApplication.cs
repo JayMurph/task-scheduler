@@ -18,10 +18,6 @@ namespace task_scheduler_application {
         private readonly IClock clock;
 
 
-        public TaskSchedulerApplication() {
-
-        }
-
         public TaskSchedulerApplication(
             ITaskItemRepositoryFactory taskItemRepositoryFactory,
             INotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory,
