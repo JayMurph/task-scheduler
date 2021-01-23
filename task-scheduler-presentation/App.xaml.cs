@@ -76,28 +76,27 @@ namespace task_scheduler_presentation {
                 NotificationRepositoryFactory notificationRepositoryFactory =
                     new NotificationRepositoryFactory(dbConnectionStr);
 
-                //create domain dependencies
-                BasicNotificationManager notificationManager = new BasicNotificationManager();
-                BasicTaskManager taskManager = new BasicTaskManager();
-                RealTimeClock clock = new RealTimeClock();
+                TaskSchedulerApplication taskSchedulerApp = 
+                    new TaskSchedulerApplication(
+                        taskItemRepositoryFactory,
+                        notificationFrequencyRepositoryFactory,
+                        notificationRepositoryFactory,
+                        new BasicNotificationManager(),
+                        new BasicTaskManager(),
+                        new RealTimeClock()
+                    );
 
-                TaskSchedulerApplication application = new TaskSchedulerApplication();
+                App.UserController = new Controllers.UserController(taskSchedulerApp);
 
-                application.InitializeDomainFromDatabase(
-                    taskItemRepositoryFactory,
-                    notificationRepositoryFactory,
-                    notificationManager,
-                    taskManager,
-                    clock
-                );
-
-                UserController = CreateUserController(
-                    taskItemRepositoryFactory,
-                    notificationManager,
-                    taskManager,
-                    clock, 
-                    application
-                );
+                //TODO: find a better solution than this filthy hack
+                /*
+                 * hook up UserController to the notificationManager, so that it is made aware of when
+                 * the domain creates new notifications
+                 */
+                taskSchedulerApp.NotificationAdded +=
+                    async (s, notification) => {
+                        await App.UserController.ReceiveNotification(notification);
+                    };
 
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
@@ -124,72 +123,6 @@ namespace task_scheduler_presentation {
                 // Ensure the current window is active
                 Window.Current.Activate();
             }
-        }
-
-        /// <summary>
-        /// Creates and returns a new UserController
-        /// </summary>
-        /// <param name="taskItemRepositoryFactory"></param>
-        /// <param name="notificationManager"></param>
-        /// <param name="taskManager"></param>
-        /// <param name="clock"></param>
-        /// <param name="taskSchedulerApplication"></param>
-        private Controllers.UserController CreateUserController(
-            TaskItemRepositoryFactory taskItemRepositoryFactory,
-            BasicNotificationManager notificationManager,
-            BasicTaskManager taskManager,
-            RealTimeClock clock, 
-            TaskSchedulerApplication taskSchedulerApplication) {
-
-            //CREATE USE-CASE FACTORIES
-            var createTaskUseCaseFactory =
-                new CreateTaskUseCaseFactory(
-                    taskManager,
-                    notificationManager,
-                    clock,
-                    taskItemRepositoryFactory
-                );
-
-            var viewTasksUseCaseFactory =
-                new ViewTasksUseCaseFactory(taskManager, taskItemRepositoryFactory);
-
-            var viewNotificationsUseCaseFactory =
-                new ViewNotificationsUseCaseFactory(
-                    notificationManager,
-                    taskItemRepositoryFactory
-                );
-
-            //Instantiate user controller, passing in required factories
-            Controllers.UserController controller = new Controllers.UserController(
-                createTaskUseCaseFactory,
-                viewTasksUseCaseFactory,
-                viewNotificationsUseCaseFactory, 
-                taskSchedulerApplication);
-
-            //TODO: find a better solution than this filthy hack
-            /*
-             * hook up UserController to the notificationManager, so that it is made aware of when
-             * the domain creates new notifications
-             */
-            notificationManager.NotificationAdded +=
-                async (s, notification) => {
-
-                    //convert ITaskItem Producer to TaskItem which carries a color
-                    if (notification.Producer is TaskItem task) {
-                        NotificationDTO dto = new NotificationDTO() {
-                            TaskId = task.ID,
-                            Time = notification.Time,
-                            Title = notification.Producer.Title,
-                            R = task.Colour.R,
-                            G = task.Colour.G,
-                            B = task.Colour.B
-                        };
-
-                        await controller.ReceiveNotification(dto);
-                    }
-                };
-
-            return controller;
         }
 
         #region BoilerPlate
