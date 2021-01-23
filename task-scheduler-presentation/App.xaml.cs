@@ -161,7 +161,7 @@ namespace task_scheduler_presentation {
                 createTaskUseCaseFactory,
                 viewTasksUseCaseFactory,
                 viewNotificationsUseCaseFactory
-            );
+, taskSchedulerApplication);
 
             //TODO: find a better solution than this filthy hack
             /*

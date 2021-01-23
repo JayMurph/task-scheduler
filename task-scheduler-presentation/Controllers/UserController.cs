@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using task_scheduler_application;
 using task_scheduler_application.DTO;
 using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.UseCases.CreateTask;
@@ -32,7 +33,7 @@ namespace task_scheduler_presentation.Controllers {
         /// for creating new ViewNotificationsUseCases
         /// </summary>
         private readonly ViewNotificationsUseCaseFactory viewNotificationsUseCaseFactory;
-
+        private readonly TaskSchedulerApplication taskSchedulerApplication;
         public const string CUSTOM_NOTIFICATION_TYPE_STRING = "Custom";
 
         //TODO : abstract these strings out of the presentation layer
@@ -123,11 +124,13 @@ namespace task_scheduler_presentation.Controllers {
         public UserController(
             CreateTaskUseCaseFactory createTaskUseCaseFactory,
             ViewTasksUseCaseFactory viewTasksUseCaseFactory,
-            ViewNotificationsUseCaseFactory viewNotificationsUseCaseFactory) {
+            ViewNotificationsUseCaseFactory viewNotificationsUseCaseFactory, 
+            TaskSchedulerApplication taskSchedulerApplication) {
 
             this.createTaskUseCaseFactory = createTaskUseCaseFactory ?? throw new ArgumentNullException(nameof(createTaskUseCaseFactory));
             this.viewTasksUseCaseFactory = viewTasksUseCaseFactory ?? throw new ArgumentNullException(nameof(viewTasksUseCaseFactory));
             this.viewNotificationsUseCaseFactory = viewNotificationsUseCaseFactory ?? throw new ArgumentNullException(nameof(viewNotificationsUseCaseFactory));
+            this.taskSchedulerApplication = taskSchedulerApplication ?? throw new ArgumentNullException(nameof(taskSchedulerApplication));
         }
 
 
