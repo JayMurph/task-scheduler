@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using task_scheduler_application.NotificationFrequencies;
+using task_scheduler_application.UseCases.CreateTask;
+using task_scheduler_application.UseCases.ViewNotifications;
+using task_scheduler_application.UseCases.ViewTasks;
 using task_scheduler_data_access.DataObjects;
 using task_scheduler_data_access.Repositories;
 using task_scheduler_entities;
@@ -17,6 +20,9 @@ namespace task_scheduler_application {
         private readonly ITaskManager taskManager;
         private readonly IClock clock;
 
+        private readonly CreateTaskUseCaseFactory createTaskUseCaseFactory;
+        private readonly ViewTasksUseCaseFactory viewTasksUseCaseFactory;
+        private readonly ViewNotificationsUseCaseFactory viewNotificationsUseCaseFactory;
 
         public TaskSchedulerApplication(
             ITaskItemRepositoryFactory taskItemRepositoryFactory,
@@ -32,6 +38,32 @@ namespace task_scheduler_application {
             this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));
             this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
             this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
+
+            this.InitializeDomainFromDatabase(
+                taskItemRepositoryFactory,
+                notificationRepositoryFactory,
+                notificationManager,
+                taskManager,
+                clock
+            );
+
+            //CREATE USE-CASE FACTORIES
+            createTaskUseCaseFactory =
+                new CreateTaskUseCaseFactory(
+                    taskManager,
+                    notificationManager,
+                    clock,
+                    taskItemRepositoryFactory
+                );
+
+            viewTasksUseCaseFactory =
+                new ViewTasksUseCaseFactory(taskManager, taskItemRepositoryFactory);
+
+            viewNotificationsUseCaseFactory =
+                new ViewNotificationsUseCaseFactory(
+                    notificationManager,
+                    taskItemRepositoryFactory
+                );
         }
 
         //private readonly CreateTaskUseCaseFactory(){
@@ -68,21 +100,12 @@ namespace task_scheduler_application {
         //        }
         //    };
 
-
-        /// <summary>
-        /// Creates and adds neccessary domain objects to the domain manager classes
-        /// </summary>
-        /// <param name="taskItemRepositoryFactory"></param>
-        /// <param name="notificationRepositoryFactory"></param>
-        /// <param name="notificationManager"></param>
-        /// <param name="taskManager"></param>
-        /// <param name="clock"></param>
         public void InitializeDomainFromDatabase(
-            TaskItemRepositoryFactory taskItemRepositoryFactory,
-            NotificationRepositoryFactory notificationRepositoryFactory,
-            BasicNotificationManager notificationManager,
-            BasicTaskManager taskManager,
-            RealTimeClock clock) {
+            ITaskItemRepositoryFactory taskItemRepositoryFactory,
+            INotificationRepositoryFactory notificationRepositoryFactory,
+            INotificationManager notificationManager,
+            ITaskManager taskManager,
+            IClock clock) {
 
 
             //load database data into domain managers
@@ -127,12 +150,14 @@ namespace task_scheduler_application {
 
             INotificationRepository notificationRepo = notificationRepositoryFactory.New();
 
+            List<ITaskItem> tasks = taskManager.GetAll();
+
             /*
              * read in notifications from database, create domain Notifications from data and store
              * them in the NotificationManager
              */
             foreach(NotificationDAL notification in notificationRepo.GetAll()) {
-                ITaskItem producer = taskManager.Find(notification.taskId);
+                ITaskItem producer = tasks.Find(task => task.ID ==notification.taskId);
 
                 if(producer == null) {
                     continue;
