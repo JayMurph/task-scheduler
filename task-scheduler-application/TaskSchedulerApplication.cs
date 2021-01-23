@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using task_scheduler_application.DTO;
 using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewNotifications;
@@ -10,7 +11,7 @@ using task_scheduler_data_access.Repositories;
 using task_scheduler_entities;
 
 namespace task_scheduler_application {
-        //maybe make public into non-static class
+    //maybe make public into non-static class
     public class TaskSchedulerApplication {
 
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
@@ -47,6 +48,8 @@ namespace task_scheduler_application {
                 clock
             );
 
+            notificationManager.NotificationAdded += OnNotificationAdded;
+
             //CREATE USE-CASE FACTORIES
             createTaskUseCaseFactory =
                 new CreateTaskUseCaseFactory(
@@ -69,36 +72,36 @@ namespace task_scheduler_application {
         //private readonly CreateTaskUseCaseFactory(){
         //}
 
-        public CreateTaskUseCase NewCreateTaskUseCase(){
-          return createTaskUseCaseFactory.New();
+        public CreateTaskUseCase NewCreateTaskUseCase() {
+            return createTaskUseCaseFactory.New();
         }
-        public ViewTasksUseCase NewViewTasksUseCase(){
-          return viewTasksUseCaseFactory.New();
+        public ViewTasksUseCase NewViewTasksUseCase() {
+            return viewTasksUseCaseFactory.New();
         }
 
-        public ViewNotificationsUseCase NewViewNotificationsUseCase(){
+        public ViewNotificationsUseCase NewViewNotificationsUseCase() {
             return viewNotificationsUseCaseFactory.New();
         }
 
         //invoked when new Notifications are generated
-        //public event EventHandler<NotificationDTO> NotificationAdded
+        public event EventHandler<NotificationDTO> NotificationAdded;
 
-        //protected void OnNotificationAdded(object source, Notification notification){
-        //        if (notification.Producer is TaskItem task) {
-        //create DTO to return to caller
-        //            NotificationDTO dto = new NotificationDTO() {
-        //                TaskId = task.ID,
-        //                Time = notification.Time,
-        //                Title = notification.Producer.Title,
-        //                R = task.Colour.R,
-        //                G = task.Colour.G,
-        //                B = task.Colour.B
-        //            };
+        protected void OnNotificationAdded(object source, Notification notification) {
+            if (notification.Producer is TaskItem task) {
+                //create DTO to return to caller
+                NotificationDTO dto = new NotificationDTO() {
+                    TaskId = task.ID,
+                    Time = notification.Time,
+                    Title = notification.Producer.Title,
+                    R = task.Colour.R,
+                    G = task.Colour.G,
+                    B = task.Colour.B
+                };
 
-        //invoked event delegates
-        //NotificationAdded?.Invoke(source, dto);
-        //        }
-        //    };
+                //invoked event delegates
+                NotificationAdded?.Invoke(source, dto);
+            }
+        }
 
         public void InitializeDomainFromDatabase(
             ITaskItemRepositoryFactory taskItemRepositoryFactory,
