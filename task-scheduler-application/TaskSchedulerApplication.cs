@@ -8,7 +8,12 @@ using task_scheduler_entities;
 
 namespace task_scheduler_application {
         //maybe make public into non-static class
-    public static class TaskSchedulerApplication {
+    public class TaskSchedulerApplication {
+
+        public TaskSchedulerApplication() {
+
+        }
+
 
         //private readonly CreateTaskUseCaseFactory(){
         //}
@@ -55,7 +60,7 @@ namespace task_scheduler_application {
         /// <param name="notificationManager"></param>
         /// <param name="taskManager"></param>
         /// <param name="clock"></param>
-        public static void InitializeDomainFromDatabase(
+        public void InitializeDomainFromDatabase(
             TaskItemRepositoryFactory taskItemRepositoryFactory,
             NotificationRepositoryFactory notificationRepositoryFactory,
             BasicNotificationManager notificationManager,
