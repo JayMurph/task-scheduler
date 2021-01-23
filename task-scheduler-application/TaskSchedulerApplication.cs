@@ -87,8 +87,27 @@ namespace task_scheduler_application {
         public event EventHandler<NotificationDTO> NotificationAdded;
 
         protected void OnNotificationAdded(object source, Notification notification) {
+
+            //update database with new notification
+            NotificationDAL notificationDal = new NotificationDAL {
+                taskId = notification.Producer.ID,
+                time = notification.Time
+            };
+            INotificationRepository notificationRepo = notificationRepositoryFactory.New();
+            notificationRepo.Add(notificationDal);
+
+            ITaskItemRepository taskRepo = taskItemRepositoryFactory.New();
+            List<TaskItemDAL> tasks = new List<TaskItemDAL>(taskRepo.GetAll());
+
             if (notification.Producer is TaskItem task) {
-                //create DTO to return to caller
+
+                //update the notifications producer in the database
+                TaskItemDAL taskItemDAL = tasks.Find(t => t.id == task.ID);
+                if(taskRepo.Update(taskItemDAL) == false) {
+                    //could not update task in database
+                }
+
+                //create DTO to invoke NotificationAdded with
                 NotificationDTO dto = new NotificationDTO() {
                     TaskId = task.ID,
                     Time = notification.Time,
