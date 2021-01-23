@@ -160,8 +160,8 @@ namespace task_scheduler_presentation {
             Controllers.UserController controller = new Controllers.UserController(
                 createTaskUseCaseFactory,
                 viewTasksUseCaseFactory,
-                viewNotificationsUseCaseFactory
-, taskSchedulerApplication);
+                viewNotificationsUseCaseFactory, 
+                taskSchedulerApplication);
 
             //TODO: find a better solution than this filthy hack
             /*
