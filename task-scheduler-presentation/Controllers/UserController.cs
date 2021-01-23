@@ -19,20 +19,7 @@ namespace task_scheduler_presentation.Controllers {
     /// </summary>
     public class UserController {
 
-        /// <summary>
-        /// For creating new CreateTaskUseCases
-        /// </summary>
-        private readonly CreateTaskUseCaseFactory createTaskUseCaseFactory;
 
-        /// <summary>
-        /// For creating new ViewTaskUseCases
-        /// </summary>
-        private readonly ViewTasksUseCaseFactory viewTasksUseCaseFactory;
-
-        /// <summary>
-        /// for creating new ViewNotificationsUseCases
-        /// </summary>
-        private readonly ViewNotificationsUseCaseFactory viewNotificationsUseCaseFactory;
         private readonly TaskSchedulerApplication taskSchedulerApplication;
         public const string CUSTOM_NOTIFICATION_TYPE_STRING = "Custom";
 
@@ -121,15 +108,8 @@ namespace task_scheduler_presentation.Controllers {
             );
         }
 
-        public UserController(
-            CreateTaskUseCaseFactory createTaskUseCaseFactory,
-            ViewTasksUseCaseFactory viewTasksUseCaseFactory,
-            ViewNotificationsUseCaseFactory viewNotificationsUseCaseFactory, 
-            TaskSchedulerApplication taskSchedulerApplication) {
+        public UserController(TaskSchedulerApplication taskSchedulerApplication) {
 
-            this.createTaskUseCaseFactory = createTaskUseCaseFactory ?? throw new ArgumentNullException(nameof(createTaskUseCaseFactory));
-            this.viewTasksUseCaseFactory = viewTasksUseCaseFactory ?? throw new ArgumentNullException(nameof(viewTasksUseCaseFactory));
-            this.viewNotificationsUseCaseFactory = viewNotificationsUseCaseFactory ?? throw new ArgumentNullException(nameof(viewNotificationsUseCaseFactory));
             this.taskSchedulerApplication = taskSchedulerApplication ?? throw new ArgumentNullException(nameof(taskSchedulerApplication));
         }
 
