@@ -111,6 +111,16 @@ namespace task_scheduler_presentation.Controllers {
         public UserController(TaskSchedulerApplication taskSchedulerApplication) {
 
             this.taskSchedulerApplication = taskSchedulerApplication ?? throw new ArgumentNullException(nameof(taskSchedulerApplication));
+
+            //TODO: find a better solution than this filthy hack
+            /*
+             * hook up UserController to the notificationManager, so that it is made aware of when
+             * the domain creates new notifications
+             */
+            taskSchedulerApplication.NotificationAdded +=
+                async (s, notification) => {
+                    await App.UserController.ReceiveNotification(notification);
+                };
         }
 
 

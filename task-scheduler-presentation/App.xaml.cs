@@ -88,16 +88,6 @@ namespace task_scheduler_presentation {
 
                 App.UserController = new Controllers.UserController(taskSchedulerApp);
 
-                //TODO: find a better solution than this filthy hack
-                /*
-                 * hook up UserController to the notificationManager, so that it is made aware of when
-                 * the domain creates new notifications
-                 */
-                taskSchedulerApp.NotificationAdded +=
-                    async (s, notification) => {
-                        await App.UserController.ReceiveNotification(notification);
-                    };
-
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
