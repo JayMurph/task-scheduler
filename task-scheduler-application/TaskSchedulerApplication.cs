@@ -76,7 +76,7 @@ namespace task_scheduler_application {
           return viewTasksUseCaseFactory.New();
         }
 
-        public ViewNotificationsUseCase ViewNotificationsUseCase(){
+        public ViewNotificationsUseCase NewViewNotificationsUseCase(){
             return viewNotificationsUseCaseFactory.New();
         }
 
