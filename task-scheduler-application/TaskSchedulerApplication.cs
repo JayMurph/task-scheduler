@@ -69,16 +69,16 @@ namespace task_scheduler_application {
         //private readonly CreateTaskUseCaseFactory(){
         //}
 
-        //public CreateTaskUseCase NewCreateTaskUseCase(){
-        //  return CreateTaskUseCaseFactory.New();
-        //}
-        //public ViewTasksUseCase NewViewTasksUseCase(){
-        //  return ViewTaskUseCaseFactory.New();
-        //}
+        public CreateTaskUseCase NewCreateTaskUseCase(){
+          return createTaskUseCaseFactory.New();
+        }
+        public ViewTasksUseCase NewViewTasksUseCase(){
+          return viewTasksUseCaseFactory.New();
+        }
 
-        //public ViewNotificationsUseCase ViewNotificationsUseCase(){
-        //  return ViewNotificationsUseCase.New();
-        //}
+        public ViewNotificationsUseCase ViewNotificationsUseCase(){
+            return viewNotificationsUseCaseFactory.New();
+        }
 
         //invoked when new Notifications are generated
         //public event EventHandler<NotificationDTO> NotificationAdded
