@@ -125,7 +125,7 @@ namespace task_scheduler_presentation.Controllers {
         public void ViewNotifications(INotificationsView view) {
 
             //call use-case factory to create use-case object
-            var uc = viewNotificationsUseCaseFactory.New();
+            var uc = taskSchedulerApplication.NewViewNotificationsUseCase();
 
             //execute the use-case
             ViewNotificationsOutput output = uc.Execute(new ViewNotificationsInput());
@@ -176,7 +176,7 @@ namespace task_scheduler_presentation.Controllers {
         /// </param>
         public void ViewTasks(ITasksView view) {
 
-            var uc = viewTasksUseCaseFactory.New();
+            var uc = taskSchedulerApplication.NewViewTasksUseCase();
 
             ViewTasksOutput output = uc.Execute(new ViewTasksInput());
 
@@ -245,7 +245,7 @@ namespace task_scheduler_presentation.Controllers {
             };
 
             //create UseCase instance and assign input structure to its input port
-            var uc = createTaskUseCaseFactory.New();
+            var uc = taskSchedulerApplication.NewCreateTaskUseCase();
             //run the use case
             
 
