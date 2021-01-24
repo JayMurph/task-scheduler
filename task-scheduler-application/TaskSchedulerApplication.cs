@@ -42,7 +42,6 @@ namespace task_scheduler_application {
 
             this.InitializeDomainFromDatabase(
                 taskItemRepositoryFactory,
-                notificationRepositoryFactory,
                 notificationManager,
                 taskManager,
                 clock
@@ -127,7 +126,6 @@ namespace task_scheduler_application {
 
         public void InitializeDomainFromDatabase(
             ITaskItemRepositoryFactory taskItemRepositoryFactory,
-            INotificationRepositoryFactory notificationRepositoryFactory,
             INotificationManager notificationManager,
             ITaskManager taskManager,
             IClock clock) {
