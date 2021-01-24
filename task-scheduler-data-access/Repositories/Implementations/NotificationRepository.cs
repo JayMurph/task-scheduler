@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Linq;
 using task_scheduler_data_access.DataObjects;
 
@@ -47,7 +48,11 @@ namespace task_scheduler_data_access.Repositories {
 
             SQLiteDataAdapter adapter = new SQLiteDataAdapter("SELECT * FROM Notifications", conn);
 
-            adapter.InsertCommand = new SQLiteCommand("INSERT INTO Notifications VALUES(@id, @time)");
+            adapter.InsertCommand = 
+                new SQLiteCommand(
+                    "INSERT INTO Notifications VALUES(@id, @time)", 
+                    conn
+                );
             adapter.InsertCommand.Parameters.Add("@id", DbType.String, 1, "TaskId");
             adapter.InsertCommand.Parameters.Add("@time", DbType.String, 1, "Time");
 
@@ -57,7 +62,11 @@ namespace task_scheduler_data_access.Repositories {
                 adapter.UpdateCommand.Parameters.Add("@time", DbType.String, 1, "Time");
             */
 
-            adapter.DeleteCommand = new SQLiteCommand("DELETE FROM Notifications WHERE TaskId=@id AND Time=@time");
+            adapter.DeleteCommand = 
+                new SQLiteCommand(
+                    "DELETE FROM Notifications WHERE TaskId=@id AND Time=@time",
+                    conn
+                );
             adapter.DeleteCommand.Parameters.Add("@id", DbType.String, 1, "TaskId");
             adapter.DeleteCommand.Parameters.Add("@time", DbType.String, 1, "Time");
 
