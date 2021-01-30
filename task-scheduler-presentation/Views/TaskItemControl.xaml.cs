@@ -13,10 +13,6 @@ namespace task_scheduler_presentation.Views {
         [Description("Invoked when delete context menu option is selected")]
         public event EventHandler<TaskItemModel> DeleteClick;
 
-        private void OnDeleteClick(object sender, TaskItemModel model){
-            this.DeleteClick?.Invoke(sender, model);
-        }
-
         /// <summary>
         /// Serves as the Data that the Control markup accesses and displays
         /// </summary>
@@ -31,8 +27,13 @@ namespace task_scheduler_presentation.Views {
             this.DataContextChanged += (s, e) => Bindings.Update();
         }
 
+        /// <summary>
+        /// Invoked when the Delete option is selected from the TaskItemControl's context menu
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void DeleteMenuOption_Click(object sender, RoutedEventArgs e) {
-            OnDeleteClick(this, TaskItem);
+            this.DeleteClick?.Invoke(sender, TaskItem);
         }
     }
 }
