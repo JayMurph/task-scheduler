@@ -17,8 +17,9 @@
                       >
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="models:TaskItemModel">
-                        <views:TaskItemControl />
-                    </DataTemplate>
+                    <views:TaskItemControl DeleteClick="TaskItemControl_DeleteClick">
+                    </views:TaskItemControl>
+                </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </StackPanel>
