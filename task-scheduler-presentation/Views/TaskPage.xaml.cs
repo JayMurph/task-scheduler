@@ -68,6 +68,7 @@ namespace task_scheduler_presentation.Views {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TaskItemControl_DeleteClick(object sender, TaskItemModel e) {
+            //TODO: Invoke DeleteTaskUseCase here
             TaskItems.Remove(e);
         }
     }
