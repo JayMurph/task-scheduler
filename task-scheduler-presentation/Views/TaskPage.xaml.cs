@@ -60,5 +60,15 @@ namespace task_scheduler_presentation.Views {
             OnClosing(this, null);
             base.OnNavigatingFrom(e);
         }
+
+        /// <summary>
+        /// Handles when the Delete context menu option is selected on a TaskItem. removes the
+        /// TaskItem from the page.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TaskItemControl_DeleteClick(object sender, TaskItemModel e) {
+            TaskItems.Remove(e);
+        }
     }
 }
