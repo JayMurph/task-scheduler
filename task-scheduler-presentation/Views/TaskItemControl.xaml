@@ -16,6 +16,12 @@
 
     <Grid 
         BorderBrush="{x:Bind TaskItem.Color}" BorderThickness="2">
+        <Grid.ContextFlyout>
+            <MenuFlyout>
+                <MenuFlyoutItem Text="Delete" Click="DeleteMenuOption_Click">
+                </MenuFlyoutItem>
+            </MenuFlyout>
+        </Grid.ContextFlyout>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="100"/>
