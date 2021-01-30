@@ -31,7 +31,7 @@ namespace task_scheduler_presentation.Views {
             this.DataContextChanged += (s, e) => Bindings.Update();
         }
 
-        private void MenuFlyoutItem_Click(object sender, RoutedEventArgs e) {
+        private void DeleteMenuOption_Click(object sender, RoutedEventArgs e) {
             OnDeleteClick(this, TaskItem);
         }
     }
