@@ -63,9 +63,6 @@ namespace task_scheduler_application {
                 );
         }
 
-        //private readonly CreateTaskUseCaseFactory(){
-        //}
-
         public CreateTaskUseCase NewCreateTaskUseCase() {
             return createTaskUseCaseFactory.New();
         }
