@@ -10,6 +10,6 @@ namespace task_scheduler_application.UseCases.DeleteTask {
         /// <summary>
         /// The unique identifier of the TaskItem to be deleted
         /// </summary>
-        Guid Id;
+        public Guid Id;
     }
 }
