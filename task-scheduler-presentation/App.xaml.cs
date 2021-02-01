@@ -9,11 +9,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
 using task_scheduler_application;
-using task_scheduler_application.DTO;
-using task_scheduler_application.UseCases.CreateTask;
-using task_scheduler_application.UseCases.ViewNotifications;
-using task_scheduler_application.UseCases.ViewTasks;
-using task_scheduler_data_access;
 using task_scheduler_data_access.Repositories;
 using task_scheduler_entities;
 
