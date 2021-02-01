@@ -10,6 +10,7 @@ namespace task_scheduler_application.UseCases.DeleteTask {
     /// </summary>
     public class DeleteTaskUseCaseFactory : IUseCaseFactory<DeleteTaskUseCase> {
 
+        //dependencies for DeleteTaskUseCases
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
         private readonly INotificationRepositoryFactory notificationRepositoryFactory;
         private readonly BasicTaskManager taskItemManager;
@@ -27,6 +28,10 @@ namespace task_scheduler_application.UseCases.DeleteTask {
             this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));
         }
 
+        /// <summary>
+        /// Creates and returns a new DeleteTaskUseCase object
+        /// </summary>
+        /// <returns></returns>
         public DeleteTaskUseCase New() {
             return new DeleteTaskUseCase(taskItemRepositoryFactory, notificationRepositoryFactory, taskItemManager, notificationManager);
         }
