@@ -74,8 +74,6 @@ namespace task_scheduler_presentation {
                         taskItemRepositoryFactory,
                         notificationFrequencyRepositoryFactory,
                         notificationRepositoryFactory,
-                        new BasicNotificationManager(),
-                        new BasicTaskManager(),
                         new RealTimeClock()
                     );
 
