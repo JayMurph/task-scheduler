@@ -17,13 +17,13 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// Holds all currently active TaskItem's in the application. After the Use-Case creates a
         /// new TaskItem, it will give it to the taskManager.
         /// </summary>
-        private readonly ITaskManager taskManager;
+        private readonly BasicTaskManager taskManager;
 
         /// <summary>
         /// Receives and maintains Notifications produced by TaskItem's. Required for the
         /// construction of a new TaskItem.
         /// </summary>
-        private readonly INotificationManager notificationManager;
+        private readonly BasicNotificationManager notificationManager;
 
         /// <summary>
         /// Retrieves the current time. Required for the creation of a new TaskItem.
@@ -41,8 +41,8 @@ namespace task_scheduler_application.UseCases.CreateTask {
         #region AddTaskUseCase Constructor
 
         public CreateTaskUseCase(
-            ITaskManager taskManager,
-            INotificationManager notificationManager,
+            BasicTaskManager taskManager,
+            BasicNotificationManager notificationManager,
             IClock clock,
             ITaskItemRepositoryFactory taskItemRepositoryFactory) {
 
