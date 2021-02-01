@@ -11,14 +11,14 @@ namespace task_scheduler_application.UseCases.DeleteTask {
 
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
         private readonly INotificationRepositoryFactory notificationRepositoryFactory;
-        private readonly ITaskManager taskItemManager;
-        private readonly INotificationManager notificationManager;
+        private readonly BasicTaskManager taskItemManager;
+        private readonly BasicNotificationManager notificationManager;
 
         public DeleteTaskUseCase(
             ITaskItemRepositoryFactory taskItemRepositoryFactory,
             INotificationRepositoryFactory notificationRepositoryFactory,
-            ITaskManager taskItemManager,
-            INotificationManager notificationManager) {
+            BasicTaskManager taskItemManager,
+            BasicNotificationManager notificationManager) {
 
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
             this.notificationRepositoryFactory = notificationRepositoryFactory ?? throw new ArgumentNullException(nameof(notificationRepositoryFactory));
