@@ -10,8 +10,8 @@ namespace task_scheduler_application.UseCases.CreateTask {
     public class CreateTaskUseCaseFactory : IUseCaseFactory<CreateTaskUseCase> {
 
 
-        private readonly ITaskManager taskManager;
-        private readonly INotificationManager notificationManager;
+        private readonly BasicTaskManager taskManager;
+        private readonly BasicNotificationManager notificationManager;
         private readonly IClock clock;
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
 
@@ -28,8 +28,8 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// </param>
         /// <exception cref="ArgumentNullException">One of the arguments provided was null</exception>
         public CreateTaskUseCaseFactory(
-            ITaskManager taskManager,
-            INotificationManager notificationManager,
+            BasicTaskManager taskManager,
+            BasicNotificationManager notificationManager,
             IClock clock,
             ITaskItemRepositoryFactory taskItemRepositoryFactory
             ){
