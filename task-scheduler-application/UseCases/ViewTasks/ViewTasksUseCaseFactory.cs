@@ -9,9 +9,9 @@ namespace task_scheduler_application.UseCases.ViewTasks {
     /// </summary>
     public class ViewTasksUseCaseFactory : IUseCaseFactory<ViewTasksUseCase> {
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
-        private readonly ITaskManager taskManager;
+        private readonly BasicTaskManager taskManager;
 
-        public ViewTasksUseCaseFactory(ITaskManager taskManager, ITaskItemRepositoryFactory taskItemRepositoryFactory) {
+        public ViewTasksUseCaseFactory(BasicTaskManager taskManager, ITaskItemRepositoryFactory taskItemRepositoryFactory) {
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
             this.taskManager = taskManager;
         }
