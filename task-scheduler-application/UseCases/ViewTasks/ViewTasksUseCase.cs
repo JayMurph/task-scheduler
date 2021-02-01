@@ -15,12 +15,12 @@ namespace task_scheduler_application.UseCases.ViewTasks {
         /// Produces TaskItemRepository's which allow for retrieving tasks from a database
         /// </summary>
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
-        private readonly ITaskManager taskManager;
+        private readonly BasicTaskManager taskManager;
 
         /// <summary>
         /// Constructs a new ViewTasksUseCase
         /// </summary>
-        public ViewTasksUseCase(ITaskManager taskManager, ITaskItemRepositoryFactory taskItemRepositoryFactory) {
+        public ViewTasksUseCase(BasicTaskManager taskManager, ITaskItemRepositoryFactory taskItemRepositoryFactory) {
 
             this.taskManager = taskManager;
             this.taskItemRepositoryFactory = taskItemRepositoryFactory;
