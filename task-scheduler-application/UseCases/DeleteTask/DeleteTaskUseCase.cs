@@ -44,8 +44,12 @@ namespace task_scheduler_application.UseCases.DeleteTask {
         /// <summary>
         /// Deletes a Task Item from the application
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
+        /// <param name="input">
+        /// Holds the input necessary for deleting a TaskItem
+        /// </param>
+        /// <returns>
+        /// The result of deleting the TaskItem
+        /// </returns>
         public DeleteTaskUseCaseOutput Execute(DeleteTaskUseCaseInput input) {
             Guid idToDelete = input.Id;
 
