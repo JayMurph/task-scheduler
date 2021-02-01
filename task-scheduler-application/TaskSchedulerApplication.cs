@@ -17,9 +17,10 @@ namespace task_scheduler_application {
         private readonly ITaskItemRepositoryFactory taskItemRepositoryFactory;
         private readonly INotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory;
         private readonly INotificationRepositoryFactory notificationRepositoryFactory;
-        private readonly INotificationManager notificationManager;
-        private readonly ITaskManager taskManager;
         private readonly IClock clock;
+
+        private readonly BasicNotificationManager notificationManager = new BasicNotificationManager();
+        private readonly BasicTaskManager taskManager = new BasicTaskManager();
 
         private readonly CreateTaskUseCaseFactory createTaskUseCaseFactory;
         private readonly ViewTasksUseCaseFactory viewTasksUseCaseFactory;
@@ -29,15 +30,11 @@ namespace task_scheduler_application {
             ITaskItemRepositoryFactory taskItemRepositoryFactory,
             INotificationFrequencyRepositoryFactory notificationFrequencyRepositoryFactory,
             INotificationRepositoryFactory notificationRepositoryFactory,
-            INotificationManager notificationManager,
-            ITaskManager taskManager,
             IClock clock) {
 
             this.taskItemRepositoryFactory = taskItemRepositoryFactory ?? throw new ArgumentNullException(nameof(taskItemRepositoryFactory));
             this.notificationFrequencyRepositoryFactory = notificationFrequencyRepositoryFactory ?? throw new ArgumentNullException(nameof(notificationFrequencyRepositoryFactory));
             this.notificationRepositoryFactory = notificationRepositoryFactory ?? throw new ArgumentNullException(nameof(notificationRepositoryFactory));
-            this.notificationManager = notificationManager ?? throw new ArgumentNullException(nameof(notificationManager));
-            this.taskManager = taskManager ?? throw new ArgumentNullException(nameof(taskManager));
             this.clock = clock ?? throw new ArgumentNullException(nameof(clock));
 
             this.InitializeDomainFromDatabase(
