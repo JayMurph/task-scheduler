@@ -133,6 +133,7 @@
       <DependentUpon>CustomNotificationFrequencyInputControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IAddTaskView.cs" />
+    <Compile Include="Views\IDeleteTaskView.cs" />
     <Compile Include="Views\INotificationsView.cs" />
     <Compile Include="Views\ITasksView.cs" />
     <Compile Include="Views\MainPage.xaml.cs">
