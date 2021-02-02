@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace task_scheduler_entities {
     /// <summary>
@@ -30,6 +31,19 @@ namespace task_scheduler_entities {
             lock (notification) {
                 return notifications.Remove(notification);
             }
+        }
+
+        public bool Remove(Guid taskId) {
+            bool res = true;
+
+            lock (notifications) {
+                IEnumerable<Notification> taskNotifications = notifications.Where(x => x.Producer.ID == taskId);
+                foreach(Notification notification in taskNotifications) {
+                    res = res && Remove(notification);
+                }
+            }
+
+            return res;
         }
     }
 }
