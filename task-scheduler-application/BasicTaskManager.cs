@@ -41,8 +41,8 @@ namespace task_scheduler_entities {
             return false;
         }
 
-        public bool Remove(Guid taskId) {
-            ITaskItem taskToRemove = tasks.Where(x => x.ID == taskId).FirstOrDefault();
+        public bool Remove(Guid id) {
+            ITaskItem taskToRemove = Find(id);
             if(taskToRemove != null) {
                 return tasks.Remove(taskToRemove);
             }
