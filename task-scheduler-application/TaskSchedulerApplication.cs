@@ -6,6 +6,7 @@ using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.UseCases.CreateTask;
 using task_scheduler_application.UseCases.ViewNotifications;
 using task_scheduler_application.UseCases.ViewTasks;
+using task_scheduler_application.UseCases.DeleteTask;
 using task_scheduler_data_access.DataObjects;
 using task_scheduler_data_access.Repositories;
 using task_scheduler_entities;
@@ -25,6 +26,7 @@ namespace task_scheduler_application {
         private readonly CreateTaskUseCaseFactory createTaskUseCaseFactory;
         private readonly ViewTasksUseCaseFactory viewTasksUseCaseFactory;
         private readonly ViewNotificationsUseCaseFactory viewNotificationsUseCaseFactory;
+        private readonly DeleteTaskUseCaseFactory deleteTaskUseCaseFactory;
 
         public TaskSchedulerApplication(
             ITaskItemRepositoryFactory taskItemRepositoryFactory,
@@ -61,6 +63,14 @@ namespace task_scheduler_application {
                     taskItemRepositoryFactory,
                     notificationRepositoryFactory
                 );
+
+            deleteTaskUseCaseFactory =
+                new DeleteTaskUseCaseFactory(
+                    taskItemRepositoryFactory,
+                    notificationRepositoryFactory,
+                    taskManager,
+                    notificationManager
+                );
         }
 
         public CreateTaskUseCase NewCreateTaskUseCase() {
@@ -72,6 +82,10 @@ namespace task_scheduler_application {
 
         public ViewNotificationsUseCase NewViewNotificationsUseCase() {
             return viewNotificationsUseCaseFactory.New();
+        }
+
+        public DeleteTaskUseCase NewDeleteTaskUseCase() {
+            return deleteTaskUseCaseFactory.New();
         }
 
         //invoked when new Notifications are generated
