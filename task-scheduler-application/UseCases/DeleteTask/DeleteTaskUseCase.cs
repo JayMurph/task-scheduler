@@ -80,14 +80,16 @@ namespace task_scheduler_application.UseCases.DeleteTask {
                     if(notificationDAL.taskId == idToDelete) {
                         if(notificationRepo.Delete(notificationDAL) == false) {
                             //unable to delete notification
+                            //TODO : handle this appropriately
                         }
                     }
                 }
 
                 //delete task notifications in domain
-                //TODO: give INotificationManager interface Remove(id) method
-                //notificationManager.remove(idToDelete)
-
+                if(notificationManager.Remove(idToDelete) == false) {
+                    //failed to remove task notifications from domain
+                    //TODO : handle this appropriately
+                }
 
                 notificationRepo.Save();
                 taskRepo.Save();
