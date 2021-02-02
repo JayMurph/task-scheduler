@@ -68,8 +68,10 @@ namespace task_scheduler_application.UseCases.DeleteTask {
                 }
 
                 //delete task item from domain
-                //TODO: give ITaskManager interface Remove(id) method
-                //taskItemManager.Remove(idToDelete)
+                if(taskItemManager.Remove(idToDelete) == false) {
+                    //failed to remove TaskItem from domain
+                    //TODO : handle this appropriately
+                }
 
                 INotificationRepository notificationRepo = notificationRepositoryFactory.New();
 
