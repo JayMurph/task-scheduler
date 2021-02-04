@@ -117,8 +117,9 @@ namespace task_scheduler_data_access.Repositories {
              * and Time fields
              */
             var findQuery = from row in table.AsEnumerable()
-                            where row.Field<string>("TaskId") == notification.taskId.ToString() &&
-                            row.Field<string>("Time") == notification.time.ToString()
+                            where row.RowState != DataRowState.Deleted &&
+                                row.Field<string>("TaskId") == notification.taskId.ToString() &&
+                                row.Field<string>("Time") == notification.time.ToString()
                             select row;
 
             if(findQuery.Count() != 1) {
