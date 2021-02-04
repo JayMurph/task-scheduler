@@ -214,7 +214,7 @@ namespace task_scheduler_data_access.Repositories {
 
                 //check if there is a custom notification frequency associated with the
                 //TaskItem being deleted
-                if(notificationFrequencyRepository.GetById(id) != null) {
+                if(notificationFrequencyRepository.GetById(id).HasValue) {
 
                     //delete TaskItem's custom notification frequency
                     if(notificationFrequencyRepository.Delete(id) == false) {
