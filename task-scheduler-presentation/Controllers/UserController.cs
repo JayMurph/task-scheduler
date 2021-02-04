@@ -7,6 +7,7 @@ using task_scheduler_application;
 using task_scheduler_application.DTO;
 using task_scheduler_application.NotificationFrequencies;
 using task_scheduler_application.UseCases.CreateTask;
+using task_scheduler_application.UseCases.DeleteTask;
 using task_scheduler_application.UseCases.ViewNotifications;
 using task_scheduler_application.UseCases.ViewTasks;
 using task_scheduler_presentation.Models;
@@ -205,6 +206,7 @@ namespace task_scheduler_presentation.Controllers {
 
                     //create TaskItemModel from data of TaskItemDTO
                     TaskItemModel taskItemModel = new TaskItemModel() {
+                        Id = taskDTO.Id,
                         Title = taskDTO.Title,
                         Description = taskDTO.Description,
                         FrequencyType = frequencyTypeStr,
@@ -273,6 +275,7 @@ namespace task_scheduler_presentation.Controllers {
 
                 //create task item model from taskDTO
                 TaskItemModel newTaskItemModel = new TaskItemModel() {
+                    Id = taskDTO.Id,
                     Title = taskDTO.Title,
                     Description = taskDTO.Description,
                     StartTime = taskDTO.StartTime,
@@ -293,6 +296,15 @@ namespace task_scheduler_presentation.Controllers {
                 view.ApplicationErrorMessage = output.Error;
                 view.ApplicationError = true;
             }
+        }
+
+        public void DeleteTask(IDeleteTaskView view) {
+
+            DeleteTaskUseCase deleteTaskUseCase = taskSchedulerApplication.NewDeleteTaskUseCase();
+
+            DeleteTaskUseCaseOutput output = deleteTaskUseCase.Execute(new DeleteTaskUseCaseInput() { Id = view.ModelToDelete.Id});
+
+            //handle errors
         }
     }
 }
