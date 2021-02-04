@@ -304,7 +304,14 @@ namespace task_scheduler_presentation.Controllers {
 
             DeleteTaskUseCaseOutput output = deleteTaskUseCase.Execute(new DeleteTaskUseCaseInput() { Id = view.ModelToDelete.Id});
 
-            //handle errors
+            if (output.Success) {
+                //remove deleted model from view
+                view.TaskItems.Remove(view.ModelToDelete);
+            }
+            else {
+                //handle errors
+            }
+
         }
     }
 }
