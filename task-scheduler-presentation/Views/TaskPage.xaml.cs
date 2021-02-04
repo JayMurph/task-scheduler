@@ -8,11 +8,12 @@ namespace task_scheduler_presentation.Views {
     /// <summary>
     /// Page that displays TaskItems
     /// </summary>
-    public sealed partial class TaskPage : Page, ITasksView{
+    public sealed partial class TaskPage : Page, ITasksView, IDeleteTaskView{
         /// <summary>
         /// Collection of TaskItemModels that will be displayed on the page
         /// </summary>
         public ObservableCollection<TaskItemModel> TaskItems { get; set; } = new ObservableCollection<TaskItemModel>();
+        public TaskItemModel ModelToDelete { get; set; }
 
         /// <summary>
         /// Creates and setups a new TaskPage
@@ -68,8 +69,8 @@ namespace task_scheduler_presentation.Views {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void TaskItemControl_DeleteClick(object sender, TaskItemModel e) {
-            //TODO: Invoke DeleteTaskUseCase here
-            TaskItems.Remove(e);
+            ModelToDelete = e;
+            App.UserController.DeleteTask(this);
         }
     }
 }
