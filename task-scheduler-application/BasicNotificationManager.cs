@@ -38,8 +38,8 @@ namespace task_scheduler_entities {
 
             lock (notifications) {
                 IEnumerable<Notification> taskNotifications = notifications.Where(x => x.Producer.ID == taskId);
-                foreach(Notification notification in taskNotifications) {
-                    res = res && Remove(notification);
+                for(int i =  taskNotifications.Count() - 1; i >= 0; i--) {
+                    res = res && Remove(taskNotifications.ElementAt(i));
                 }
             }
 
