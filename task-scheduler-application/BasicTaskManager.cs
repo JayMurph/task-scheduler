@@ -44,7 +44,7 @@ namespace task_scheduler_entities {
         public bool Remove(Guid id) {
             ITaskItem taskToRemove = Find(id);
             if(taskToRemove != null) {
-                return tasks.Remove(taskToRemove);
+                return Remove(taskToRemove);
             }
             else {
                 return false;
