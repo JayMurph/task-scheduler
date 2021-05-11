@@ -298,20 +298,28 @@ namespace task_scheduler_presentation.Controllers {
             }
         }
 
+        /// <summary>
+        /// Extracts the id of a Task to delete from the given IDeleteTaskView
+        /// and deletes that Task from the application
+        /// </summary>
+        /// <param name="view">
+        /// Contains field with the TaskItem to delete from the application
+        /// </param>
         public void DeleteTask(IDeleteTaskView view) {
+            if(view.ModelToDelete != null) {//if there is a model to delete
+                //execute DeleteTaskUseCase on the ID of the model to delete
+                DeleteTaskUseCase deleteTaskUseCase = taskSchedulerApplication.NewDeleteTaskUseCase();
+                DeleteTaskUseCaseOutput output = deleteTaskUseCase.Execute(new DeleteTaskUseCaseInput() { Id = view.ModelToDelete.Id});
 
-            DeleteTaskUseCase deleteTaskUseCase = taskSchedulerApplication.NewDeleteTaskUseCase();
-
-            DeleteTaskUseCaseOutput output = deleteTaskUseCase.Execute(new DeleteTaskUseCaseInput() { Id = view.ModelToDelete.Id});
-
-            if (output.Success) {
-                //remove deleted model from view
-                view.TaskItems.Remove(view.ModelToDelete);
+                if (output.Success) {
+                    //remove deleted model from view
+                    view.TaskItems.Remove(view.ModelToDelete);
+                    view.ModelToDelete = null;
+                }
+                else {
+                    //handle errors
+                }
             }
-            else {
-                //handle errors
-            }
-
         }
     }
 }
