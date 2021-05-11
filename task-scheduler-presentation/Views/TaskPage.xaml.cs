@@ -13,7 +13,7 @@ namespace task_scheduler_presentation.Views {
         /// Collection of TaskItemModels that will be displayed on the page
         /// </summary>
         public ObservableCollection<TaskItemModel> TaskItems { get; set; } = new ObservableCollection<TaskItemModel>();
-        public TaskItemModel ModelToDelete { get; set; }
+        public TaskItemModel ModelToDelete { get; set; } = null;
 
         /// <summary>
         /// Creates and setups a new TaskPage
