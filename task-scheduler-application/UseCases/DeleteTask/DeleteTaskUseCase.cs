@@ -71,6 +71,7 @@ namespace task_scheduler_application.UseCases.DeleteTask {
                 if(taskItemManager.Remove(idToDelete) == false) {
                     //failed to remove TaskItem from domain
                     //TODO : handle this appropriately
+                    return new DeleteTaskUseCaseOutput() { Error = "Unable to to delete TaskItem", Success = false };
                 }
 
                 INotificationRepository notificationRepo = notificationRepositoryFactory.New();
