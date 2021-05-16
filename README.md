@@ -19,7 +19,7 @@ So one does not have to remember for themselves to do things on a certain period
 
 ## Status
 So far, the application has the following functionality:
-- Users can create Tasks
+- Users can create and delete Tasks
 - Users can view all their Tasks on the Tasks page
 - Tasks are saved between application sessions
 - Users can view all generated Notifications in the Notifications page
