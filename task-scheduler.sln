@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-application"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-data-access", "task-scheduler-data-access\task-scheduler-data-access.csproj", "{BD4FDED9-0992-41CF-9E31-9E22E5157F61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task-scheduler-utility", "task-scheduler-utility\task-scheduler-utility.csproj", "{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "task-scheduler-utility", "task-scheduler-utility\task-scheduler-utility.csproj", "{C0493AB6-1500-4599-9A46-0E9E9F8CDA2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +70,8 @@ Global
 		{74627B04-0258-417A-AA29-D98DB9A6FCF5}.Release|x86.ActiveCfg = Release|Any CPU
 		{74627B04-0258-417A-AA29-D98DB9A6FCF5}.Release|x86.Build.0 = Release|Any CPU
 		{54010E79-B7EA-4513-B698-A6AC09F96EDC}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{54010E79-B7EA-4513-B698-A6AC09F96EDC}.Debug|Any CPU.Build.0 = Debug|x86
+		{54010E79-B7EA-4513-B698-A6AC09F96EDC}.Debug|Any CPU.Deploy.0 = Debug|x86
 		{54010E79-B7EA-4513-B698-A6AC09F96EDC}.Debug|ARM.ActiveCfg = Debug|ARM
 		{54010E79-B7EA-4513-B698-A6AC09F96EDC}.Debug|ARM.Build.0 = Debug|ARM
 		{54010E79-B7EA-4513-B698-A6AC09F96EDC}.Debug|ARM.Deploy.0 = Debug|ARM

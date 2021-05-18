@@ -10,6 +10,13 @@ namespace task_scheduler_presentation.Views {
     public interface INotificationsView {
 
         /// <summary>
+        /// Executed when the NotificationsView page is closing
+        /// </summary>
+        event EventHandler Closing;
+
+        event EventHandler Loaded;
+
+        /// <summary>
         /// Collection of Notifications that the page will display
         /// </summary>
         ObservableCollection<NotificationModel> Notifications { get; set; }
@@ -25,10 +32,5 @@ namespace task_scheduler_presentation.Views {
         /// A newly generated Notification
         /// </param>
         void NotificationCreatedCallback(object source, NotificationModel newNotification);
-
-        /// <summary>
-        /// Executed when the NotificationsView page is closing
-        /// </summary>
-        event EventHandler Closing;
     }
 }

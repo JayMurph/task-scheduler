@@ -77,6 +77,8 @@ namespace task_scheduler_presentation {
                         new RealTimeClock()
                     );
 
+                Controllers.NotificationsController.TaskSchedulerApp = taskSchedulerApp;
+
                 App.UserController = new Controllers.UserController(taskSchedulerApp);
 
                 // Create a Frame to act as the navigation context and navigate to the first page

@@ -20,7 +20,6 @@ namespace task_scheduler_presentation.Controllers {
     /// </summary>
     public class UserController {
 
-
         private readonly TaskSchedulerApplication taskSchedulerApplication;
         public const string CUSTOM_NOTIFICATION_TYPE_STRING = "Custom";
 
@@ -51,11 +50,6 @@ namespace task_scheduler_presentation.Controllers {
         public event EventHandler<TaskItemModel> TaskCreated;
 
         /// <summary>
-        /// Invoked when a new Notification is created within the application
-        /// </summary>
-        public event EventHandler<NotificationModel> NotificationCreated;
-
-        /// <summary>
         /// Executed whenever a new TaskItem is created. Invokes the delegates attached to the
         /// TaskCreated event.
         /// </summary>
@@ -66,117 +60,8 @@ namespace task_scheduler_presentation.Controllers {
             TaskCreated?.Invoke(this, taskItem);
         }
 
-        /// <summary>
-        /// Invokes the NotificationCreated event subscribers.
-        /// </summary>
-        /// <param name="notification">
-        /// a newly created Notification
-        /// </param>
-        protected void OnNotificationCreated(NotificationModel notification) {
-            NotificationCreated?.Invoke(this, notification);
-        }
-
-        /// <summary>
-        /// kludge method. To be used for receiving Notifications when they are created in separate
-        /// layers (which they always are)
-        /// </summary>
-        /// <param name="notification">
-        /// a newly created Notification
-        /// </param>
-        //TODO: I don't like this method. But, since Notifications are generated in the entity layer
-        //then passed to a notificationManager, we need to expose a method so that we can 'hook'
-        //into that event and receive the info.
-        public async Task ReceiveNotification(NotificationDTO notification) {
-
-            /*
-             * because creating a NotificationModel involves creating a UIElement, and this method
-             * will NOT be called by the UI thread ( but instead by a TaskItem's thread) we have to
-             * move the creation of the model to a UI thread
-             */
-            await Windows.ApplicationModel.Core.CoreApplication.MainView.Dispatcher.RunAsync(
-                Windows.UI.Core.CoreDispatcherPriority.Normal,
-                () => {
-
-                    NotificationModel model = new NotificationModel() {
-                        Title = notification.Title,
-                        Time = notification.Time,
-                        Color = new Windows.UI.Xaml.Media.SolidColorBrush(
-                            Windows.UI.Color.FromArgb(255, notification.R, notification.G, notification.B))
-                    };
-
-                    OnNotificationCreated(model);
-                }
-            );
-        }
-
         public UserController(TaskSchedulerApplication taskSchedulerApplication) {
-
             this.taskSchedulerApplication = taskSchedulerApplication ?? throw new ArgumentNullException(nameof(taskSchedulerApplication));
-
-            //TODO: find a better solution than this filthy hack
-            /*
-             * hook up UserController to the notificationManager, so that it is made aware of when
-             * the domain creates new notifications
-             */
-            taskSchedulerApplication.NotificationAdded +=
-                async (s, notification) => {
-                    await App.UserController.ReceiveNotification(notification);
-                };
-        }
-
-
-        /// <summary>
-        /// Retrieves Notifications in the application then adds them to an INotificationView's
-        /// collection of Notifications to displays, also subscribes the view to the
-        /// NotificationCreated event
-        /// </summary>
-        /// <param name="view">
-        /// Will be given Notitications displayed and subscribed to the NotificationCreated Event
-        /// </param>
-        public void ViewNotifications(INotificationsView view) {
-
-            //call use-case factory to create use-case object
-            var uc = taskSchedulerApplication.NewViewNotificationsUseCase();
-
-            //execute the use-case
-            ViewNotificationsOutput output = uc.Execute(new ViewNotificationsInput());
-
-            if (output.Success) {
-
-                List<NotificationModel> models = new List<NotificationModel>();
-
-                //get and convert all Use-Cases Notifications output to NotificationModels
-                foreach(NotificationDTO notification in output.Notifications) {
-
-                    //convert the NotificationDTOs rgb color to a Windows brush
-                    SolidColorBrush colorBrush = new SolidColorBrush(Windows.UI.Color.FromArgb(255, notification.R, notification.G, notification.B));
-
-                    models.Add(
-                        new NotificationModel() {
-                            Title=notification.Title,
-                            Time = notification.Time,
-                            Color = colorBrush
-                        }
-                    );
-
-                }
-
-                /*
-                 * sort the notifications by their Time values, convert it to a list, then assign
-                 * them to the view's collection to display
-                 */
-                view.Notifications = 
-                    new ObservableCollection<NotificationModel>(models.OrderBy(x => x.Time).ToList());
-
-                //subscribe view to NotificationCreated event
-                NotificationCreated += view.NotificationCreatedCallback;
-
-                //use the view's Closing event to unsubscribe it from NotificationCreated
-                view.Closing += (s, e) => { NotificationCreated -= view.NotificationCreatedCallback; }; 
-            }
-            else {
-                //TODO: handle possible failure of the use-case
-            }
         }
 
         /// <summary>

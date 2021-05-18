@@ -13,19 +13,26 @@ namespace task_scheduler_presentation.Views {
         /// <summary>
         /// Data that will be displayed on the page
         /// </summary>
-        public ObservableCollection<NotificationModel> Notifications { get; set; } = new ObservableCollection<NotificationModel>();
+        public ObservableCollection<NotificationModel> Notifications {
+            get {
+                return notificationListView.ItemsSource as ObservableCollection<NotificationModel>;
+            }
+            set {
+                notificationListView.ItemsSource = value;
+            }
+        }
 
         /// <summary>
         /// Event to be executed when the page is closed
         /// </summary>
         public event EventHandler Closing;
 
+        new public event EventHandler Loaded;
+
         public NotificationPage() {
             this.InitializeComponent();
 
-            App.UserController.ViewNotifications(this);
-
-            this.notificationListView.ItemsSource = Notifications;
+            _controller = new Controllers.NotificationsController(this);
         }
 
         /// <summary>
@@ -51,16 +58,6 @@ namespace task_scheduler_presentation.Views {
             }
         }
 
-
-        /// <summary>
-        /// Invokes the Closing event delegates
-        /// </summary>
-        /// <param name="source">Passed to invoke calls</param>
-        /// <param name="args">Passed to invoke calls</param>
-        private void OnClosing(object source, EventArgs args) {
-            Closing?.Invoke(source, args);
-        }
-
         /// <summary>
         /// Executed when the user navigates away from the NotificationPage. 
         /// </summary>
@@ -70,5 +67,24 @@ namespace task_scheduler_presentation.Views {
             base.OnNavigatedFrom(e);
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e) {
+            OnLoaded(this, null);
+            base.OnNavigatedTo(e);
+        }
+
+        private readonly Controllers.NotificationsController _controller = null;
+
+        private void OnLoaded(object source, EventArgs args) {
+            Loaded?.Invoke(source, args);
+        }
+
+        /// <summary>
+        /// Invokes the Closing event delegates
+        /// </summary>
+        /// <param name="source">Passed to invoke calls</param>
+        /// <param name="args">Passed to invoke calls</param>
+        private void OnClosing(object source, EventArgs args) {
+            Closing?.Invoke(source, args);
+        }
     }
 }
