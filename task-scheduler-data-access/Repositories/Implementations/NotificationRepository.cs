@@ -187,7 +187,9 @@ namespace task_scheduler_data_access.Repositories {
         /// </summary>
         /// <param name="notification">unused</param>
         /// <returns>always false</returns>
-        public bool Update(NotificationDAL notification) {
+        /// <param name="unusedParameter"></param>
+        public bool Update(NotificationDAL notification, int unusedParameter)
+        {
             return false;
         }
 

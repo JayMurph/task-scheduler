@@ -110,7 +110,7 @@ namespace task_scheduler_application {
                 //update the notifications producer in the database
                 TaskItemDAL taskItemDAL = tasks.Find(t => t.id == task.ID);
                 taskItemDAL.lastNotificationTime = task.LastNotificationTime;
-                if(taskRepo.Update(taskItemDAL) == false) {
+                if(taskRepo.Update(taskItemDAL, 20) == false) {
                     //could not update task in database
                 }
 

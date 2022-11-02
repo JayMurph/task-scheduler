@@ -97,7 +97,8 @@ namespace task_scheduler_data_access.Repositories {
             return true;
         }
 
-        public bool Update(CustomNotificationFrequencyDAL notificationFrequency) {
+        public bool Update(CustomNotificationFrequencyDAL notificationFrequency, int unusedParameter)
+        {
 
             var findByIdQuery = GetQueryForId(notificationFrequency.taskId);
 

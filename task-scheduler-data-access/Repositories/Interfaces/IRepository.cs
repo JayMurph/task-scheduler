@@ -28,7 +28,8 @@ namespace task_scheduler_data_access.Repositories {
         /// <returns>
         /// True if the Update operation was successful, otherwise false
         /// </returns>
-        bool Update(T t);
+        /// <param name="unusedParameter"></param>
+        bool Update(T t, int unusedParameter);
 
         /// <summary>
         /// Adds a new object to the repository for it to manage
