@@ -28,7 +28,6 @@ namespace task_scheduler_entities {
             }
             else
             {
-                return false;
             }
 
             return false;
