@@ -47,7 +47,7 @@ namespace task_scheduler_entities {
         /// <param name="clock">
         /// Provides the current time for the DelayedTask
         /// </param>
-        public DelayedTask(Action action, DateTime dueTime, IClock clock, int unusedParameter = 20) {
+        public DelayedTask(Action action, DateTime dueTime, IClock clock) {
 
             this.dueTime = dueTime;
 
