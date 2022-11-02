@@ -9,7 +9,7 @@ namespace task_scheduler_entities {
     /// </summary>
     public class BasicTaskManager : ITaskManager {
 
-        private List<ITaskItem> tasks = new List<ITaskItem>();
+        private readonly List<ITaskItem> tasks = new List<ITaskItem>();
 
         /// <summary>
         /// Gives a new ITaskItem to the BasicTaskManager for it to maintain.
@@ -71,6 +71,11 @@ namespace task_scheduler_entities {
         /// collection and disposed of, otherwise false.
         /// </returns>
         public bool Remove(ITaskItem taskItem) {
+            if (taskItem == null)
+            {
+                throw new ArgumentNullException($"Parameter {nameof(taskItem)} is NULL");
+            }
+
             if (tasks.Remove(taskItem)) {
                 taskItem.Dispose();
                 return true;

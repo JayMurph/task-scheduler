@@ -11,23 +11,23 @@ namespace task_scheduler_data_access.DataObjects {
         /// <summary>
         /// Unique identifier for the TaskItem
         /// </summary>
-        public Guid id;
+        public readonly Guid id;
 
         /// <summary>
         /// Title of the TaskItem
         /// </summary>
-        public string title;
+        public readonly string title;
 
         /// <summary>
         /// Description of the TaskItem
         /// </summary>
-        public string description;
+        public readonly string description;
 
         /// <summary>
         /// The time at which the TaskItem should begin generating notifications whenever its
         /// notification frequency elapses
         /// </summary>
-        public DateTime startTime;
+        public readonly DateTime startTime;
 
         /// <summary>
         /// The last point in time at which the TaskItem generated a Notification
@@ -37,19 +37,19 @@ namespace task_scheduler_data_access.DataObjects {
         /// <summary>
         /// R component of the TaskItem's RGB colour
         /// </summary>
-        public byte r;
+        public readonly byte r;
 
         /// <summary>
         /// G component of the TaskItem's RGB colour
         /// </summary>
-        public byte g;
+        public readonly byte g;
 
         /// <summary>
         /// B component of the TaskItem's RGB colour
         /// </summary>
-        public byte b;
+        public readonly byte b;
 
-        public int notificationFrequencyType;
+        public readonly int notificationFrequencyType;
 
         /// <summary>
         /// A custom Notification Frequency that the TaskItem may use, instead of one the
@@ -74,7 +74,7 @@ namespace task_scheduler_data_access.DataObjects {
             }
 
             if (description == null) {
-                throw new ArgumentException($"'{nameof(description)}' cannot be null", nameof(description));
+                throw new ArgumentNullException($"'{nameof(description)}' cannot be null", nameof(description));
             }
 
             this.id = id;

@@ -58,7 +58,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
         public CreateTaskOutput Execute(CreateTaskInput input) {
 
             if (input is null) {
-                throw new ArgumentNullException(nameof(input));
+                throw new ArgumentNullException($"parameter {nameof(input)} is NULL");
             }
 
             if (input.IsValid()) {
@@ -176,7 +176,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
          * TODO: this should probably end up in a conversion class, of some sort, in the application
          * layer
          */
-        private TaskItemDAL TaskItemAndInputToDAL(TaskItem taskItem, CreateTaskInput input) {
+        private static TaskItemDAL TaskItemAndInputToDAL(TaskItem taskItem, CreateTaskInput input) {
 
             Maybe<CustomNotificationFrequencyDAL> notificationFrequency = Maybe<CustomNotificationFrequencyDAL>.CreateEmpty();
 

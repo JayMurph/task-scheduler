@@ -13,11 +13,11 @@ namespace task_scheduler_data_access.DataObjects {
         /// <summary>
         /// The unique id TaskItem that produced the notification
         /// </summary>
-        public Guid taskId;
+        public readonly Guid taskId;
 
         /// <summary>
         /// The point in time at which the Notification was produced
         /// </summary>
-        public DateTime time; 
+        public readonly DateTime time; 
     }
 }

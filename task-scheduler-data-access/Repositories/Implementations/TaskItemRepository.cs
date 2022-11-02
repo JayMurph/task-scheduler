@@ -56,10 +56,9 @@ namespace task_scheduler_data_access.Repositories {
         private static SQLiteDataAdapter NewTaskItemAdapter(string connectionStr) {
             SQLiteConnection conn = new SQLiteConnection(connectionStr);
 
-            SQLiteDataAdapter taskAdapter = 
-                new SQLiteDataAdapter("SELECT * FROM Tasks", conn);
-
-            taskAdapter.InsertCommand =
+            SQLiteDataAdapter taskAdapter = new SQLiteDataAdapter("SELECT * FROM Tasks", conn)
+            {
+                InsertCommand =
                 new SQLiteCommand(
                     "INSERT INTO Tasks VALUES(" +
                     "@id, " +
@@ -72,7 +71,8 @@ namespace task_scheduler_data_access.Repositories {
                     "@g," +
                     "@b)",
                     conn
-                );
+                )
+            };
 
             taskAdapter.InsertCommand.Parameters.Add("@id", DbType.String, 1, "Id");
             taskAdapter.InsertCommand.Parameters.Add("@startTime", DbType.String, 1, "StartTime");

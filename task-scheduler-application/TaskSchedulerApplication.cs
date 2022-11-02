@@ -94,10 +94,7 @@ namespace task_scheduler_application {
         protected void OnNotificationAdded(object source, Notification notification) {
 
             //update database with new notification
-            NotificationDAL notificationDal = new NotificationDAL {
-                taskId = notification.Producer.ID,
-                time = notification.Time
-            };
+            NotificationDAL notificationDal = new NotificationDAL(notification.Producer.ID, notification.Time);
 
             INotificationRepository notificationRepo = notificationRepositoryFactory.New();
             notificationRepo.Add(notificationDal);
