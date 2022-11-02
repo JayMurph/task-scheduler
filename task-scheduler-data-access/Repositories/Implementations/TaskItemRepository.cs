@@ -296,9 +296,7 @@ namespace task_scheduler_data_access.Repositories {
         /// repository and if its fields were successfuly updated with the incoming data, otherwise
         /// false.
         /// </returns>
-        /// <param name="unusedParameter"></param>
-        public bool Update(TaskItemDAL taskItemDAL, int unusedParameter)
-        {
+        public bool Update(TaskItemDAL taskItemDAL) {
             var findTaskQuery = GetQueryForId(taskItemDAL.id);
 
             if(findTaskQuery.Count() != 1) {
@@ -330,7 +328,7 @@ namespace task_scheduler_data_access.Repositories {
                         if(taskItemDAL.customNotificationFrequency.HasValue) {
                             //update the custom notification frequency
                             //TODO: check that update is successful/handle failure
-                            notificationFrequencyRepository.Update(taskItemDAL.customNotificationFrequency.Value, 20);
+                            notificationFrequencyRepository.Update(taskItemDAL.customNotificationFrequency.Value);
                         }
                         else {
                             //TaskItem no longer has a custom notification frequency
