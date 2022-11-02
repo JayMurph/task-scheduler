@@ -147,7 +147,7 @@ namespace task_scheduler_application.UseCases.CreateTask {
         /// <returns>
         /// TaskItemDTO created from a CreateTaskInput object
         /// </returns>
-        private TaskItemDTO InputToTaskItemDTO(CreateTaskInput input) {
+        private static TaskItemDTO InputToTaskItemDTO(CreateTaskInput input) {
 
             return new TaskItemDTO {
                 Title = input.Title,
