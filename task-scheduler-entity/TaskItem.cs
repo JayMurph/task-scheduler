@@ -117,6 +117,11 @@ namespace task_scheduler_entities {
             Guid id
             ) {
 
+            if (frequency is null)
+            {
+                throw new NullReferenceException($"parameter {nameof(frequency)} is NULL");
+            }
+
             Title = title;
             Description = description;
             Colour = colour;
