@@ -26,6 +26,10 @@ namespace task_scheduler_entities {
                 tasks.Add(taskItem);
                 return true;
             }
+            else
+            {
+                return false;
+            }
 
             return false;
         }
